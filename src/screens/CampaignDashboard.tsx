@@ -19,7 +19,7 @@ import {
   Chart,
   ContactList,
   FilterButton,
-  AnalysisSidebar,
+  SegmentedControl,
 } from '../components';
 import { mockDashboards } from '../data/mockDashboards';
 import { mockContacts } from '../data/mockContacts';
@@ -60,12 +60,12 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
     container: {
       flex: 1,
       backgroundColor: themeColors.canvasFrost,
-      flexDirection: isMobile ? 'column' : 'row',
+      flexDirection: 'column',
     } as ViewStyle,
     contentWrapper: {
       flex: 1,
-      paddingHorizontal: isMobile ? spacing.md : spacing.lg,
-      paddingTop: spacing.lg,
+      paddingHorizontal: spacing.lg,
+      paddingTop: 0,
     } as ViewStyle,
     header: {
       flexDirection: 'row',
@@ -297,24 +297,15 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
 
   return (
     <View style={styles.container}>
-      {!isMobile && (
-        <AnalysisSidebar
-          activeAnalysis={infoType}
-          onSelectAnalysis={setInfoType}
-        />
-      )}
-
       <View style={styles.contentWrapper}>
         <View style={styles.header}>
           <Text style={styles.title}>{dashboard.name}</Text>
         </View>
 
-        {isMobile && (
-          <AnalysisSidebar
-            activeAnalysis={infoType}
-            onSelectAnalysis={setInfoType}
-          />
-        )}
+        <SegmentedControl
+          activeAnalysis={infoType}
+          onSelectAnalysis={setInfoType}
+        />
 
         <View style={styles.tabContainer}>
           {['indicadores', 'contactos'].map((tab) => (

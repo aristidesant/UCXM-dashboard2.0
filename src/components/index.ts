@@ -14,3 +14,4 @@ export { DeviceFrame } from './DeviceFrame';
 export { AnimatedKPICard } from './AnimatedKPICard';
 export { StatusBar } from './StatusBar';
 export { AnalysisSidebar } from './AnalysisSidebar';
+export { SegmentedControl } from './SegmentedControl';
