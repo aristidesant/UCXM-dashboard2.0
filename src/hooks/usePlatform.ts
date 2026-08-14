@@ -3,5 +3,6 @@
 import { usePlatformContext } from '../context/PlatformContext';
 
 export const usePlatform = () => {
-  return usePlatformContext();
+  const { platform, setPlatform, dimensions } = usePlatformContext();
+  return { platform, setPlatform, dimensions, isMobile: platform === 'mobile' };
 };

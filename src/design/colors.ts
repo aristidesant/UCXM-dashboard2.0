@@ -1,26 +1,37 @@
 // src/design/colors.ts
+// Using design system tokens from Design system/tokens/colors.css
 
 export const colors = {
   light: {
-    primaryBlue: '#0066CC',
-    successGreen: '#00AA44',
-    warningOrange: '#FF9900',
-    dangerRed: '#FF3333',
-    darkGray: '#333333',
-    mediumGray: '#666666',
-    lightGray: '#CCCCCC',
+    // Semantic colors
+    primaryBlue: '#0A84FF',
+    successGreen: '#34C759',
+    warningOrange: '#FF9500',
+    dangerRed: '#FF3B30',
+    // Text colors
+    darkGray: '#1C1C1E',
+    mediumGray: '#6E6E73',
+    lightGray: '#C7C7CC',
+    // Backgrounds
     bgPrimary: '#FFFFFF',
-    bgSecondary: '#F5F5F5',
+    bgSecondary: '#F2F2F7',
+    // Semantic
+    white: '#FFFFFF',
   },
   dark: {
-    primaryBlue: '#0066CC',
-    successGreen: '#00AA44',
-    warningOrange: '#FF9900',
-    dangerRed: '#FF3333',
-    darkGray: '#FFFFFF',
-    mediumGray: '#CCCCCC',
-    lightGray: '#333333',
-    bgPrimary: '#1A1A1A',
-    bgSecondary: '#2A2A2A',
+    // Semantic colors
+    primaryBlue: '#4FA8F5',
+    successGreen: '#34C759',
+    warningOrange: '#FF9500',
+    dangerRed: '#FF3B30',
+    // Text colors
+    darkGray: '#F5F5F7',
+    mediumGray: '#98989F',
+    lightGray: '#4A4A50',
+    // Backgrounds
+    bgPrimary: '#0B0B0D',
+    bgSecondary: '#1C1C1F',
+    // Semantic
+    white: '#FFFFFF',
   },
 };

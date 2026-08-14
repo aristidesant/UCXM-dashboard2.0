@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, SafeAreaView, ViewStyle } from 'react-native';
+import { LayoutGrid, CheckCircle, Shield, Lightbulb, Settings } from 'lucide-react';
 import { PlatformProvider } from './context/PlatformContext';
 import { AppProvider } from './context/AppContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import { PlatformToggle, TabBar } from './components';
+import { PlatformToggle, TabBar, BottomNavBar, DeviceFrame } from './components';
 import {
   DashboardsScreen,
   CampaignDashboardScreen,
   ContactDetailsScreen,
   SettingsScreen,
   LoginScreen,
+  DashboardsMobileScreen,
 } from './screens';
 import { useAppContext } from './context/AppContext';
 import { usePlatform } from './hooks/usePlatform';
@@ -22,8 +24,7 @@ const AppContent: React.FC = () => {
   const { isLoggedIn } = useAuth();
   const [currentScreen, setCurrentScreen] = useState<Screen>('dashboards');
   const { currentDashboard, setCurrentDashboard } = useAppContext();
-  const { platform } = usePlatform();
-  const isMobile = platform === 'mobile';
+  const { platform, isMobile } = usePlatform();
   const [selectedContactId, setSelectedContactId] = useState<string | null>(null);
 
   const selectedContact = mockContacts.find((c) => c.id === selectedContactId);
@@ -43,11 +44,12 @@ const AppContent: React.FC = () => {
     } as ViewStyle,
   });
 
-  const tabs = [
-    { id: 'dashboards', label: 'Dashboards', icon: '📊' },
-    { id: 'campaign', label: 'Campaign', icon: '📈' },
-    { id: 'contact', label: 'Contact', icon: '👤' },
-    { id: 'settings', label: 'Settings', icon: '⚙️' },
+  const navItems = [
+    { id: 'dashboards', label: 'Dashboards', icon: <LayoutGrid size={24} color={currentScreen === 'dashboards' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
+    { id: 'campaign', label: 'Calidad', icon: <CheckCircle size={24} color={currentScreen === 'campaign' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
+    { id: 'contact', label: 'Cumplimiento', icon: <Shield size={24} color={currentScreen === 'contact' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
+    { id: 'insights', label: 'Insights', icon: <Lightbulb size={24} color={currentScreen === 'insights' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
+    { id: 'settings', label: 'Ajustes', icon: <Settings size={24} color={currentScreen === 'settings' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
   ];
 
   const handleSelectDashboard = (dashboardId: string) => {
@@ -72,13 +74,19 @@ const AppContent: React.FC = () => {
   const renderScreen = () => {
     switch (currentScreen) {
       case 'dashboards':
-        return <DashboardsScreen onSelectDashboard={handleSelectDashboard} />;
+        return isMobile ? (
+          <DashboardsMobileScreen onSelectDashboard={handleSelectDashboard} />
+        ) : (
+          <DashboardsScreen onSelectDashboard={handleSelectDashboard} />
+        );
       case 'campaign':
         return currentDashboard ? (
           <CampaignDashboardScreen
             onSelectContact={handleSelectContact}
             onBack={handleBack}
           />
+        ) : isMobile ? (
+          <DashboardsMobileScreen onSelectDashboard={handleSelectDashboard} />
         ) : (
           <DashboardsScreen onSelectDashboard={handleSelectDashboard} />
         );
@@ -89,30 +97,64 @@ const AppContent: React.FC = () => {
       case 'settings':
         return <SettingsScreen />;
       default:
-        return <DashboardsScreen onSelectDashboard={handleSelectDashboard} />;
+        return isMobile ? (
+          <DashboardsMobileScreen onSelectDashboard={handleSelectDashboard} />
+        ) : (
+          <DashboardsScreen onSelectDashboard={handleSelectDashboard} />
+        );
     }
   };
 
   if (!isLoggedIn) {
+    if (platform === 'desktop') {
+      return (
+        <View style={styles.container}>
+          <PlatformToggle />
+          <LoginScreen onLoginSuccess={() => {}} />
+        </View>
+      );
+    }
     return (
-      <View style={styles.container}>
+      <DeviceFrame>
+        <PlatformToggle />
         <LoginScreen onLoginSuccess={() => {}} />
-      </View>
+      </DeviceFrame>
+    );
+  }
+
+  if (platform === 'desktop') {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <PlatformToggle />
+          <View style={styles.content}>{renderScreen()}</View>
+          <TabBar
+            currentScreen={currentScreen}
+            onSelectScreen={(screen) => setCurrentScreen(screen as Screen)}
+            tabs={[
+              { id: 'dashboards', label: 'Dashboards', icon: '📊' },
+              { id: 'campaign', label: 'Campaign', icon: '📈' },
+              { id: 'contact', label: 'Contact', icon: '👤' },
+              { id: 'settings', label: 'Settings', icon: '⚙️' },
+            ]}
+          />
+        </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <DeviceFrame>
+      <PlatformToggle />
       <View style={styles.container}>
-        <PlatformToggle />
         <View style={styles.content}>{renderScreen()}</View>
-        <TabBar
-          currentScreen={currentScreen}
-          onSelectScreen={(screen) => setCurrentScreen(screen as Screen)}
-          tabs={tabs}
+        <BottomNavBar
+          items={navItems}
+          activeItemId={currentScreen}
+          onSelectItem={(id) => setCurrentScreen(id as Screen)}
         />
       </View>
-    </SafeAreaView>
+    </DeviceFrame>
   );
 };
 

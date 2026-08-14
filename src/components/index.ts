@@ -9,3 +9,5 @@ export { ContactList } from './ContactList';
 export { FilterButton } from './FilterButton';
 export { PlatformToggle } from './PlatformToggle';
 export { TabBar } from './TabBar';
+export { BottomNavBar } from './BottomNavBar';
+export { DeviceFrame } from './DeviceFrame';

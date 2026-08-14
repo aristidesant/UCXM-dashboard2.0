@@ -1,32 +1,49 @@
 // src/design/typography.ts
+// Using design system tokens from Design system/tokens/typography.css
 
 import { TextStyle } from 'react-native';
 
 export const typography = {
   display: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: '700' as const,
+    lineHeight: 32,
+  } as TextStyle,
+  title: {
+    fontSize: 20,
+    fontWeight: '700' as const,
+    lineHeight: 24,
   } as TextStyle,
   heading: {
-    fontSize: 24,
+    fontSize: 17,
     fontWeight: '700' as const,
-  } as TextStyle,
-  subheading: {
-    fontSize: 18,
-    fontWeight: '600' as const,
+    lineHeight: 22,
   } as TextStyle,
   body: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '400' as const,
+    lineHeight: 21,
   } as TextStyle,
   label: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '600' as const,
+    lineHeight: 18,
   } as TextStyle,
   caption: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '400' as const,
+    lineHeight: 18,
+  } as TextStyle,
+  micro: {
+    fontSize: 11,
+    fontWeight: '700' as const,
+    lineHeight: 14,
+  } as TextStyle,
+  subheading: {
+    fontSize: 16,
+    fontWeight: '600' as const,
+    lineHeight: 20,
   } as TextStyle,
 };
 
-export const fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+export const fontFamily = '-apple-system, "SF Pro Text", "Inter", "Helvetica Neue", Arial, sans-serif';
