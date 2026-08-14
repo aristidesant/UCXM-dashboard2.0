@@ -180,7 +180,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
                 <View key={idx} style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: spacing.sm, borderBottomWidth: idx < operationMetrics.calls.byLanguage.length - 1 ? 1 : 0, borderBottomColor: themeColors.whisperBorder }}>
                   <Text style={[typography.body, { color: themeColors.steelSecondary }]}>{lang.language}</Text>
                   <View style={{ flexDirection: 'row', gap: spacing.lg }}>
-                    <Text style={typography.body}>{lang.quantity}</Text>
+                    <Text style={[typography.body, { color: themeColors.inkPrimary }]}>{lang.quantity}</Text>
                     <Text style={[typography.body, { color: themeColors.steelSecondary }]}>{lang.percentage}%</Text>
                   </View>
                 </View>
@@ -239,7 +239,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
                 <View key={idx} style={{ gap: spacing.sm }}>
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={[typography.body, { color: themeColors.steelSecondary }]}>{disp.disposition}</Text>
-                    <Text style={typography.body}>{disp.count} ({disp.percentage}%)</Text>
+                    <Text style={[typography.body, { color: themeColors.inkPrimary }]}>{disp.count} ({disp.percentage}%)</Text>
                   </View>
                   <View style={{ height: 8, backgroundColor: themeColors.whisperBorder, borderRadius: 4, overflow: 'hidden' }}>
                     <View style={{ height: '100%', width: `${disp.percentage}%`, backgroundColor: themeColors.newtechGreen }} />
