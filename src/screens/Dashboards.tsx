@@ -115,6 +115,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
         />
       </View>
       <FlatList
+        key={isMobile ? 'mobile' : 'web'}
         data={filteredDashboards}
         renderItem={renderDashboard}
         keyExtractor={(item) => item.id}
