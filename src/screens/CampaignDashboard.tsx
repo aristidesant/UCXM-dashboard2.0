@@ -174,7 +174,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
           </View>
 
           <Card style={{ marginBottom: spacing.lg }}>
-            <Text style={[typography.heading, { marginBottom: spacing.md }]}>Llamadas por Idioma</Text>
+            <Text style={[typography.heading, { marginBottom: spacing.md, color: themeColors.inkPrimary }]}>Llamadas por Idioma</Text>
             <View style={{ gap: spacing.md }}>
               {operationMetrics.calls.byLanguage.map((lang, idx) => (
                 <View key={idx} style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: spacing.sm, borderBottomWidth: idx < operationMetrics.calls.byLanguage.length - 1 ? 1 : 0, borderBottomColor: themeColors.whisperBorder }}>
@@ -233,7 +233,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
           </View>
 
           <Card style={{ marginBottom: spacing.lg }}>
-            <Text style={[typography.heading, { marginBottom: spacing.md }]}>Llamadas por Disposición</Text>
+            <Text style={[typography.heading, { marginBottom: spacing.md, color: themeColors.inkPrimary }]}>Llamadas por Disposición</Text>
             <View style={{ gap: spacing.md }}>
               {operationMetrics.management.callsByDisposition.map((disp, idx) => (
                 <View key={idx} style={{ gap: spacing.sm }}>
