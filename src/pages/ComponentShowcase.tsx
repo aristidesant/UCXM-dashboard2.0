@@ -4,11 +4,12 @@ import { colors, typography, spacing } from '../design';
 import { Button, Card, Badge, MetricCard, Chart, ContactList, FilterButton, TabBar } from '../components';
 import { usePlatform } from '../hooks/usePlatform';
 import { mockContacts } from '../data/mockContacts';
+import { InfoType } from '../context/AppContext';
 
 export const ComponentShowcase: React.FC = () => {
   const { platform } = usePlatform();
   const isMobile = platform === 'mobile';
-  const [selectedInfoType, setSelectedInfoType] = useState<'qa' | 'emotion' | 'compliance'>('qa');
+  const [selectedInfoType, setSelectedInfoType] = useState<InfoType>('operation');
 
   const styles = StyleSheet.create({
     container: {

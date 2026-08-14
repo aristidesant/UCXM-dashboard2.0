@@ -157,15 +157,13 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
             <View style={[styles.metricColumn, !isMobile && { marginRight: spacing.md }]}>
               <MetricCard
                 label="Performance Score"
-                value={operationMetrics.performanceScore.toString()}
-                unit="%"
+                value={`${operationMetrics.performanceScore}%`}
               />
             </View>
             <View style={styles.metricColumn}>
               <MetricCard
                 label="Resource Usage"
-                value={operationMetrics.resourceUsage.toString()}
-                unit="%"
+                value={`${operationMetrics.resourceUsage}%`}
               />
             </View>
           </View>

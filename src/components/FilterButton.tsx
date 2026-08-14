@@ -20,6 +20,7 @@ interface FilterButtonProps {
 }
 
 const infoTypeLabels: Record<InfoType, string> = {
+  operation: 'Operation',
   qa: 'QA',
   emotion: 'Emotion & Sentiment',
   compliance: 'Compliance',
