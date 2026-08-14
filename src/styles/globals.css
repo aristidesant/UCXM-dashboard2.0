@@ -1,3 +1,9 @@
+/* Import design system tokens */
+@import '../../Design system/tokens/colors.css';
+@import '../../Design system/tokens/typography.css';
+@import '../../Design system/tokens/spacing.css';
+@import '../../Design system/tokens/effects.css';
+
 /* src/styles/globals.css */
 
 * {
@@ -10,9 +16,9 @@ html,
 body {
   width: 100%;
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #ffffff;
-  color: #333333;
+  font-family: var(--font-family, -apple-system, 'SF Pro Text', 'Inter', 'Helvetica Neue', Arial, sans-serif);
+  background-color: var(--surface-app, #FFFFFF);
+  color: var(--text-primary, #1C1C1E);
 }
 
 #root {

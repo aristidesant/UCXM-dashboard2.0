@@ -153,12 +153,10 @@ export const KPIDashboardScreen: React.FC<KPIDashboardScreenProps> = ({
         <Text style={styles.subtitle}>Live KPI Dashboard - Real-time data collection</Text>
       </View>
 
-      <View style={styles.statusBadge}>
-        <View style={getStatusBadgeStyle()}>
-          <Text style={getStatusTextStyle()}>
-            📊 System Health: {kpiData.healthStatus}
-          </Text>
-        </View>
+      <View style={[styles.statusBadge, getStatusBadgeStyle()]}>
+        <Text style={getStatusTextStyle()}>
+          📊 System Health: {kpiData.healthStatus}
+        </Text>
       </View>
 
       <View style={styles.kpiGrid}>
@@ -205,9 +203,7 @@ export const KPIDashboardScreen: React.FC<KPIDashboardScreenProps> = ({
         </View>
       </View>
 
-      <View style={styles.sectionTitle}>
-        <Text style={styles.sectionTitle}>System Status</Text>
-      </View>
+      <Text style={styles.sectionTitle}>System Status</Text>
 
       <View style={styles.kpiGrid}>
         <View style={styles.fullWidthKpi}>

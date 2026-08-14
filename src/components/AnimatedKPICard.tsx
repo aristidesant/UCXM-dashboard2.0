@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, View, Text, ViewStyle } from 'react-native';
 import { colors, typography, spacing, borderRadius } from '../design';
 
@@ -20,6 +20,8 @@ export const AnimatedKPICard: React.FC<AnimatedKPICardProps> = ({
   isNumeric = true,
 }) => {
   const [displayedValue, setDisplayedValue] = useState(0);
+  const animationFrameRef = useRef<number | null>(null);
+  const startTimeRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!isNumeric || typeof value !== 'number') {
@@ -29,24 +31,34 @@ export const AnimatedKPICard: React.FC<AnimatedKPICardProps> = ({
 
     const targetValue = value as number;
     const duration = 800;
-    const steps = 60;
-    const stepDuration = duration / steps;
-    let currentStep = 0;
 
-    const interval = setInterval(() => {
-      currentStep++;
-      const progress = Math.min(currentStep / steps, 1);
+    const animate = (currentTime: number) => {
+      if (startTimeRef.current === null) {
+        startTimeRef.current = currentTime;
+      }
+
+      const elapsed = currentTime - startTimeRef.current;
+      const progress = Math.min(elapsed / duration, 1);
+
       const easeOutQuad = 1 - (1 - progress) * (1 - progress);
       const currentValue = Math.floor(targetValue * easeOutQuad);
       setDisplayedValue(currentValue);
 
-      if (progress >= 1) {
-        clearInterval(interval);
+      if (progress < 1) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+      } else {
         setDisplayedValue(targetValue);
       }
-    }, stepDuration);
+    };
 
-    return () => clearInterval(interval);
+    startTimeRef.current = null;
+    animationFrameRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
   }, [value, isNumeric]);
 
   const variantColors = {
