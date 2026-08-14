@@ -12,3 +12,5 @@ export { TabBar } from './TabBar';
 export { BottomNavBar } from './BottomNavBar';
 export { DeviceFrame } from './DeviceFrame';
 export { AnimatedKPICard } from './AnimatedKPICard';
+export { StatusBar } from './StatusBar';
+export { AnalysisSidebar } from './AnalysisSidebar';

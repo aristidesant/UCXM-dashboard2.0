@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState } from 'react';
 
-export type InfoType = 'qa' | 'emotion' | 'compliance';
+export type InfoType = 'operation' | 'qa' | 'emotion' | 'compliance';
 
 interface AppContextType {
   currentDashboard: string | null;
@@ -17,7 +17,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentDashboard, setCurrentDashboard] = useState<string | null>(null);
-  const [currentInfoType, setCurrentInfoType] = useState<InfoType>('qa');
+  const [currentInfoType, setCurrentInfoType] = useState<InfoType>('operation');
   const [selectedContact, setSelectedContact] = useState<string | null>(null);
 
   return (

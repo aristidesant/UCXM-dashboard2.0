@@ -24,7 +24,16 @@ export interface ComplianceMetrics {
   alerts: string[];
 }
 
-export type Metrics = QAMetrics | EmotionMetrics | ComplianceMetrics;
+export interface OperationMetrics {
+  healthStatus: 'Healthy' | 'At Risk' | 'Critical';
+  systemUptime: number;
+  performanceScore: number;
+  resourceUsage: number;
+  trend: number[];
+  alerts: string[];
+}
+
+export type Metrics = QAMetrics | EmotionMetrics | ComplianceMetrics | OperationMetrics;
 
 export const mockMetrics: Record<string, Record<InfoType, Metrics>> = {
   'loc-1': {
@@ -47,6 +56,14 @@ export const mockMetrics: Record<string, Record<InfoType, Metrics>> = {
       trend: [90, 91, 92, 94, 95, 95, 95],
       alerts: ['Rule A violated twice', 'Coverage target met'],
     },
+    operation: {
+      healthStatus: 'Healthy',
+      systemUptime: 99.8,
+      performanceScore: 92,
+      resourceUsage: 68,
+      trend: [88, 89, 90, 91, 92, 92, 92],
+      alerts: ['CPU usage: 68%', 'Memory: Normal', 'All services running'],
+    },
   },
   'loc-mayo': {
     qa: {
@@ -67,6 +84,14 @@ export const mockMetrics: Record<string, Record<InfoType, Metrics>> = {
       coverage: 100,
       trend: [95, 96, 97, 98, 99, 100, 100],
       alerts: ['All compliance rules met'],
+    },
+    operation: {
+      healthStatus: 'Healthy',
+      systemUptime: 99.95,
+      performanceScore: 96,
+      resourceUsage: 54,
+      trend: [92, 93, 94, 95, 95, 96, 96],
+      alerts: ['CPU usage: 54%', 'Memory: Excellent', 'All services running optimal'],
     },
   },
 };

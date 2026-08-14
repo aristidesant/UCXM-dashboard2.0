@@ -19,10 +19,11 @@ import {
   Chart,
   ContactList,
   FilterButton,
+  AnalysisSidebar,
 } from '../components';
 import { mockDashboards } from '../data/mockDashboards';
 import { mockContacts } from '../data/mockContacts';
-import { QAMetrics, EmotionMetrics, ComplianceMetrics } from '../data/mockMetrics';
+import { QAMetrics, EmotionMetrics, ComplianceMetrics, OperationMetrics } from '../data/mockMetrics';
 
 interface CampaignDashboardScreenProps {
   onSelectContact: (contactId: string) => void;
@@ -59,6 +60,10 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
     container: {
       flex: 1,
       backgroundColor: themeColors.canvasFrost,
+      flexDirection: isMobile ? 'column' : 'row',
+    } as ViewStyle,
+    contentWrapper: {
+      flex: 1,
       paddingHorizontal: isMobile ? spacing.md : spacing.lg,
       paddingTop: spacing.lg,
     } as ViewStyle,
@@ -119,6 +124,65 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
   });
 
   const renderIndicadores = () => {
+    if (infoType === 'operation' && 'healthStatus' in metrics) {
+      const operationMetrics = metrics as OperationMetrics;
+      const getHealthBadgeColor = () => {
+        switch (operationMetrics.healthStatus) {
+          case 'Healthy':
+            return themeColors.success;
+          case 'At Risk':
+            return themeColors.warning;
+          case 'Critical':
+            return themeColors.danger;
+        }
+      };
+
+      return (
+        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+          <View style={styles.metricsGrid}>
+            <View style={[styles.metricColumn, !isMobile && { marginRight: spacing.md }]}>
+              <MetricCard
+                label="System Health"
+                value={operationMetrics.healthStatus}
+              />
+            </View>
+            <View style={styles.metricColumn}>
+              <MetricCard
+                label="System Uptime"
+                value={`${operationMetrics.systemUptime.toFixed(2)}%`}
+              />
+            </View>
+          </View>
+          <View style={styles.metricsGrid}>
+            <View style={[styles.metricColumn, !isMobile && { marginRight: spacing.md }]}>
+              <MetricCard
+                label="Performance Score"
+                value={operationMetrics.performanceScore.toString()}
+                unit="%"
+              />
+            </View>
+            <View style={styles.metricColumn}>
+              <MetricCard
+                label="Resource Usage"
+                value={operationMetrics.resourceUsage.toString()}
+                unit="%"
+              />
+            </View>
+          </View>
+          <View style={[styles.fullWidth, { marginBottom: spacing.lg }]}>
+            <Chart data={operationMetrics.trend} height={200} />
+          </View>
+          <Card>
+            {operationMetrics.alerts.map((alert, idx) => (
+              <Text key={idx} style={[typography.body, { marginBottom: spacing.sm }]}>
+                • {alert}
+              </Text>
+            ))}
+          </Card>
+        </ScrollView>
+      );
+    }
+
     if (infoType === 'qa' && 'contactPercentage' in metrics) {
       const qaMetrics = metrics as QAMetrics;
       return (
@@ -235,35 +299,47 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>{dashboard.name}</Text>
-      </View>
+      {!isMobile && (
+        <AnalysisSidebar
+          activeAnalysis={infoType}
+          onSelectAnalysis={setInfoType}
+        />
+      )}
 
-      <View style={styles.filterContainer}>
-        <FilterButton currentType={infoType} onSelect={setInfoType} />
-      </View>
+      <View style={styles.contentWrapper}>
+        <View style={styles.header}>
+          <Text style={styles.title}>{dashboard.name}</Text>
+        </View>
 
-      <View style={styles.tabContainer}>
-        {['indicadores', 'contactos'].map((tab) => (
-          <TouchableOpacity
-            key={tab}
-            style={[styles.tab, activeTab === tab && styles.activeTab]}
-            onPress={() => setActiveTab(tab as 'indicadores' | 'contactos')}
-            activeOpacity={0.7}
-          >
-            <Text
-              style={[
-                styles.tabText,
-                activeTab === tab && styles.activeTabText,
-              ]}
+        {isMobile && (
+          <AnalysisSidebar
+            activeAnalysis={infoType}
+            onSelectAnalysis={setInfoType}
+          />
+        )}
+
+        <View style={styles.tabContainer}>
+          {['indicadores', 'contactos'].map((tab) => (
+            <TouchableOpacity
+              key={tab}
+              style={[styles.tab, activeTab === tab && styles.activeTab]}
+              onPress={() => setActiveTab(tab as 'indicadores' | 'contactos')}
+              activeOpacity={0.7}
             >
-              {tab === 'indicadores' ? 'Indicadores' : 'Detalles de contacto'}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+              <Text
+                style={[
+                  styles.tabText,
+                  activeTab === tab && styles.activeTabText,
+                ]}
+              >
+                {tab === 'indicadores' ? 'Indicadores' : 'Detalles de contacto'}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
-      {activeTab === 'indicadores' ? renderIndicadores() : renderContactos()}
+        {activeTab === 'indicadores' ? renderIndicadores() : renderContactos()}
+      </View>
     </View>
   );
 };

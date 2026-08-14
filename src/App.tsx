@@ -80,18 +80,18 @@ const AppContent: React.FC = () => {
       case 'kpi':
         return <ExecutiveDashboardScreen />;
       case 'dashboards':
-        return isMobile ? (
-          <DashboardsMobileScreen onSelectDashboard={handleSelectDashboard} />
-        ) : (
-          <DashboardsScreen onSelectDashboard={handleSelectDashboard} />
-        );
-      case 'campaign':
         return currentDashboard ? (
           <CampaignDashboardScreen
             onSelectContact={handleSelectContact}
             onBack={handleBack}
           />
         ) : isMobile ? (
+          <DashboardsMobileScreen onSelectDashboard={handleSelectDashboard} />
+        ) : (
+          <DashboardsScreen onSelectDashboard={handleSelectDashboard} />
+        );
+      case 'campaign':
+        return isMobile ? (
           <DashboardsMobileScreen onSelectDashboard={handleSelectDashboard} />
         ) : (
           <DashboardsScreen onSelectDashboard={handleSelectDashboard} />
