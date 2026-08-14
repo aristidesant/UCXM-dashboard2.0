@@ -12,6 +12,7 @@ import { usePlatform } from '../hooks/usePlatform';
 import { useInfoType } from '../hooks/useInfoType';
 import { useMockData } from '../hooks/useMockData';
 import { useAppContext } from '../context/AppContext';
+import { useTheme } from '../context/ThemeContext';
 import {
   Card,
   MetricCard,
@@ -36,6 +37,9 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
   const isMobile = platform === 'mobile';
   const { infoType, setInfoType } = useInfoType();
   const { currentDashboard } = useAppContext();
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
   const [activeTab, setActiveTab] = useState<'indicadores' | 'contactos'>(
     'indicadores'
   );
@@ -54,7 +58,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.light.bgPrimary,
+      backgroundColor: themeColors.canvasFrost,
       paddingHorizontal: isMobile ? spacing.md : spacing.lg,
       paddingTop: spacing.lg,
     } as ViewStyle,
@@ -65,8 +69,11 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
       marginBottom: spacing.lg,
     },
     title: {
-      ...typography.display,
-      color: colors.light.darkGray,
+      fontSize: 32,
+      fontWeight: '700',
+      color: themeColors.inkPrimary,
+      lineHeight: 40,
+      letterSpacing: -0.02,
     },
     filterContainer: {
       marginBottom: spacing.md,
@@ -76,7 +83,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
       gap: spacing.md,
       marginBottom: spacing.md,
       borderBottomWidth: 1,
-      borderBottomColor: colors.light.lightGray,
+      borderBottomColor: themeColors.whisperBorder,
     } as ViewStyle,
     tab: {
       paddingVertical: spacing.sm,
@@ -85,14 +92,16 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
       marginBottom: -1,
     } as ViewStyle,
     activeTab: {
-      borderBottomColor: colors.light.primaryBlue,
+      borderBottomColor: themeColors.newtechGreen,
     } as ViewStyle,
     tabText: {
-      ...typography.body,
-      color: colors.light.mediumGray,
+      fontSize: 15,
+      fontWeight: '400',
+      color: themeColors.steelSecondary,
+      lineHeight: 22,
     },
     activeTabText: {
-      color: colors.light.primaryBlue,
+      color: themeColors.newtechGreen,
       fontWeight: '600',
     },
     metricsGrid: {
@@ -172,11 +181,11 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
                   justifyContent: 'space-between',
                   paddingVertical: spacing.sm,
                   borderBottomWidth: 1,
-                  borderBottomColor: colors.light.lightGray,
+                  borderBottomColor: themeColors.whisperBorder,
                 }}
               >
-                <Text style={typography.body}>{key}</Text>
-                <Text style={[typography.body, { fontWeight: '600' }]}>
+                <Text style={{ fontSize: 15, fontWeight: '400', color: themeColors.steelSecondary, lineHeight: 22 }}>{key}</Text>
+                <Text style={{ fontSize: 15, fontWeight: '600', color: themeColors.inkPrimary, lineHeight: 22 }}>
                   {value}%
                 </Text>
               </View>

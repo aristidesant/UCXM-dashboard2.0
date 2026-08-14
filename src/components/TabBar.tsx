@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { colors, typography, spacing } from '../design';
 import { usePlatform } from '../hooks/usePlatform';
+import { useTheme } from '../context/ThemeContext';
 
 interface TabBarProps {
   currentScreen: string;
@@ -24,18 +25,27 @@ export const TabBar: React.FC<TabBarProps> = ({
 }) => {
   const { platform } = usePlatform();
   const isMobile = platform === 'mobile';
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
 
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
-      backgroundColor: colors.light.bgPrimary,
+      backgroundColor: isDark ? 'rgba(20, 26, 34, 0.8)' : 'rgba(255, 255, 255, 0.85)',
+      backdropFilter: 'blur(20px)',
       borderTopWidth: 1,
-      borderTopColor: colors.light.lightGray,
+      borderTopColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
       height: isMobile ? 56 : 50,
       alignItems: 'center',
       justifyContent: isMobile ? 'space-around' : 'flex-start',
       paddingHorizontal: isMobile ? 0 : spacing.md,
       gap: isMobile ? 0 : spacing.lg,
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: -4 },
+      shadowOpacity: isDark ? 0.3 : 0.08,
+      shadowRadius: 16,
+      elevation: 10,
     } as ViewStyle,
     tab: {
       flex: isMobile ? 1 : undefined,
@@ -46,7 +56,7 @@ export const TabBar: React.FC<TabBarProps> = ({
       borderBottomColor: 'transparent',
     } as ViewStyle,
     activeTab: {
-      borderBottomColor: colors.light.primaryBlue,
+      borderBottomColor: themeColors.primaryBlue,
     } as ViewStyle,
     icon: {
       fontSize: isMobile ? 20 : 18,
@@ -55,10 +65,10 @@ export const TabBar: React.FC<TabBarProps> = ({
     },
     label: {
       ...typography.caption,
-      color: colors.light.mediumGray,
+      color: themeColors.mediumGray,
     },
     activeLabel: {
-      color: colors.light.primaryBlue,
+      color: themeColors.primaryBlue,
       fontWeight: '600',
     },
   });

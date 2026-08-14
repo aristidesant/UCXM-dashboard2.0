@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, Text, ViewStyle } from 'react-native';
+import { BarChart3, Rocket, CheckCircle, Shield, SmilePlus, AlertCircle, Star, ThumbsUp } from 'lucide-react';
 import { colors, typography, spacing, borderRadius } from '../design';
 import { AnimatedKPICard } from '../components';
 import { usePlatform } from '../hooks/usePlatform';
+import { useTheme } from '../context/ThemeContext';
 
 interface KPIDashboardScreenProps {
   onSelectDashboard?: (dashboardId: string) => void;
@@ -13,6 +15,9 @@ export const KPIDashboardScreen: React.FC<KPIDashboardScreenProps> = ({
 }) => {
   const { platform } = usePlatform();
   const isMobile = platform === 'mobile';
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
 
   const [kpiData, setKpiData] = useState({
     activeCampaigns: 0,
@@ -49,7 +54,7 @@ export const KPIDashboardScreen: React.FC<KPIDashboardScreenProps> = ({
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.light.bgPrimary,
+      backgroundColor: themeColors.canvasFrost,
       paddingHorizontal: isMobile ? spacing.md : spacing.lg,
       paddingTop: spacing.lg,
       paddingBottom: spacing.lg,
@@ -61,13 +66,18 @@ export const KPIDashboardScreen: React.FC<KPIDashboardScreenProps> = ({
       marginBottom: spacing.xl,
     },
     title: {
-      ...typography.display,
-      color: colors.light.darkGray,
+      fontSize: 32,
+      fontWeight: '700',
+      color: themeColors.inkPrimary,
       marginBottom: spacing.sm,
+      lineHeight: 40,
+      letterSpacing: -0.02,
     },
     subtitle: {
-      ...typography.body,
-      color: colors.light.mediumGray,
+      fontSize: 15,
+      fontWeight: '400',
+      color: themeColors.steelSecondary,
+      lineHeight: 22,
     },
     kpiGrid: {
       flexDirection: 'row',
@@ -90,33 +100,41 @@ export const KPIDashboardScreen: React.FC<KPIDashboardScreenProps> = ({
       marginBottom: spacing.xl,
     } as ViewStyle,
     statusBadgeExcellent: {
-      backgroundColor: 'rgba(52, 199, 89, 0.1)',
+      backgroundColor: themeColors.successBg,
+      borderWidth: 1,
+      borderColor: isDark ? 'rgba(38, 211, 102, 0.3)' : 'rgba(27, 181, 74, 0.2)',
     } as ViewStyle,
     statusBadgeGood: {
-      backgroundColor: 'rgba(10, 132, 255, 0.1)',
+      backgroundColor: themeColors.infoBg,
+      borderWidth: 1,
+      borderColor: isDark ? 'rgba(79, 168, 245, 0.3)' : 'rgba(0, 152, 212, 0.2)',
     } as ViewStyle,
     statusBadgeBad: {
-      backgroundColor: 'rgba(255, 59, 48, 0.1)',
+      backgroundColor: themeColors.dangerBg,
+      borderWidth: 1,
+      borderColor: isDark ? 'rgba(248, 113, 113, 0.3)' : 'rgba(229, 57, 53, 0.2)',
     } as ViewStyle,
     statusText: {
-      ...typography.label,
       fontSize: 12,
       fontWeight: '600',
+      lineHeight: 18,
     },
     statusTextExcellent: {
-      color: colors.light.successGreen,
+      color: themeColors.success,
     } as ViewStyle,
     statusTextGood: {
-      color: colors.light.primaryBlue,
+      color: themeColors.info,
     } as ViewStyle,
     statusTextBad: {
-      color: colors.light.dangerRed,
+      color: themeColors.danger,
     } as ViewStyle,
     sectionTitle: {
-      ...typography.heading,
-      color: colors.light.darkGray,
+      fontSize: 20,
+      fontWeight: '600',
+      color: themeColors.inkPrimary,
       marginBottom: spacing.md,
       marginTop: spacing.lg,
+      lineHeight: 26,
     },
   });
 
@@ -153,9 +171,10 @@ export const KPIDashboardScreen: React.FC<KPIDashboardScreenProps> = ({
         <Text style={styles.subtitle}>Live KPI Dashboard - Real-time data collection</Text>
       </View>
 
-      <View style={[styles.statusBadge, getStatusBadgeStyle()]}>
+      <View style={[styles.statusBadge, getStatusBadgeStyle(), { flexDirection: 'row', alignItems: 'center' }]}>
+        <BarChart3 size={16} color={getStatusTextStyle()[1].color} strokeWidth={2} style={{ marginRight: spacing.sm }} />
         <Text style={getStatusTextStyle()}>
-          📊 System Health: {kpiData.healthStatus}
+          System Health: {kpiData.healthStatus}
         </Text>
       </View>
 
@@ -164,7 +183,7 @@ export const KPIDashboardScreen: React.FC<KPIDashboardScreenProps> = ({
           <AnimatedKPICard
             label="Active Campaigns"
             value={kpiData.activeCampaigns}
-            icon="🚀"
+            icon={<Rocket size={24} color={themeColors.newtechBlue} strokeWidth={2} />}
             variant="primary"
             isNumeric={true}
           />
@@ -175,7 +194,7 @@ export const KPIDashboardScreen: React.FC<KPIDashboardScreenProps> = ({
             label="QA Score"
             value={kpiData.qaScore}
             suffix="%"
-            icon="✓"
+            icon={<CheckCircle size={24} color={themeColors.success} strokeWidth={2} />}
             variant="success"
             isNumeric={true}
           />
@@ -186,7 +205,7 @@ export const KPIDashboardScreen: React.FC<KPIDashboardScreenProps> = ({
             label="Compliance Score"
             value={kpiData.complianceScore}
             suffix="%"
-            icon="🛡️"
+            icon={<Shield size={24} color={themeColors.success} strokeWidth={2} />}
             variant="success"
             isNumeric={true}
           />
@@ -196,7 +215,7 @@ export const KPIDashboardScreen: React.FC<KPIDashboardScreenProps> = ({
           <AnimatedKPICard
             label="Predominant Sentiment"
             value={kpiData.sentiment}
-            icon={kpiData.sentiment === 'Positive' ? '😊' : kpiData.sentiment === 'Neutral' ? '😐' : '😞'}
+            icon={kpiData.sentiment === 'Positive' ? <SmilePlus size={24} color={themeColors.success} strokeWidth={2} /> : kpiData.sentiment === 'Neutral' ? <AlertCircle size={24} color={themeColors.warning} strokeWidth={2} /> : <AlertCircle size={24} color={themeColors.danger} strokeWidth={2} />}
             variant={sentimentVariant}
             isNumeric={false}
           />
@@ -211,9 +230,9 @@ export const KPIDashboardScreen: React.FC<KPIDashboardScreenProps> = ({
             label="Overall System Health"
             value={kpiData.healthStatus}
             icon={
-              kpiData.healthStatus === 'Excellent' ? '⭐' :
-              kpiData.healthStatus === 'Good' ? '👍' :
-              '⚠️'
+              kpiData.healthStatus === 'Excellent' ? <Star size={24} color={themeColors.success} strokeWidth={2} /> :
+              kpiData.healthStatus === 'Good' ? <ThumbsUp size={24} color={themeColors.info} strokeWidth={2} /> :
+              <AlertCircle size={24} color={themeColors.danger} strokeWidth={2} />
             }
             variant={healthVariant}
             isNumeric={false}

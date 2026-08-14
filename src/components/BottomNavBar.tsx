@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ViewStyle } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, ViewStyle } from 'react-native';
 import { colors, spacing } from '../design';
+import { useTheme } from '../context/ThemeContext';
 
 interface NavItem {
   id: string;
-  label: string;
+  label?: string;
   icon: React.ReactNode;
 }
 
@@ -19,41 +20,55 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
   activeItemId,
   onSelectItem,
 }) => {
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
+
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
-      backgroundColor: colors.light.bgPrimary,
-      borderTopWidth: 1,
-      borderTopColor: colors.light.lightGray,
-      height: 68,
-      paddingBottom: spacing.sm,
-      paddingTop: spacing.xs,
+      backgroundColor: isDark ? 'rgba(20, 26, 34, 0.65)' : 'rgba(255, 255, 255, 0.75)',
+      backdropFilter: 'blur(28px)',
+      borderWidth: 1,
+      borderColor: isDark ? 'rgba(27, 181, 74, 0.15)' : 'rgba(27, 181, 74, 0.12)',
+      borderRadius: 20,
+      height: 64,
+      marginHorizontal: spacing.lg,
+      marginBottom: spacing.lg,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.md,
       justifyContent: 'space-around',
       alignItems: 'center',
+      shadowColor: 'transparent',
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0,
+      shadowRadius: 0,
+      elevation: 0,
     } as ViewStyle,
     navItem: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      paddingVertical: spacing.xs,
-      gap: 4,
+      paddingVertical: spacing.sm,
     } as ViewStyle,
     iconContainer: {
-      width: 24,
-      height: 24,
+      width: 40,
+      height: 40,
       alignItems: 'center',
       justifyContent: 'center',
+      borderRadius: 10,
+      backgroundColor: 'transparent',
+      transition: 'all 200ms ease-out',
     } as ViewStyle,
-    label: {
-      fontSize: 10,
-      fontWeight: '500',
-      color: colors.light.mediumGray,
-      textAlign: 'center',
-    },
-    activeLabel: {
-      color: colors.light.primaryBlue,
-      fontWeight: '600',
-    },
+    activeIconContainer: {
+      backgroundColor: isDark
+        ? 'rgba(27, 181, 74, 0.2)'
+        : 'rgba(27, 181, 74, 0.15)',
+      borderWidth: 1,
+      borderColor: isDark
+        ? 'rgba(27, 181, 74, 0.3)'
+        : 'rgba(27, 181, 74, 0.25)',
+    } as ViewStyle,
   });
 
   return (
@@ -67,12 +82,15 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
             onPress={() => onSelectItem(item.id)}
             activeOpacity={0.7}
           >
-            <View style={[styles.iconContainer, { opacity: isActive ? 1 : 0.6 }]}>
+            <View
+              style={[
+                styles.iconContainer,
+                isActive && styles.activeIconContainer,
+                { opacity: isActive ? 1 : 0.5 },
+              ]}
+            >
               {item.icon}
             </View>
-            <Text style={[styles.label, isActive && styles.activeLabel]}>
-              {item.label}
-            </Text>
           </TouchableOpacity>
         );
       })}

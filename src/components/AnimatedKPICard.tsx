@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, View, Text, ViewStyle } from 'react-native';
 import { colors, typography, spacing, borderRadius } from '../design';
+import { useTheme } from '../context/ThemeContext';
 
 interface AnimatedKPICardProps {
   label: string;
   value: number | string;
   suffix?: string;
-  icon?: React.ReactNode;
+  icon?: React.ReactNode | string;
   variant?: 'primary' | 'success' | 'warning' | 'danger' | 'neutral';
   isNumeric?: boolean;
 }
@@ -19,6 +20,10 @@ export const AnimatedKPICard: React.FC<AnimatedKPICardProps> = ({
   variant = 'primary',
   isNumeric = true,
 }) => {
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
+
   const [displayedValue, setDisplayedValue] = useState(0);
   const animationFrameRef = useRef<number | null>(null);
   const startTimeRef = useRef<number | null>(null);
@@ -63,29 +68,29 @@ export const AnimatedKPICard: React.FC<AnimatedKPICardProps> = ({
 
   const variantColors = {
     primary: {
-      bg: colors.light.bgSecondary,
-      accent: colors.light.primaryBlue,
-      text: colors.light.darkGray,
+      bg: themeColors.infoBg,
+      accent: themeColors.newtechBlue,
+      text: themeColors.steelSecondary,
     },
     success: {
-      bg: 'rgba(52, 199, 89, 0.1)',
-      accent: colors.light.successGreen,
-      text: colors.light.darkGray,
+      bg: themeColors.successBg,
+      accent: themeColors.newtechGreen,
+      text: themeColors.steelSecondary,
     },
     warning: {
-      bg: 'rgba(255, 149, 0, 0.1)',
-      accent: colors.light.warningOrange,
-      text: colors.light.darkGray,
+      bg: themeColors.warningBg,
+      accent: themeColors.warning,
+      text: themeColors.steelSecondary,
     },
     danger: {
-      bg: 'rgba(255, 59, 48, 0.1)',
-      accent: colors.light.dangerRed,
-      text: colors.light.darkGray,
+      bg: themeColors.dangerBg,
+      accent: themeColors.danger,
+      text: themeColors.steelSecondary,
     },
     neutral: {
-      bg: colors.light.bgSecondary,
-      accent: colors.light.mediumGray,
-      text: colors.light.darkGray,
+      bg: themeColors.sunkenBase,
+      accent: themeColors.mutedSlate,
+      text: themeColors.steelSecondary,
     },
   };
 
@@ -101,6 +106,13 @@ export const AnimatedKPICard: React.FC<AnimatedKPICardProps> = ({
       borderLeftColor: variantStyle.accent,
       minHeight: 140,
       justifyContent: 'space-between',
+      borderWidth: 1,
+      borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.5)',
+      shadowColor: variantStyle.accent,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.15,
+      shadowRadius: 12,
+      elevation: 4,
     } as ViewStyle,
     header: {
       flexDirection: 'row',
@@ -113,9 +125,12 @@ export const AnimatedKPICard: React.FC<AnimatedKPICardProps> = ({
       opacity: 0.6,
     },
     label: {
-      ...typography.caption,
-      color: colors.light.mediumGray,
+      fontSize: 12,
+      fontWeight: '600',
+      color: themeColors.mutedSlate,
       flex: 1,
+      lineHeight: 18,
+      letterSpacing: 0.06,
     },
     valueContainer: {
       flexDirection: 'row',
@@ -123,22 +138,24 @@ export const AnimatedKPICard: React.FC<AnimatedKPICardProps> = ({
       gap: spacing.xs,
     } as ViewStyle,
     value: {
-      ...typography.display,
       color: variantStyle.accent,
       fontWeight: '700',
       fontSize: 32,
+      lineHeight: 40,
     },
     suffix: {
-      ...typography.body,
-      color: colors.light.mediumGray,
+      fontSize: 15,
+      fontWeight: '400',
+      color: themeColors.steelSecondary,
       marginBottom: spacing.xs,
+      lineHeight: 22,
     },
   });
 
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        {icon && <Text style={styles.icon}>{icon}</Text>}
+        {icon && (typeof icon === 'string' ? <Text style={styles.icon}>{icon}</Text> : icon)}
         <Text style={styles.label} numberOfLines={2}>{label}</Text>
       </View>
       <View style={styles.valueContainer}>

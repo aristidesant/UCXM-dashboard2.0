@@ -4,6 +4,7 @@ import { colors, typography, spacing } from '../design';
 import { Card, Button } from '../components';
 import { Contact } from '../data/mockContacts';
 import { usePlatform } from '../hooks/usePlatform';
+import { useTheme } from '../context/ThemeContext';
 
 interface ContactDetailsScreenProps {
   contact: Contact | null;
@@ -16,24 +17,30 @@ export const ContactDetailsScreen: React.FC<ContactDetailsScreenProps> = ({
 }) => {
   const { platform } = usePlatform();
   const isMobile = platform === 'mobile';
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.light.bgPrimary,
+      backgroundColor: themeColors.canvasFrost,
       paddingHorizontal: isMobile ? spacing.md : spacing.lg,
       paddingTop: spacing.lg,
     } as ViewStyle,
     header: {
-      ...typography.display,
-      color: colors.light.darkGray,
+      fontSize: 32,
+      fontWeight: '700',
+      color: themeColors.inkPrimary,
       marginBottom: spacing.lg,
+      lineHeight: 40,
+      letterSpacing: -0.02,
     },
     avatar: {
       width: 80,
       height: 80,
       borderRadius: 40,
-      backgroundColor: colors.light.bgSecondary,
+      backgroundColor: themeColors.sunkenBase,
       justifyContent: 'center',
       alignItems: 'center',
       marginBottom: spacing.lg,
@@ -46,25 +53,30 @@ export const ContactDetailsScreen: React.FC<ContactDetailsScreenProps> = ({
       marginBottom: spacing.lg,
     },
     sectionTitle: {
-      ...typography.subheading,
-      color: colors.light.darkGray,
+      fontSize: 20,
+      fontWeight: '600',
+      color: themeColors.inkPrimary,
       marginBottom: spacing.md,
+      lineHeight: 26,
     },
     infoRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       paddingVertical: spacing.md,
       borderBottomWidth: 1,
-      borderBottomColor: colors.light.lightGray,
+      borderBottomColor: themeColors.whisperBorder,
     } as ViewStyle,
     infoLabel: {
-      ...typography.caption,
-      color: colors.light.mediumGray,
+      fontSize: 12,
+      fontWeight: '600',
+      color: themeColors.mutedSlate,
+      lineHeight: 18,
     },
     infoValue: {
-      ...typography.body,
-      color: colors.light.darkGray,
+      fontSize: 15,
       fontWeight: '600',
+      color: themeColors.inkPrimary,
+      lineHeight: 22,
     },
     actionButtonsContainer: {
       gap: spacing.md,
@@ -110,7 +122,7 @@ export const ContactDetailsScreen: React.FC<ContactDetailsScreenProps> = ({
           )}
           <View style={[styles.infoRow, { borderBottomWidth: 0 }]}>
             <Text style={styles.infoLabel}>Action</Text>
-            <Text style={[styles.infoValue, { color: colors.light.successGreen }]}>
+            <Text style={[styles.infoValue, { color: themeColors.successGreen }]}>
               {contact.action}
             </Text>
           </View>

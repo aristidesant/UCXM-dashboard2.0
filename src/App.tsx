@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, SafeAreaView, ViewStyle } from 'react-native';
-import { LayoutGrid, CheckCircle, Shield, Lightbulb, Settings } from 'lucide-react';
+import { Home, BarChart3, Briefcase, Settings } from 'lucide-react';
 import { PlatformProvider } from './context/PlatformContext';
 import { AppProvider } from './context/AppContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -12,10 +12,11 @@ import {
   SettingsScreen,
   LoginScreen,
   DashboardsMobileScreen,
-  KPIDashboardScreen,
+  ExecutiveDashboardScreen,
 } from './screens';
 import { useAppContext } from './context/AppContext';
 import { usePlatform } from './hooks/usePlatform';
+import { useTheme } from './context/ThemeContext';
 import { colors, spacing } from './design';
 import { mockContacts } from './data/mockContacts';
 
@@ -27,17 +28,20 @@ const AppContent: React.FC = () => {
   const { currentDashboard, setCurrentDashboard } = useAppContext();
   const { platform, isMobile } = usePlatform();
   const [selectedContactId, setSelectedContactId] = useState<string | null>(null);
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
 
   const selectedContact = mockContacts.find((c) => c.id === selectedContactId);
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.light.bgPrimary,
+      backgroundColor: themeColors.canvasFrost,
     } as ViewStyle,
     safeArea: {
       flex: 1,
-      backgroundColor: colors.light.bgPrimary,
+      backgroundColor: themeColors.canvasFrost,
     } as ViewStyle,
     content: {
       flex: 1,
@@ -46,11 +50,10 @@ const AppContent: React.FC = () => {
   });
 
   const navItems = [
-    { id: 'kpi', label: 'KPI', icon: <LayoutGrid size={24} color={currentScreen === 'kpi' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
-    { id: 'dashboards', label: 'Dashboards', icon: <LayoutGrid size={24} color={currentScreen === 'dashboards' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
-    { id: 'campaign', label: 'Calidad', icon: <CheckCircle size={24} color={currentScreen === 'campaign' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
-    { id: 'contact', label: 'Cumplimiento', icon: <Shield size={24} color={currentScreen === 'contact' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
-    { id: 'settings', label: 'Ajustes', icon: <Settings size={24} color={currentScreen === 'settings' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
+    { id: 'kpi', icon: <Home size={24} color={currentScreen === 'kpi' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
+    { id: 'dashboards', icon: <BarChart3 size={24} color={currentScreen === 'dashboards' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
+    { id: 'campaign', icon: <Briefcase size={24} color={currentScreen === 'campaign' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
+    { id: 'settings', icon: <Settings size={24} color={currentScreen === 'settings' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
   ];
 
   const handleSelectDashboard = (dashboardId: string) => {
@@ -75,7 +78,7 @@ const AppContent: React.FC = () => {
   const renderScreen = () => {
     switch (currentScreen) {
       case 'kpi':
-        return <KPIDashboardScreen onSelectDashboard={handleSelectDashboard} />;
+        return <ExecutiveDashboardScreen />;
       case 'dashboards':
         return isMobile ? (
           <DashboardsMobileScreen onSelectDashboard={handleSelectDashboard} />
@@ -100,7 +103,7 @@ const AppContent: React.FC = () => {
       case 'settings':
         return <SettingsScreen />;
       default:
-        return <KPIDashboardScreen onSelectDashboard={handleSelectDashboard} />;
+        return <ExecutiveDashboardScreen />;
     }
   };
 

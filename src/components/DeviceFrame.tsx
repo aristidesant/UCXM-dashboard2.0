@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { usePlatform } from '../hooks/usePlatform';
 import { colors } from '../design';
+import { useTheme } from '../context/ThemeContext';
 
 interface DeviceFrameProps {
   children: React.ReactNode;
@@ -9,6 +10,9 @@ interface DeviceFrameProps {
 
 export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
   const { platform, dimensions } = usePlatform();
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
 
   if (platform === 'desktop') {
     return <>{children}</>;
@@ -23,7 +27,7 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: colors.light.bgSecondary,
+      backgroundColor: themeColors.bgSecondary,
       padding: 20,
     } as ViewStyle,
     deviceBezel: {
@@ -38,7 +42,7 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
     screenContent: {
       flex: 1,
       borderRadius: Math.max(0, dimensions.borderRadius - bezelSize),
-      backgroundColor: colors.light.bgPrimary,
+      backgroundColor: themeColors.bgPrimary,
       overflow: 'hidden',
     } as ViewStyle,
   });

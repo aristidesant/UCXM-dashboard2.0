@@ -15,6 +15,7 @@ import { usePlatform } from '../hooks/usePlatform';
 import { useAppContext } from '../context/AppContext';
 import { Card, Badge } from '../components';
 import { mockDashboards } from '../data/mockDashboards';
+import { useTheme } from '../context/ThemeContext';
 
 interface DashboardsMobileScreenProps {
   onSelectDashboard: (dashboardId: string) => void;
@@ -25,6 +26,9 @@ export const DashboardsMobileScreen: React.FC<DashboardsMobileScreenProps> = ({
 }) => {
   const { platform } = usePlatform();
   const isMobile = platform === 'mobile';
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
   const [search, setSearch] = React.useState('');
 
   const filteredDashboards = mockDashboards.filter((d) =>
@@ -34,7 +38,7 @@ export const DashboardsMobileScreen: React.FC<DashboardsMobileScreenProps> = ({
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.light.bgPrimary,
+      backgroundColor: themeColors.canvasFrost,
     } as ViewStyle,
     scrollContent: {
       paddingHorizontal: spacing.md,
@@ -42,12 +46,12 @@ export const DashboardsMobileScreen: React.FC<DashboardsMobileScreenProps> = ({
       paddingBottom: 100,
     } as ViewStyle,
     header: {
-      ...typography.display,
-      color: colors.light.darkGray,
-      marginBottom: spacing.lg,
       fontSize: 32,
       fontWeight: '700',
       lineHeight: 40,
+      color: themeColors.inkPrimary,
+      marginBottom: spacing.lg,
+      letterSpacing: -0.02,
     },
     searchContainer: {
       marginBottom: spacing.lg,
@@ -59,11 +63,11 @@ export const DashboardsMobileScreen: React.FC<DashboardsMobileScreenProps> = ({
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: colors.light.bgSecondary,
-      borderRadius: borderRadius.sm,
+      backgroundColor: themeColors.pureSurface,
+      borderRadius: 8,
       paddingHorizontal: spacing.md,
       borderWidth: 1,
-      borderColor: colors.light.lightGray,
+      borderColor: themeColors.whisperBorder,
     } as ViewStyle,
     searchIcon: {
       marginRight: spacing.sm,
@@ -71,22 +75,24 @@ export const DashboardsMobileScreen: React.FC<DashboardsMobileScreenProps> = ({
     searchInput: {
       flex: 1,
       paddingVertical: spacing.md,
-      ...typography.body,
-      color: colors.light.darkGray,
-      fontSize: 16,
+      color: themeColors.inkPrimary,
+      fontSize: 15,
+      fontWeight: '400',
+      lineHeight: 22,
     },
     dashboardsLabel: {
-      ...typography.subheading,
-      color: colors.light.darkGray,
-      marginBottom: spacing.sm,
       fontSize: 16,
       fontWeight: '600',
+      color: themeColors.inkPrimary,
+      marginBottom: spacing.sm,
+      lineHeight: 22,
     },
     dashboardCount: {
-      ...typography.caption,
-      color: colors.light.mediumGray,
+      fontSize: 12,
+      fontWeight: '600',
+      color: themeColors.mutedSlate,
       marginBottom: spacing.lg,
-      fontSize: 13,
+      lineHeight: 18,
     },
     dashboardCard: {
       minHeight: 100,
@@ -96,17 +102,18 @@ export const DashboardsMobileScreen: React.FC<DashboardsMobileScreenProps> = ({
       paddingVertical: spacing.md,
     } as ViewStyle,
     dashboardName: {
-      ...typography.subheading,
-      color: colors.light.darkGray,
-      marginBottom: spacing.sm,
       fontSize: 16,
       fontWeight: '600',
+      color: themeColors.inkPrimary,
+      marginBottom: spacing.sm,
+      lineHeight: 22,
     },
     dashboardMeta: {
-      ...typography.caption,
-      color: colors.light.mediumGray,
-      marginBottom: spacing.xs,
       fontSize: 12,
+      fontWeight: '400',
+      color: themeColors.mutedSlate,
+      marginBottom: spacing.xs,
+      lineHeight: 18,
     },
     metaRow: {
       flexDirection: 'row',
@@ -120,16 +127,19 @@ export const DashboardsMobileScreen: React.FC<DashboardsMobileScreenProps> = ({
       paddingVertical: spacing.xl,
     },
     emptyStateText: {
-      ...typography.body,
-      color: colors.light.mediumGray,
+      fontSize: 15,
+      fontWeight: '400',
+      color: themeColors.steelSecondary,
+      lineHeight: 22,
     },
     lastUpdateText: {
-      ...typography.caption,
-      color: colors.light.mediumGray,
+      fontSize: 11,
+      fontWeight: '400',
+      color: themeColors.mutedSlate,
       marginTop: spacing.lg,
       textAlign: 'center',
       marginBottom: spacing.lg,
-      fontSize: 11,
+      lineHeight: 16,
     },
   });
 
@@ -163,11 +173,11 @@ export const DashboardsMobileScreen: React.FC<DashboardsMobileScreenProps> = ({
 
         <View style={styles.searchContainer}>
           <View style={styles.searchInputWrapper}>
-            <Search size={18} color={colors.light.mediumGray} style={styles.searchIcon} />
+            <Search size={18} color={themeColors.mediumGray} style={styles.searchIcon} />
             <TextInput
               style={styles.searchInput}
               placeholder="Buscar dashboards..."
-              placeholderTextColor={colors.light.mediumGray}
+              placeholderTextColor={themeColors.mediumGray}
               value={search}
               onChangeText={setSearch}
             />

@@ -14,6 +14,7 @@ import { usePlatform } from '../hooks/usePlatform';
 import { useAppContext } from '../context/AppContext';
 import { Card, Badge } from '../components';
 import { mockDashboards } from '../data/mockDashboards';
+import { useTheme } from '../context/ThemeContext';
 
 interface DashboardsScreenProps {
   onSelectDashboard: (dashboardId: string) => void;
@@ -24,6 +25,9 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
 }) => {
   const { platform } = usePlatform();
   const isMobile = platform === 'mobile';
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
   const [search, setSearch] = React.useState('');
 
   const filteredDashboards = mockDashboards.filter((d) =>
@@ -33,14 +37,17 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.light.bgPrimary,
+      backgroundColor: themeColors.canvasFrost,
       paddingHorizontal: isMobile ? spacing.md : spacing.lg,
       paddingTop: spacing.lg,
     } as ViewStyle,
     header: {
-      ...typography.display,
-      color: colors.light.darkGray,
+      fontSize: 32,
+      fontWeight: '700',
+      lineHeight: 40,
+      color: themeColors.inkPrimary,
       marginBottom: spacing.lg,
+      letterSpacing: -0.02,
     },
     searchContainer: {
       flexDirection: 'row',
@@ -50,12 +57,14 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
     searchInput: {
       flex: 1,
       borderWidth: 1,
-      borderColor: colors.light.lightGray,
-      borderRadius: borderRadius.sm,
+      borderColor: themeColors.whisperBorder,
+      borderRadius: 8,
       paddingVertical: spacing.sm,
       paddingHorizontal: spacing.md,
-      ...typography.body,
-      color: colors.light.darkGray,
+      fontSize: 15,
+      fontWeight: '400',
+      color: themeColors.inkPrimary,
+      lineHeight: 22,
     },
     gridContainer: {
       gap: spacing.md,
@@ -66,14 +75,18 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       marginBottom: spacing.md,
     } as ViewStyle,
     dashboardName: {
-      ...typography.subheading,
-      color: colors.light.darkGray,
+      fontSize: 16,
+      fontWeight: '600',
+      color: themeColors.inkPrimary,
       marginBottom: spacing.sm,
+      lineHeight: 22,
     },
     dashboardMeta: {
-      ...typography.caption,
-      color: colors.light.mediumGray,
+      fontSize: 12,
+      fontWeight: '400',
+      color: themeColors.mutedSlate,
       marginBottom: spacing.sm,
+      lineHeight: 18,
     },
     metaRow: {
       flexDirection: 'row',
@@ -109,7 +122,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
         <TextInput
           style={styles.searchInput}
           placeholder="Buscar dashboards..."
-          placeholderTextColor={colors.light.mediumGray}
+          placeholderTextColor={themeColors.mediumGray}
           value={search}
           onChangeText={setSearch}
         />

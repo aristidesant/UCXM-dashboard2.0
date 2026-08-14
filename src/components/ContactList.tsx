@@ -5,6 +5,7 @@ import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native
 import { colors, typography, spacing, borderRadius } from '../design';
 import { Contact } from '../data/mockContacts';
 import { Card } from './Card';
+import { useTheme } from '../context/ThemeContext';
 
 interface ContactListProps {
   contacts: Contact[];
@@ -15,6 +16,10 @@ export const ContactList: React.FC<ContactListProps> = ({
   contacts,
   onSelectContact,
 }) => {
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
+
   const styles = StyleSheet.create({
     listContainer: {
       gap: spacing.sm,
@@ -22,7 +27,7 @@ export const ContactList: React.FC<ContactListProps> = ({
     contactItem: {
       padding: spacing.md,
       borderRadius: borderRadius.md,
-      backgroundColor: colors.light.bgSecondary,
+      backgroundColor: themeColors.bgSecondary,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -32,18 +37,18 @@ export const ContactList: React.FC<ContactListProps> = ({
     },
     contactName: {
       ...typography.body,
-      color: colors.light.darkGray,
+      color: themeColors.darkGray,
       fontWeight: '600',
       marginBottom: spacing.xs,
     },
     contactAction: {
       ...typography.caption,
-      color: colors.light.successGreen,
+      color: themeColors.successGreen,
       fontWeight: '600',
     },
     chevron: {
       ...typography.body,
-      color: colors.light.mediumGray,
+      color: themeColors.mediumGray,
     },
   });
 

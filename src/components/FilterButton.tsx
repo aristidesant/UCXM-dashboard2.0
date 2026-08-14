@@ -9,8 +9,10 @@ import {
   Modal,
   ScrollView,
 } from 'react-native';
+import { Settings, Check } from 'lucide-react';
 import { colors, typography, spacing, borderRadius } from '../design';
 import { InfoType } from '../context/AppContext';
+import { useTheme } from '../context/ThemeContext';
 
 interface FilterButtonProps {
   currentType: InfoType;
@@ -28,20 +30,23 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
   onSelect,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
 
   const styles = StyleSheet.create({
     button: {
       paddingVertical: spacing.sm,
       paddingHorizontal: spacing.md,
       borderRadius: borderRadius.sm,
-      backgroundColor: colors.light.bgSecondary,
+      backgroundColor: themeColors.bgSecondary,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
     },
     buttonText: {
       ...typography.label,
-      color: colors.light.darkGray,
+      color: themeColors.darkGray,
       marginRight: spacing.sm,
     },
     modalOverlay: {
@@ -50,7 +55,7 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
       justifyContent: 'flex-end',
     },
     modalContent: {
-      backgroundColor: colors.light.bgPrimary,
+      backgroundColor: themeColors.bgPrimary,
       borderTopLeftRadius: borderRadius.lg,
       borderTopRightRadius: borderRadius.lg,
       paddingVertical: spacing.md,
@@ -59,18 +64,18 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
       paddingVertical: spacing.md,
       paddingHorizontal: spacing.lg,
       borderBottomWidth: 1,
-      borderBottomColor: colors.light.lightGray,
+      borderBottomColor: themeColors.lightGray,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
     },
     optionText: {
       ...typography.body,
-      color: colors.light.darkGray,
+      color: themeColors.darkGray,
     },
     checkmark: {
       ...typography.body,
-      color: colors.light.primaryBlue,
+      color: themeColors.primaryBlue,
       fontWeight: '700',
     },
   });
@@ -88,7 +93,7 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
         activeOpacity={0.7}
       >
         <Text style={styles.buttonText}>{infoTypeLabels[currentType]}</Text>
-        <Text style={styles.buttonText}>⚙️</Text>
+        <Settings size={18} color={themeColors.steelSecondary} strokeWidth={2} />
       </TouchableOpacity>
 
       <Modal
@@ -107,7 +112,7 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
                 activeOpacity={0.7}
               >
                 <Text style={styles.optionText}>{infoTypeLabels[type]}</Text>
-                {currentType === type && <Text style={styles.checkmark}>✓</Text>}
+                {currentType === type && <Check size={18} color={themeColors.newtechGreen} strokeWidth={2} />}
               </TouchableOpacity>
             ))}
           </View>

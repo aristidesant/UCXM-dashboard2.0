@@ -4,6 +4,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { colors, typography, spacing } from '../design';
 import { Card } from './Card';
+import { useTheme } from '../context/ThemeContext';
 
 interface MetricCardProps {
   label: string;
@@ -18,37 +19,62 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   trend,
   trendLabel,
 }) => {
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
+
   const isTrendPositive = trend !== undefined && trend > 0;
   const trendColor = isTrendPositive
-    ? colors.light.successGreen
-    : colors.light.dangerRed;
+    ? themeColors.success
+    : themeColors.danger;
 
   const styles = StyleSheet.create({
     container: {
       marginBottom: spacing.md,
+      borderRadius: 12,
+      padding: spacing.md,
+      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.6)',
+      borderWidth: 1,
+      borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.8)',
+      backdropFilter: 'blur(10px)',
+      shadowColor: themeColors.diffusedShadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.08,
+      shadowRadius: 8,
+      elevation: 2,
     },
     label: {
-      ...typography.caption,
-      color: colors.light.mediumGray,
+      fontSize: 12,
+      fontWeight: '600',
+      color: themeColors.mutedSlate,
       marginBottom: spacing.sm,
+      lineHeight: 18,
+      textTransform: 'uppercase',
+      letterSpacing: 0.06,
     },
     value: {
-      ...typography.heading,
-      color: colors.light.darkGray,
+      fontSize: 20,
+      fontWeight: '700',
+      color: themeColors.inkPrimary,
       marginBottom: spacing.sm,
+      lineHeight: 26,
     },
     trendContainer: {
       flexDirection: 'row',
       alignItems: 'center',
     },
     trendArrow: {
-      ...typography.body,
+      fontSize: 15,
+      fontWeight: '700',
       color: trendColor,
       marginRight: spacing.xs,
+      lineHeight: 22,
     },
     trendText: {
-      ...typography.caption,
+      fontSize: 12,
+      fontWeight: '400',
       color: trendColor,
+      lineHeight: 18,
     },
   });
 

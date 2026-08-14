@@ -6,6 +6,7 @@ import { usePlatform } from '../hooks/usePlatform';
 import { colors, typography, spacing, borderRadius } from '../design';
 import { Smartphone, Tablet, Monitor } from 'lucide-react';
 import { Platform } from '../context/PlatformContext';
+import { useTheme } from '../context/ThemeContext';
 
 const PLATFORMS: Array<{ id: Platform; label: string; icon: React.ReactNode }> = [
   { id: 'mobile', label: 'Mobile', icon: <Smartphone size={16} /> },
@@ -15,6 +16,9 @@ const PLATFORMS: Array<{ id: Platform; label: string; icon: React.ReactNode }> =
 
 export const PlatformToggle: React.FC = () => {
   const { platform, setPlatform } = usePlatform();
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
 
   const styles = StyleSheet.create({
     container: {
@@ -24,9 +28,9 @@ export const PlatformToggle: React.FC = () => {
       zIndex: 1000,
       flexDirection: 'row',
       gap: spacing.xs,
-      backgroundColor: colors.light.bgPrimary,
+      backgroundColor: themeColors.bgPrimary,
       borderWidth: 1,
-      borderColor: colors.light.lightGray,
+      borderColor: themeColors.lightGray,
       borderRadius: borderRadius.sm,
       padding: spacing.xs,
     } as ViewStyle,
@@ -42,12 +46,12 @@ export const PlatformToggle: React.FC = () => {
       height: 36,
     } as ViewStyle,
     activeButton: {
-      backgroundColor: colors.light.primaryBlue,
-      borderColor: colors.light.primaryBlue,
+      backgroundColor: themeColors.primaryBlue,
+      borderColor: themeColors.primaryBlue,
     } as ViewStyle,
     inactiveButton: {
       backgroundColor: 'transparent',
-      borderColor: colors.light.lightGray,
+      borderColor: themeColors.lightGray,
     } as ViewStyle,
     label: {
       ...typography.caption,
@@ -59,7 +63,7 @@ export const PlatformToggle: React.FC = () => {
       color: '#FFFFFF',
     },
     inactiveLabel: {
-      color: colors.light.mediumGray,
+      color: themeColors.mediumGray,
     },
     content: {
       flexDirection: 'row',
@@ -83,7 +87,7 @@ export const PlatformToggle: React.FC = () => {
             activeOpacity={0.7}
           >
             <View style={styles.content}>
-              <View style={{ opacity: isActive ? 1 : 0.6, color: isActive ? '#FFFFFF' : colors.light.mediumGray }}>
+              <View style={{ opacity: isActive ? 1 : 0.6, color: isActive ? '#FFFFFF' : themeColors.mediumGray }}>
                 {p.icon}
               </View>
               <Text

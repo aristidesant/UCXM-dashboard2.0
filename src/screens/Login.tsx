@@ -12,10 +12,12 @@ import {
   Modal,
   ActivityIndicator,
 } from 'react-native';
+import { Camera } from 'lucide-react';
 import { colors, typography, spacing, borderRadius } from '../design';
 import { Button, Card } from '../components';
 import { usePlatform } from '../hooks/usePlatform';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 interface LoginScreenProps {
   onLoginSuccess: () => void;
@@ -25,6 +27,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
   const { platform } = usePlatform();
   const isMobile = platform === 'mobile';
   const { login } = useAuth();
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -68,7 +73,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.light.bgPrimary,
+      backgroundColor: themeColors.canvasFrost,
       justifyContent: 'center',
       alignItems: 'center',
       paddingHorizontal: isMobile ? spacing.md : spacing.lg,
@@ -81,35 +86,46 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
       padding: isMobile ? spacing.lg : spacing.xl,
     },
     header: {
-      ...typography.display,
-      color: colors.light.darkGray,
+      fontSize: 32,
+      fontWeight: '700',
+      color: themeColors.inkPrimary,
       marginBottom: spacing.md,
       textAlign: 'center',
+      lineHeight: 40,
+      letterSpacing: -0.02,
     },
     subtitle: {
-      ...typography.body,
-      color: colors.light.mediumGray,
+      fontSize: 15,
+      fontWeight: '400',
+      color: themeColors.steelSecondary,
       marginBottom: spacing.lg,
       textAlign: 'center',
+      lineHeight: 22,
     },
     inputContainer: {
       marginBottom: spacing.lg,
     },
     label: {
-      ...typography.label,
-      color: colors.light.darkGray,
+      fontSize: 12,
+      fontWeight: '600',
+      color: themeColors.inkPrimary,
       marginBottom: spacing.sm,
+      lineHeight: 18,
+      textTransform: 'uppercase',
+      letterSpacing: 0.06,
     },
     input: {
       borderWidth: 1,
-      borderColor: colors.light.lightGray,
-      borderRadius: borderRadius.sm,
+      borderColor: '#DDE2E8',
+      borderRadius: 8,
       paddingVertical: spacing.sm,
       paddingHorizontal: spacing.md,
-      ...typography.body,
-      color: colors.light.darkGray,
-      backgroundColor: colors.light.bgSecondary,
+      fontSize: 14,
+      fontWeight: '400',
+      color: themeColors.inkPrimary,
+      backgroundColor: themeColors.pureSurface,
       minHeight: 44,
+      lineHeight: 20,
     },
     rememberMeContainer: {
       flexDirection: 'row',
@@ -120,21 +136,23 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
       width: 20,
       height: 20,
       borderWidth: 1,
-      borderColor: colors.light.primaryBlue,
+      borderColor: themeColors.newtechGreen,
       borderRadius: 4,
       marginRight: spacing.sm,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: rememberMe ? colors.light.primaryBlue : 'transparent',
+      backgroundColor: rememberMe ? themeColors.newtechGreen : 'transparent',
     },
     rememberMeCheckmark: {
-      color: colors.light.bgPrimary,
+      color: '#FFFFFF',
       fontSize: 14,
       fontWeight: 'bold',
     },
     rememberMeLabel: {
-      ...typography.body,
-      color: colors.light.darkGray,
+      fontSize: 15,
+      fontWeight: '400',
+      color: themeColors.inkPrimary,
+      lineHeight: 22,
     },
     buttonContainer: {
       gap: spacing.md,
@@ -148,18 +166,24 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
     dividerLine: {
       flex: 1,
       height: 1,
-      backgroundColor: colors.light.lightGray,
+      backgroundColor: themeColors.whisperBorder,
     },
     dividerText: {
-      ...typography.caption,
-      color: colors.light.mediumGray,
+      fontSize: 12,
+      fontWeight: '600',
+      color: themeColors.mutedSlate,
       marginHorizontal: spacing.md,
+      lineHeight: 18,
+      textTransform: 'uppercase',
+      letterSpacing: 0.06,
     },
     errorText: {
-      ...typography.caption,
-      color: colors.light.dangerRed,
+      fontSize: 12,
+      fontWeight: '400',
+      color: themeColors.danger,
       marginBottom: spacing.md,
       textAlign: 'center',
+      lineHeight: 18,
     },
     faceRecognitionModal: {
       flex: 1,
@@ -174,19 +198,21 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
     cameraPreview: {
       width: 200,
       height: 250,
-      borderRadius: borderRadius.md,
-      backgroundColor: colors.light.bgSecondary,
+      borderRadius: 12,
+      backgroundColor: themeColors.sunkenBase,
       justifyContent: 'center',
       alignItems: 'center',
       marginBottom: spacing.lg,
       borderWidth: 2,
-      borderColor: colors.light.primaryBlue,
+      borderColor: themeColors.newtechGreen,
     },
     scanningText: {
-      ...typography.body,
-      color: colors.light.bgPrimary,
+      fontSize: 15,
+      fontWeight: '400',
+      color: '#FFFFFF',
       marginTop: spacing.md,
       textAlign: 'center',
+      lineHeight: 22,
     },
   });
 
@@ -205,13 +231,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
             <View style={styles.cameraPreview}>
               {loading ? (
                 <>
-                  <ActivityIndicator size="large" color={colors.light.primaryBlue} />
+                  <ActivityIndicator size="large" color={themeColors.primaryBlue} />
                   <Text style={styles.scanningText}>Scanning face...</Text>
                 </>
               ) : (
-                <Text style={{ ...typography.body, color: colors.light.mediumGray }}>
-                  📷 Camera Preview
-                </Text>
+                <Camera size={32} color={themeColors.mutedSlate} strokeWidth={2} />
               )}
             </View>
             {!loading && (
@@ -245,7 +269,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
             <TextInput
               style={styles.input}
               placeholder="Enter your username"
-              placeholderTextColor={colors.light.mediumGray}
+              placeholderTextColor={themeColors.mediumGray}
               value={username}
               onChangeText={setUsername}
               editable={!loading}
@@ -291,7 +315,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
           </View>
 
           <Button
-            title="🔓 Face Recognition Login"
+            title="Face Recognition Login"
             onPress={handleFaceRecognition}
             variant="secondary"
             disabled={loading}

@@ -3,6 +3,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colors, spacing, borderRadius } from '../design';
+import { useTheme } from '../context/ThemeContext';
 
 interface ChartProps {
   data: number[];
@@ -15,6 +16,10 @@ export const Chart: React.FC<ChartProps> = ({
   height = 200,
   labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 }) => {
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+  const themeColors = isDark ? colors.dark : colors.light;
+
   const styles = StyleSheet.create({
     container: {
       width: '100%',
@@ -22,9 +27,11 @@ export const Chart: React.FC<ChartProps> = ({
       paddingVertical: spacing.md,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: colors.light.bgSecondary,
-      borderRadius: borderRadius.md,
+      backgroundColor: themeColors.sunkenBase,
+      borderRadius: 8,
       marginVertical: spacing.md,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
     },
   });
 
@@ -58,14 +65,14 @@ export const Chart: React.FC<ChartProps> = ({
         <polyline
           points={points.join(' ')}
           fill="none"
-          stroke={colors.light.primaryBlue}
+          stroke={themeColors.primaryBlue}
           strokeWidth="2"
           vectorEffect="non-scaling-stroke"
         />
         <defs>
           <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor={colors.light.primaryBlue} stopOpacity="0.3" />
-            <stop offset="100%" stopColor={colors.light.primaryBlue} stopOpacity="0" />
+            <stop offset="0%" stopColor={themeColors.primaryBlue} stopOpacity="0.3" />
+            <stop offset="100%" stopColor={themeColors.primaryBlue} stopOpacity="0" />
           </linearGradient>
         </defs>
       </svg>
