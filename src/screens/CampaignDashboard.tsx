@@ -254,7 +254,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
     if (infoType === 'operation' && 'calls' in metrics) {
       return (
         <View style={{ flex: 1 }}>
-          <View style={{ marginBottom: -spacing.md }}>
+          <View style={{ marginBottom: spacing.xs }}>
             <OperationTabs
               activeTab={operationSubTab}
               onSelectTab={setOperationSubTab}
