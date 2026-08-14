@@ -133,7 +133,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
     if (operationSubTab === 'llamadas') {
       return (
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <View style={styles.metricsGrid}>
+          <View style={[styles.metricsGrid, { marginTop: 0 }]}>
             <View style={[styles.metricColumn, !isMobile && { marginRight: spacing.md }]}>
               <MetricCard
                 label="Total Llamadas Salientes"
@@ -169,7 +169,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
     if (operationSubTab === 'gestion') {
       return (
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <View style={styles.metricsGrid}>
+          <View style={[styles.metricsGrid, { marginTop: 0 }]}>
             <View style={[styles.metricColumn, !isMobile && { marginRight: spacing.md }]}>
               <MetricCard
                 label="Tasa de Escalación"
@@ -237,12 +237,14 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
     if (operationSubTab === 'calidad') {
       return (
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <MetricCard
+          <View style={{ marginTop: 0 }}>
+            <MetricCard
             label="Satisfacción"
             value={`${operationMetrics.quality.satisfaction.rating}/${operationMetrics.quality.satisfaction.maxRating}`}
             trend={operationMetrics.quality.satisfaction.trend}
             trendLabel={`${Math.abs(operationMetrics.quality.satisfaction.trend)}% vs ayer`}
           />
+          </View>
         </ScrollView>
       );
     }

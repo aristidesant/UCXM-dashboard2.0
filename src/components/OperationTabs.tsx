@@ -32,11 +32,10 @@ export const OperationTabs: React.FC<OperationTabsProps> = ({
     } as ViewStyle,
     pill: {
       flex: 1,
-      paddingVertical: 0,
-      paddingHorizontal: spacing.xs,
+      paddingVertical: 6,
+      paddingHorizontal: spacing.sm,
       borderRadius: 12,
       borderWidth: 1,
-      height: 28,
       borderColor: isDark ? 'rgba(200, 204, 211, 0.2)' : 'rgba(99, 115, 129, 0.15)',
       backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(99, 115, 129, 0.06)',
       justifyContent: 'center',
