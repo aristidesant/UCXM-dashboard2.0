@@ -1,5 +1,5 @@
 // src/design/colors.ts
-// Using design system tokens from Design system/tokens/colors.css
+// Design tokens defined in design.md specification
 
 export const colors = {
   light: {

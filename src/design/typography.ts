@@ -1,5 +1,5 @@
 // src/design/typography.ts
-// Using design system tokens from Design system/tokens/typography.css
+// Design tokens defined in design.md specification
 
 import { TextStyle } from 'react-native';
 

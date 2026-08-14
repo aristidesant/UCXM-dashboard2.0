@@ -1,10 +1,62 @@
-/* Import design system tokens */
-@import '../../Design system/tokens/colors.css';
-@import '../../Design system/tokens/typography.css';
-@import '../../Design system/tokens/spacing.css';
-@import '../../Design system/tokens/effects.css';
-
 /* src/styles/globals.css */
+/* Design tokens from design.md specification */
+
+:root {
+  /* Colors - Light Theme */
+  --color-primary-blue: #0A84FF;
+  --color-success-green: #34C759;
+  --color-warning-orange: #FF9500;
+  --color-danger-red: #FF3B30;
+  --color-dark-gray: #1C1C1E;
+  --color-medium-gray: #6E6E73;
+  --color-light-gray: #C7C7CC;
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #F2F2F7;
+  --color-white: #FFFFFF;
+
+  /* Typography */
+  --font-family: -apple-system, "SF Pro Text", "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-size-display: 28px;
+  --font-size-title: 20px;
+  --font-size-heading: 17px;
+  --font-size-body: 15px;
+  --font-size-label: 15px;
+  --font-size-caption: 13px;
+  --font-size-micro: 11px;
+
+  --font-weight-bold: 700;
+  --font-weight-semibold: 600;
+  --font-weight-regular: 400;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 20px;
+  --space-xxl: 24px;
+  --space-xxxl: 32px;
+
+  /* Border Radius */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+  --shadow-sheet: 0 -4px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --color-primary-blue: #4FA8F5;
+  --color-dark-gray: #F5F5F7;
+  --color-medium-gray: #98989F;
+  --color-light-gray: #4A4A50;
+  --color-bg-primary: #0B0B0D;
+  --color-bg-secondary: #1C1C1F;
+}
 
 * {
   margin: 0;
@@ -16,9 +68,9 @@ html,
 body {
   width: 100%;
   height: 100%;
-  font-family: var(--font-family, -apple-system, 'SF Pro Text', 'Inter', 'Helvetica Neue', Arial, sans-serif);
-  background-color: var(--surface-app, #FFFFFF);
-  color: var(--text-primary, #1C1C1E);
+  font-family: var(--font-family);
+  background-color: var(--color-bg-primary);
+  color: var(--color-dark-gray);
 }
 
 #root {

@@ -1,5 +1,5 @@
 // src/design/effects.ts
-// Using design system tokens from Design system/tokens/effects.css
+// Design tokens defined in design.md specification
 
 export const borderRadius = {
   sm: 10,      // --radius-sm

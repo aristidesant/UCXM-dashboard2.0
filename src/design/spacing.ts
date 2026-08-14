@@ -1,5 +1,5 @@
 // src/design/spacing.ts
-// Using design system tokens from Design system/tokens/spacing.css
+// Design tokens defined in design.md specification
 
 export const spacing = {
   xs: 4,      // --space-1
