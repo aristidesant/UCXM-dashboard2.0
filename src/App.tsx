@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { StyleSheet, View, SafeAreaView, ViewStyle } from 'react-native';
 import { PlatformProvider } from './context/PlatformContext';
 import { AppProvider } from './context/AppContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { PlatformToggle, TabBar } from './components';
 import {
   DashboardsScreen,
   CampaignDashboardScreen,
   ContactDetailsScreen,
   SettingsScreen,
+  LoginScreen,
 } from './screens';
 import { useAppContext } from './context/AppContext';
 import { usePlatform } from './hooks/usePlatform';
@@ -17,6 +19,7 @@ import { mockContacts } from './data/mockContacts';
 type Screen = 'dashboards' | 'campaign' | 'contact' | 'settings';
 
 const AppContent: React.FC = () => {
+  const { isLoggedIn } = useAuth();
   const [currentScreen, setCurrentScreen] = useState<Screen>('dashboards');
   const { currentDashboard, setCurrentDashboard } = useAppContext();
   const { platform } = usePlatform();
@@ -90,6 +93,14 @@ const AppContent: React.FC = () => {
     }
   };
 
+  if (!isLoggedIn) {
+    return (
+      <View style={styles.container}>
+        <LoginScreen onLoginSuccess={() => {}} />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -108,9 +119,11 @@ const AppContent: React.FC = () => {
 export const App: React.FC = () => {
   return (
     <PlatformProvider>
-      <AppProvider>
-        <AppContent />
-      </AppProvider>
+      <AuthProvider>
+        <AppProvider>
+          <AppContent />
+        </AppProvider>
+      </AuthProvider>
     </PlatformProvider>
   );
 };
