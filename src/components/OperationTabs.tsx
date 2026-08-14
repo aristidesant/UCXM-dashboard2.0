@@ -25,15 +25,15 @@ export const OperationTabs: React.FC<OperationTabsProps> = ({
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
-      gap: spacing.sm,
+      gap: spacing.xs,
       paddingHorizontal: spacing.lg,
-      paddingVertical: spacing.md,
+      paddingVertical: spacing.xs,
       backgroundColor: themeColors.canvasFrost,
     } as ViewStyle,
     pill: {
-      paddingVertical: spacing.sm,
-      paddingHorizontal: spacing.md,
-      borderRadius: 20,
+      paddingVertical: 4,
+      paddingHorizontal: spacing.sm,
+      borderRadius: 16,
       borderWidth: 1,
       borderColor: isDark ? 'rgba(200, 204, 211, 0.2)' : 'rgba(99, 115, 129, 0.15)',
       backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(99, 115, 129, 0.06)',
@@ -48,10 +48,10 @@ export const OperationTabs: React.FC<OperationTabsProps> = ({
       borderWidth: 1.5,
     } as ViewStyle,
     label: {
-      fontSize: 13,
+      fontSize: 12,
       fontWeight: '500',
       color: themeColors.steelSecondary,
-      lineHeight: 18,
+      lineHeight: 16,
     } as ViewStyle,
     activeLabel: {
       color: themeColors.newtechGreen,
