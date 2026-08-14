@@ -32,12 +32,18 @@ export const StatusBar: React.FC = () => {
       paddingHorizontal: spacing.lg,
       paddingVertical: spacing.sm,
       backgroundColor: isDark
-        ? 'rgba(11, 15, 20, 0.6)'
-        : 'rgba(247, 248, 250, 0.6)',
+        ? 'rgba(11, 15, 20, 0.75)'
+        : 'rgba(247, 248, 250, 0.75)',
+      backdropFilter: 'blur(16px)',
       borderBottomWidth: 1,
       borderBottomColor: isDark
-        ? 'rgba(27, 181, 74, 0.08)'
-        : 'rgba(27, 181, 74, 0.06)',
+        ? 'rgba(27, 181, 74, 0.1)'
+        : 'rgba(27, 181, 74, 0.08)',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 1000,
     } as ViewStyle,
     timeSection: {
       justifyContent: 'center',

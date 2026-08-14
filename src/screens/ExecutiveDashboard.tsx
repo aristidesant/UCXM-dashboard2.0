@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, ViewStyle } from 'react-native';
 import { colors, typography, spacing } from '../design';
 import { useTheme } from '../context/ThemeContext';
-import { Card, StatusBar } from '../components';
+import { Card } from '../components';
 import {
   TrendingUp,
   Users,
@@ -412,7 +412,6 @@ export const ExecutiveDashboardScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar />
       <NavBar />
       <ScrollView
         style={styles.content}

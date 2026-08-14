@@ -4,7 +4,7 @@ import { Home, BarChart3, Briefcase, Settings } from 'lucide-react';
 import { PlatformProvider } from './context/PlatformContext';
 import { AppProvider } from './context/AppContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import { PlatformToggle, TabBar, BottomNavBar, DeviceFrame } from './components';
+import { PlatformToggle, TabBar, BottomNavBar, DeviceFrame, StatusBar } from './components';
 import {
   DashboardsScreen,
   CampaignDashboardScreen,
@@ -46,6 +46,7 @@ const AppContent: React.FC = () => {
     content: {
       flex: 1,
       position: 'relative',
+      paddingTop: 44,
     } as ViewStyle,
   });
 
@@ -135,6 +136,7 @@ const AppContent: React.FC = () => {
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
+          <StatusBar />
           <PlatformToggle />
           <View style={styles.content}>{renderScreen()}</View>
           <TabBar
@@ -157,6 +159,7 @@ const AppContent: React.FC = () => {
       <PlatformToggle />
       <DeviceFrame>
         <View style={styles.container}>
+          <StatusBar />
           <View style={styles.content}>{renderScreen()}</View>
           <BottomNavBar
             items={navItems}
