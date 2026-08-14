@@ -20,6 +20,7 @@ import {
   ContactList,
   FilterButton,
   SegmentedControl,
+  OperationTabs,
 } from '../components';
 import { mockDashboards } from '../data/mockDashboards';
 import { mockContacts } from '../data/mockContacts';
@@ -125,32 +126,6 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
       width: '100%',
     } as ViewStyle,
   });
-
-  const renderOperationSubTabs = () => {
-    const operationMetrics = metrics as OperationMetrics;
-
-    return (
-      <View style={styles.tabContainer}>
-        {['llamadas', 'gestion', 'calidad'].map((tab) => (
-          <TouchableOpacity
-            key={tab}
-            style={[styles.tab, operationSubTab === tab && styles.activeTab]}
-            onPress={() => setOperationSubTab(tab as 'llamadas' | 'gestion' | 'calidad')}
-            activeOpacity={0.7}
-          >
-            <Text
-              style={[
-                styles.tabText,
-                operationSubTab === tab && styles.activeTabText,
-              ]}
-            >
-              {tab === 'llamadas' ? 'Llamadas' : tab === 'gestion' ? 'Gestión y Resultados' : 'Calidad'}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    );
-  };
 
   const renderOperationContent = () => {
     const operationMetrics = metrics as OperationMetrics;
@@ -277,7 +252,10 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
     if (infoType === 'operation' && 'calls' in metrics) {
       return (
         <View style={{ flex: 1 }}>
-          {renderOperationSubTabs()}
+          <OperationTabs
+            activeTab={operationSubTab}
+            onSelectTab={setOperationSubTab}
+          />
           {renderOperationContent()}
         </View>
       );
