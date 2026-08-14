@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ViewStyle, Dimensions } from 'react-native';
 import { Shield, CheckCircle, Smile, Activity } from 'lucide-react';
 import { colors, spacing, typography } from '../design';
@@ -23,6 +23,9 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
   const { effectiveTheme } = useTheme();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
+  const [hoveredAnalysis, setHoveredAnalysis] = useState<InfoType | null>(null);
+
+  const displayLabel = hoveredAnalysis || activeAnalysis;
 
   const analyses: Analysis[] = [
     {
@@ -84,32 +87,60 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
     activeIcon: {
       opacity: 1,
     } as ViewStyle,
+    labelContainer: {
+      marginTop: spacing.md,
+      minHeight: 24,
+      justifyContent: 'center',
+      alignItems: 'center',
+    } as ViewStyle,
+    label: {
+      fontSize: 13,
+      fontWeight: '500',
+      color: themeColors.inkPrimary,
+      lineHeight: 18,
+    } as ViewStyle,
   });
 
+  const currentLabel = analyses.find(a => a.id === displayLabel)?.label || '';
+
   return (
-    <View style={styles.container}>
-      {analyses.map((analysis) => {
-        const isActive = analysis.id === activeAnalysis;
-        return (
-          <TouchableOpacity
-            key={analysis.id}
-            style={[
-              styles.segment,
-              isActive ? styles.activeSegment : styles.inactiveSegment,
-            ]}
-            onPress={() => onSelectAnalysis(analysis.id)}
-            activeOpacity={0.7}
-            accessible={true}
-            accessibilityLabel={analysis.label}
-          >
-            <View style={[styles.icon, isActive && styles.activeIcon]}>
-              {React.cloneElement(analysis.icon as React.ReactElement, {
-                color: isActive ? themeColors.newtechGreen : themeColors.steelSecondary,
-              })}
+    <View>
+      <View style={styles.container}>
+        {analyses.map((analysis) => {
+          const isActive = analysis.id === activeAnalysis;
+          return (
+            <View
+              key={analysis.id}
+              // @ts-ignore - Web event support
+              onMouseEnter={() => setHoveredAnalysis(analysis.id)}
+              onMouseLeave={() => setHoveredAnalysis(null)}
+              // @ts-ignore - Web style support
+              style={{ cursor: 'pointer' }}
+            >
+              <TouchableOpacity
+                style={[
+                  styles.segment,
+                  isActive ? styles.activeSegment : styles.inactiveSegment,
+                ]}
+                onPress={() => onSelectAnalysis(analysis.id)}
+                activeOpacity={0.7}
+                accessible={true}
+                accessibilityLabel={analysis.label}
+              >
+                <View style={[styles.icon, isActive && styles.activeIcon]}>
+                  {React.cloneElement(analysis.icon as React.ReactElement, {
+                    color: isActive ? themeColors.newtechGreen : themeColors.steelSecondary,
+                  })}
+                </View>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        );
-      })}
+          );
+        })}
+      </View>
+
+      <View style={styles.labelContainer}>
+        <Text style={styles.label}>{currentLabel}</Text>
+      </View>
     </View>
   );
 };
