@@ -36,6 +36,7 @@ export const OperationTabs: React.FC<OperationTabsProps> = ({
       paddingHorizontal: spacing.sm,
       borderRadius: 12,
       borderWidth: 1,
+      height: 34,
       borderColor: isDark ? 'rgba(200, 204, 211, 0.2)' : 'rgba(99, 115, 129, 0.15)',
       backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(99, 115, 129, 0.06)',
       justifyContent: 'center',
