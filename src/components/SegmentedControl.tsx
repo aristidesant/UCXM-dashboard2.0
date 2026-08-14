@@ -23,33 +23,29 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
   const { effectiveTheme } = useTheme();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
-  const screenWidth = Dimensions.get('window').width;
-  const isMobile = screenWidth < 768;
 
   const analyses: Analysis[] = [
     {
       id: 'operation',
       label: 'Operation',
-      icon: <Shield size={16} />,
+      icon: <Shield size={18} />,
     },
     {
       id: 'qa',
       label: 'QA',
-      icon: <CheckCircle size={16} />,
+      icon: <CheckCircle size={18} />,
     },
     {
       id: 'emotion',
-      label: 'Emotion',
-      icon: <Smile size={16} />,
+      label: 'Emotion & Sentiment',
+      icon: <Smile size={18} />,
     },
     {
       id: 'compliance',
       label: 'Compliance',
-      icon: <Activity size={16} />,
+      icon: <Activity size={18} />,
     },
   ];
-
-  const segmentWidth = (screenWidth - spacing.lg * 2 - spacing.xs * 3) / 4;
 
   const styles = StyleSheet.create({
     container: {
@@ -60,18 +56,17 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
       marginHorizontal: spacing.lg,
       marginVertical: spacing.md,
       gap: spacing.xs,
+      justifyContent: 'center',
     } as ViewStyle,
     segment: {
-      flex: 1,
+      width: 44,
+      height: 44,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      paddingVertical: spacing.sm,
-      paddingHorizontal: spacing.sm,
       borderRadius: 6,
-      borderWidth: 1,
+      borderWidth: 1.5,
       borderColor: 'transparent',
-      gap: isMobile ? 0 : spacing.xs,
     } as ViewStyle,
     activeSegment: {
       backgroundColor: isDark
@@ -82,16 +77,6 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
     inactiveSegment: {
       backgroundColor: 'transparent',
       borderColor: isDark ? 'rgba(200, 204, 211, 0.15)' : 'rgba(99, 115, 129, 0.12)',
-    } as ViewStyle,
-    label: {
-      fontSize: isMobile ? 12 : 13,
-      fontWeight: '500',
-      color: themeColors.steelSecondary,
-      lineHeight: 18,
-    } as ViewStyle,
-    activeLabel: {
-      color: themeColors.newtechGreen,
-      fontWeight: '600',
     } as ViewStyle,
     icon: {
       opacity: 0.7,
@@ -114,17 +99,14 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
             ]}
             onPress={() => onSelectAnalysis(analysis.id)}
             activeOpacity={0.7}
+            accessible={true}
+            accessibilityLabel={analysis.label}
           >
             <View style={[styles.icon, isActive && styles.activeIcon]}>
               {React.cloneElement(analysis.icon as React.ReactElement, {
                 color: isActive ? themeColors.newtechGreen : themeColors.steelSecondary,
               })}
             </View>
-            {!isMobile && (
-              <Text style={[styles.label, isActive && styles.activeLabel]}>
-                {analysis.label}
-              </Text>
-            )}
           </TouchableOpacity>
         );
       })}
