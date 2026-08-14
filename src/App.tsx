@@ -91,7 +91,12 @@ const AppContent: React.FC = () => {
           <DashboardsScreen onSelectDashboard={handleSelectDashboard} />
         );
       case 'campaign':
-        return isMobile ? (
+        return currentDashboard ? (
+          <CampaignDashboardScreen
+            onSelectContact={handleSelectContact}
+            onBack={handleBack}
+          />
+        ) : isMobile ? (
           <DashboardsMobileScreen onSelectDashboard={handleSelectDashboard} />
         ) : (
           <DashboardsScreen onSelectDashboard={handleSelectDashboard} />
