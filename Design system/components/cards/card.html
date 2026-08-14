@@ -1,0 +1,57 @@
+<!-- @dsCard group="Components" viewport="700x420" subtitle="StatCard, ProfileCard — light + dark" name="Cards" -->
+<!DOCTYPE html>
+<html><head>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>body{margin:0;background:var(--surface-app);font-family:var(--font-sans)}</style>
+</head><body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+function StatCard({ label, value, delta, meta, size }) {
+  return (
+    <div style={{background:"var(--surface-card)",borderRadius:"var(--radius-lg)",boxShadow:"var(--shadow-card)",padding:16,display:"flex",flexDirection:"column",gap:8,minWidth:150}}>
+      <div style={{width:24,height:3,borderRadius:2,background:"var(--accent-interactive-tint)"}} />
+      <div style={{font:"var(--text-caption)",fontWeight:600,color:"var(--text-secondary)"}}>{label}</div>
+      <div style={{font:size==="lg"?"var(--text-display)":"700 22px/1.15 var(--font-sans)",color:"var(--text-primary)"}}>{value}</div>
+      {(delta||meta) && <div style={{display:"flex",gap:6,font:"var(--text-caption)",color:"var(--text-secondary)"}}>
+        {delta && <span style={{color:"var(--text-negative)",fontWeight:700}}>{delta}</span>}{meta && <span>{meta}</span>}
+      </div>}
+    </div>
+  );
+}
+function ProfileCard({ initials, name, email, badgeLabel, badgeValue }) {
+  return (
+    <div style={{background:"var(--surface-card)",borderRadius:"var(--radius-lg)",boxShadow:"var(--shadow-card)",padding:16,display:"flex",alignItems:"center",gap:12}}>
+      <div style={{width:48,height:48,borderRadius:"var(--radius-pill)",background:"var(--accent-primary)",color:"var(--white)",display:"flex",alignItems:"center",justifyContent:"center",font:"var(--text-heading)"}}>{initials}</div>
+      <div>
+        <div style={{font:"700 15px/1.4 var(--font-sans)",color:"var(--text-primary)"}}>{name}</div>
+        <div style={{font:"var(--text-caption)",color:"var(--text-secondary)"}}>{email}</div>
+        <div style={{display:"flex",gap:6,marginTop:6}}>
+          <span style={{font:"11px/1.3 var(--font-sans)",fontWeight:700,color:"var(--text-secondary)",background:"var(--surface-row)",padding:"2px 8px",borderRadius:"var(--radius-pill)"}}>{badgeLabel}</span>
+          <span style={{font:"700 13px/1.35 var(--font-sans)",color:"var(--text-primary)"}}>{badgeValue}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+function App() {
+  const Content = () => (
+    <div style={{display:"flex",flexWrap:"wrap",gap:16,padding:16}}>
+      <StatCard label="Porcentaje de Contacto" value="70.00%" delta="-30.0%" meta="100.00% · La semana pasada" />
+      <StatCard label="Porcentaje de Buzon de Voz" value="0.00%" meta="La semana pasada" />
+      <ProfileCard initials="AS" name="Aristides Santana" email="aristides.santana@newtechsa.com" badgeLabel="Estado" badgeValue="Sesión iniciada" />
+    </div>
+  );
+  return (
+    <div style={{display:"flex"}}>
+      <div style={{flex:1,background:"var(--surface-app)",backgroundImage:"var(--bg-app-gradient)"}}><Content /></div>
+      <div data-theme="dark" style={{flex:1,background:"var(--surface-app)",backgroundImage:"var(--bg-app-gradient)"}}><Content /></div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body></html>

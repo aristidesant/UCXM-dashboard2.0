@@ -3,7 +3,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ViewStyle } from 'react-native';
 import { usePlatform } from '../hooks/usePlatform';
-import { colors, typography, spacing } from '../design';
+import { colors, typography, spacing, borderRadius } from '../design';
 import { Smartphone, Tablet, Monitor } from 'lucide-react';
 import { Platform } from '../context/PlatformContext';
 
@@ -27,7 +27,7 @@ export const PlatformToggle: React.FC = () => {
       backgroundColor: colors.light.bgPrimary,
       borderWidth: 1,
       borderColor: colors.light.lightGray,
-      borderRadius: 8,
+      borderRadius: borderRadius.sm,
       padding: spacing.xs,
     } as ViewStyle,
     button: {

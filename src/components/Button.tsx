@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native';
-import { colors, typography, spacing } from '../design';
+import { colors, typography, spacing, borderRadius } from '../design';
 
 interface ButtonProps {
   title: string;
@@ -23,7 +23,7 @@ export const Button: React.FC<ButtonProps> = ({
     button: {
       paddingVertical: spacing.sm,
       paddingHorizontal: spacing.md,
-      borderRadius: 8,
+      borderRadius: borderRadius.sm,
       minHeight: 44,
       justifyContent: 'center',
       alignItems: 'center',

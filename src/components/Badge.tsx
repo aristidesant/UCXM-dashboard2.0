@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { colors, typography, spacing } from '../design';
+import { colors, typography, spacing, borderRadius } from '../design';
 
 interface BadgeProps {
   status: 'active' | 'inactive' | 'completed' | 'failed' | 'paused';
@@ -31,7 +31,7 @@ export const Badge: React.FC<BadgeProps> = ({ status }) => {
       alignItems: 'center',
       paddingVertical: spacing.xs,
       paddingHorizontal: spacing.sm,
-      borderRadius: 8,
+      borderRadius: borderRadius.sm,
       backgroundColor: statusColors[status],
       opacity: 0.2,
     },

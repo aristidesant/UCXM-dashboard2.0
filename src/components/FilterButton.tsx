@@ -9,7 +9,7 @@ import {
   Modal,
   ScrollView,
 } from 'react-native';
-import { colors, typography, spacing } from '../design';
+import { colors, typography, spacing, borderRadius } from '../design';
 import { InfoType } from '../context/AppContext';
 
 interface FilterButtonProps {
@@ -33,7 +33,7 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
     button: {
       paddingVertical: spacing.sm,
       paddingHorizontal: spacing.md,
-      borderRadius: 8,
+      borderRadius: borderRadius.sm,
       backgroundColor: colors.light.bgSecondary,
       flexDirection: 'row',
       alignItems: 'center',
@@ -51,8 +51,8 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
     },
     modalContent: {
       backgroundColor: colors.light.bgPrimary,
-      borderTopLeftRadius: 16,
-      borderTopRightRadius: 16,
+      borderTopLeftRadius: borderRadius.lg,
+      borderTopRightRadius: borderRadius.lg,
       paddingVertical: spacing.md,
     },
     optionItem: {

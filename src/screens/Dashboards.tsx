@@ -9,7 +9,7 @@ import {
   ViewStyle,
   TouchableOpacity,
 } from 'react-native';
-import { colors, typography, spacing } from '../design';
+import { colors, typography, spacing, borderRadius } from '../design';
 import { usePlatform } from '../hooks/usePlatform';
 import { useAppContext } from '../context/AppContext';
 import { Card, Badge } from '../components';
@@ -51,7 +51,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       flex: 1,
       borderWidth: 1,
       borderColor: colors.light.lightGray,
-      borderRadius: 8,
+      borderRadius: borderRadius.sm,
       paddingVertical: spacing.sm,
       paddingHorizontal: spacing.md,
       ...typography.body,

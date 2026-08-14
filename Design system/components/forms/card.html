@@ -1,0 +1,89 @@
+<!-- @dsCard group="Components" viewport="700x580" subtitle="Toggle, RadioDot, SettingsRow, Chip, FilterRow, SearchBar, Button — light + dark" name="Forms" -->
+<!DOCTYPE html>
+<html><head>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>body{margin:0;background:var(--surface-app);font-family:var(--font-sans)}</style>
+</head><body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+function Toggle({ checked }) {
+  return (
+    <div style={{width:51,height:31,borderRadius:"var(--radius-pill)",padding:2,background:checked?"var(--accent-primary)":"var(--gray-200)",display:"flex",justifyContent:checked?"flex-end":"flex-start"}}>
+      <div style={{width:27,height:27,borderRadius:"var(--radius-pill)",background:"var(--white)",boxShadow:"0 1px 3px rgba(0,0,0,0.25)"}} />
+    </div>
+  );
+}
+function RadioDot({ selected }) {
+  return (
+    <div style={{width:22,height:22,borderRadius:"var(--radius-pill)",border:selected?"none":"2px solid var(--gray-300)",background:selected?"var(--accent-primary)":"transparent",display:"flex",alignItems:"center",justifyContent:"center"}}>
+      {selected && <div style={{width:8,height:8,borderRadius:"var(--radius-pill)",background:"var(--white)"}} />}
+    </div>
+  );
+}
+function SettingsRow({ icon, title, subtitle, control, danger }) {
+  return (
+    <div style={{display:"flex",alignItems:"center",gap:12,padding:"14px 16px",background:"var(--surface-row)",borderRadius:"var(--radius-md)"}}>
+      {icon && <div style={{width:32,height:32,borderRadius:"var(--radius-pill)",background:"var(--accent-primary-tint)",display:"flex",alignItems:"center",justifyContent:"center",color:"var(--accent-primary)"}}>
+        <i data-lucide={icon} style={{width:16,height:16}}></i></div>}
+      <div style={{flex:1,minWidth:0}}>
+        <div style={{font:"700 15px/1.4 var(--font-sans)",color:danger?"var(--text-negative)":"var(--text-primary)"}}>{title}</div>
+        {subtitle && <div style={{font:"var(--text-caption)",color:"var(--text-secondary)",marginTop:2}}>{subtitle}</div>}
+      </div>
+      {control}
+    </div>
+  );
+}
+function Chip({ label, active }) {
+  return <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"8px 14px",borderRadius:"var(--radius-pill)",background:active?"var(--accent-primary-tint)":"var(--surface-row)",color:active?"var(--accent-primary)":"var(--text-primary)",font:"700 13px/1.35 var(--font-sans)"}}>
+    {active && <i data-lucide="check-circle-2" style={{width:14,height:14}}></i>}{label}</div>;
+}
+function FilterRow() {
+  return (
+    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 16px",borderRadius:"var(--radius-md)",border:"1px solid var(--border-subtle)",background:"var(--surface-card)"}}>
+      <span style={{display:"flex",gap:8,alignItems:"center",font:"700 15px/1.4 var(--font-sans)"}}><i data-lucide="list-filter" style={{width:18,height:18}}></i>Filtros</span>
+      <span style={{display:"flex",gap:4,alignItems:"center",font:"var(--text-caption)",color:"var(--text-secondary)"}}>Todas activas<i data-lucide="chevron-right" style={{width:16,height:16}}></i></span>
+    </div>
+  );
+}
+function SearchBar() {
+  return (
+    <div style={{display:"flex",gap:10}}>
+      <div style={{flex:1,display:"flex",alignItems:"center",gap:8,background:"var(--surface-row)",borderRadius:"var(--radius-md)",padding:"10px 14px"}}>
+        <i data-lucide="search" style={{width:18,height:18,color:"var(--text-secondary)"}}></i>
+        <span style={{font:"var(--text-body)",color:"var(--text-tertiary)"}}>Buscar dashboards...</span>
+      </div>
+      <div style={{width:44,height:44,borderRadius:"var(--radius-pill)",background:"var(--gray-900)",color:"var(--white)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <i data-lucide="sliders-horizontal" style={{width:18,height:18}}></i></div>
+    </div>
+  );
+}
+function App() {
+  const Content = () => (
+    <div style={{display:"flex",flexDirection:"column",gap:14,padding:16}}>
+      <SearchBar />
+      <FilterRow />
+      <div style={{display:"flex",gap:8}}><Chip label="Todos (15)" active /><Chip label="Efectivo (11)" /><Chip label="No efectivo (4)" /></div>
+      <SettingsRow icon="scan-face" title="Inicio de sesión biométrico" subtitle="Usa Face ID o Touch ID" control={<Toggle checked />} />
+      <SettingsRow icon="sun" title="Claro" control={<RadioDot selected />} />
+      <SettingsRow title="Cerrar sesión" danger control={<i data-lucide="chevron-right" style={{width:18,height:18,color:"var(--text-negative)"}}></i>} />
+      <div style={{display:"flex",gap:8}}>
+        <button style={{flex:1,padding:"12px 16px",borderRadius:"var(--radius-pill)",border:"none",background:"var(--accent-interactive)",color:"#fff",font:"700 14px/1.4 var(--font-sans)"}}>Cancelar</button>
+        <button style={{flex:1,padding:"12px 16px",borderRadius:"var(--radius-pill)",border:"none",background:"var(--accent-primary)",color:"#fff",font:"700 14px/1.4 var(--font-sans)"}}>Aplicar</button>
+      </div>
+    </div>
+  );
+  return (
+    <div style={{display:"flex"}}>
+      <div style={{flex:1,background:"var(--surface-app)",backgroundImage:"var(--bg-app-gradient)"}}><Content /></div>
+      <div data-theme="dark" style={{flex:1,background:"var(--surface-app)",backgroundImage:"var(--bg-app-gradient)"}}><Content /></div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+lucide.createIcons();
+</script>
+</body></html>

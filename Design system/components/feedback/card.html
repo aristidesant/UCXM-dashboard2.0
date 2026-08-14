@@ -1,0 +1,36 @@
+<!-- @dsCard group="Components" viewport="700x180" subtitle="SectionLabel, Badge — light + dark" name="Feedback" -->
+<!DOCTYPE html>
+<html><head>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>body{margin:0;background:var(--surface-app);font-family:var(--font-sans)}</style>
+</head><body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+function SectionLabel({ children }) {
+  return <div style={{font:"700 11px/1.3 var(--font-sans)",letterSpacing:"0.04em",textTransform:"uppercase",color:"var(--text-secondary)"}}>{children}</div>;
+}
+function Badge({ label, tone }) {
+  const tones = { neutral:{bg:"var(--surface-row)",color:"var(--text-secondary)"}, positive:{bg:"var(--accent-primary-tint)",color:"var(--accent-primary)"}, info:{bg:"var(--accent-interactive-tint)",color:"var(--accent-interactive)"} };
+  const t = tones[tone]||tones.neutral;
+  return <span style={{display:"inline-flex",padding:"4px 10px",borderRadius:"var(--radius-pill)",background:t.bg,color:t.color,font:"700 13px/1.35 var(--font-sans)"}}>{label}</span>;
+}
+function App() {
+  const Content = () => (
+    <div style={{display:"flex",flexDirection:"column",gap:16,padding:16}}>
+      <SectionLabel>DESGLOSE</SectionLabel>
+      <div style={{display:"flex",gap:8}}><Badge label="Semana" tone="info" /><Badge label="Efectivo" tone="positive" /><Badge label="Todas activas" tone="neutral" /></div>
+    </div>
+  );
+  return (
+    <div style={{display:"flex"}}>
+      <div style={{flex:1,background:"var(--surface-app)",backgroundImage:"var(--bg-app-gradient)"}}><Content /></div>
+      <div data-theme="dark" style={{flex:1,background:"var(--surface-app)",backgroundImage:"var(--bg-app-gradient)"}}><Content /></div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body></html>

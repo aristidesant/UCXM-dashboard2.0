@@ -12,17 +12,18 @@ import {
   SettingsScreen,
   LoginScreen,
   DashboardsMobileScreen,
+  KPIDashboardScreen,
 } from './screens';
 import { useAppContext } from './context/AppContext';
 import { usePlatform } from './hooks/usePlatform';
 import { colors, spacing } from './design';
 import { mockContacts } from './data/mockContacts';
 
-type Screen = 'dashboards' | 'campaign' | 'contact' | 'settings';
+type Screen = 'kpi' | 'dashboards' | 'campaign' | 'contact' | 'settings';
 
 const AppContent: React.FC = () => {
   const { isLoggedIn } = useAuth();
-  const [currentScreen, setCurrentScreen] = useState<Screen>('dashboards');
+  const [currentScreen, setCurrentScreen] = useState<Screen>('kpi');
   const { currentDashboard, setCurrentDashboard } = useAppContext();
   const { platform, isMobile } = usePlatform();
   const [selectedContactId, setSelectedContactId] = useState<string | null>(null);
@@ -45,10 +46,10 @@ const AppContent: React.FC = () => {
   });
 
   const navItems = [
+    { id: 'kpi', label: 'KPI', icon: <LayoutGrid size={24} color={currentScreen === 'kpi' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
     { id: 'dashboards', label: 'Dashboards', icon: <LayoutGrid size={24} color={currentScreen === 'dashboards' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
     { id: 'campaign', label: 'Calidad', icon: <CheckCircle size={24} color={currentScreen === 'campaign' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
     { id: 'contact', label: 'Cumplimiento', icon: <Shield size={24} color={currentScreen === 'contact' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
-    { id: 'insights', label: 'Insights', icon: <Lightbulb size={24} color={currentScreen === 'insights' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
     { id: 'settings', label: 'Ajustes', icon: <Settings size={24} color={currentScreen === 'settings' ? colors.light.primaryBlue : colors.light.mediumGray} /> },
   ];
 
@@ -73,6 +74,8 @@ const AppContent: React.FC = () => {
 
   const renderScreen = () => {
     switch (currentScreen) {
+      case 'kpi':
+        return <KPIDashboardScreen onSelectDashboard={handleSelectDashboard} />;
       case 'dashboards':
         return isMobile ? (
           <DashboardsMobileScreen onSelectDashboard={handleSelectDashboard} />
@@ -97,11 +100,7 @@ const AppContent: React.FC = () => {
       case 'settings':
         return <SettingsScreen />;
       default:
-        return isMobile ? (
-          <DashboardsMobileScreen onSelectDashboard={handleSelectDashboard} />
-        ) : (
-          <DashboardsScreen onSelectDashboard={handleSelectDashboard} />
-        );
+        return <KPIDashboardScreen onSelectDashboard={handleSelectDashboard} />;
     }
   };
 
@@ -115,10 +114,12 @@ const AppContent: React.FC = () => {
       );
     }
     return (
-      <DeviceFrame>
+      <View style={styles.container}>
         <PlatformToggle />
-        <LoginScreen onLoginSuccess={() => {}} />
-      </DeviceFrame>
+        <DeviceFrame>
+          <LoginScreen onLoginSuccess={() => {}} />
+        </DeviceFrame>
+      </View>
     );
   }
 
@@ -132,9 +133,9 @@ const AppContent: React.FC = () => {
             currentScreen={currentScreen}
             onSelectScreen={(screen) => setCurrentScreen(screen as Screen)}
             tabs={[
-              { id: 'dashboards', label: 'Dashboards', icon: '📊' },
-              { id: 'campaign', label: 'Campaign', icon: '📈' },
-              { id: 'contact', label: 'Contact', icon: '👤' },
+              { id: 'kpi', label: 'KPI', icon: '📊' },
+              { id: 'dashboards', label: 'Dashboards', icon: '📈' },
+              { id: 'campaign', label: 'Campaign', icon: '✓' },
               { id: 'settings', label: 'Settings', icon: '⚙️' },
             ]}
           />
@@ -144,17 +145,19 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <DeviceFrame>
+    <View style={styles.container}>
       <PlatformToggle />
-      <View style={styles.container}>
-        <View style={styles.content}>{renderScreen()}</View>
-        <BottomNavBar
-          items={navItems}
-          activeItemId={currentScreen}
-          onSelectItem={(id) => setCurrentScreen(id as Screen)}
-        />
-      </View>
-    </DeviceFrame>
+      <DeviceFrame>
+        <View style={styles.container}>
+          <View style={styles.content}>{renderScreen()}</View>
+          <BottomNavBar
+            items={navItems}
+            activeItemId={currentScreen}
+            onSelectItem={(id) => setCurrentScreen(id as Screen)}
+          />
+        </View>
+      </DeviceFrame>
+    </View>
   );
 };
 

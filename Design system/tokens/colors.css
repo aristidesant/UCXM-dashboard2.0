@@ -1,0 +1,57 @@
+:root {
+  --green-500: #34C759;
+  --green-100: #E3F8E9;
+  --blue-500: #0A84FF;
+  --blue-100: #E5F1FF;
+  --red-500: #FF3B30;
+  --red-100: #FFE5E3;
+  --gray-900: #1C1C1E;
+  --gray-600: #6E6E73;
+  --gray-400: #8E8E93;
+  --gray-300: #C7C7CC;
+  --gray-200: #E5E5EA;
+  --gray-100: #F2F2F7;
+  --white: #FFFFFF;
+
+  --text-primary: var(--gray-900);
+  --text-secondary: var(--gray-400);
+  --text-tertiary: var(--gray-300);
+  --text-link: var(--blue-500);
+  --text-positive: var(--green-500);
+  --text-negative: var(--red-500);
+
+  --surface-app: var(--gray-100);
+  --surface-card: var(--white);
+  --surface-row: #F2F2F3;
+  --surface-row-alt: #EDEDF0;
+
+  --border-subtle: var(--gray-200);
+
+  --accent-primary: var(--green-500);
+  --accent-primary-tint: var(--green-100);
+  --accent-interactive: var(--blue-500);
+  --accent-interactive-tint: var(--blue-100);
+}
+
+/* Dark theme — apply by adding data-theme="dark" to any ancestor (e.g. <body> or a screen wrapper). */
+[data-theme="dark"] {
+  --gray-200: #33343A;
+  --gray-300: #4A4A50;
+
+  --text-primary: #F5F5F7;
+  --text-secondary: #98989F;
+  --text-tertiary: #5C5C60;
+  --text-link: #4FA8F5;
+
+  --surface-app: #0B0B0D;
+  --surface-card: #1C1C1F;
+  --surface-row: #202024;
+  --surface-row-alt: #26262B;
+
+  --border-subtle: rgba(255,255,255,0.08);
+
+  --accent-interactive: #4FA8F5;
+  --accent-interactive-tint: rgba(79,168,245,0.18);
+  --accent-primary-tint: rgba(52,199,89,0.18);
+  --red-100: rgba(255,59,48,0.18);
+}

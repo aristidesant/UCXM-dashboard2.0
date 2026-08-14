@@ -12,7 +12,7 @@ import {
   Modal,
   ActivityIndicator,
 } from 'react-native';
-import { colors, typography, spacing } from '../design';
+import { colors, typography, spacing, borderRadius } from '../design';
 import { Button, Card } from '../components';
 import { usePlatform } from '../hooks/usePlatform';
 import { useAuth } from '../context/AuthContext';
@@ -103,7 +103,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
     input: {
       borderWidth: 1,
       borderColor: colors.light.lightGray,
-      borderRadius: 8,
+      borderRadius: borderRadius.sm,
       paddingVertical: spacing.sm,
       paddingHorizontal: spacing.md,
       ...typography.body,
@@ -174,7 +174,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
     cameraPreview: {
       width: 200,
       height: 250,
-      borderRadius: 12,
+      borderRadius: borderRadius.md,
       backgroundColor: colors.light.bgSecondary,
       justifyContent: 'center',
       alignItems: 'center',

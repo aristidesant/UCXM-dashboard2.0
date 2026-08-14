@@ -10,7 +10,7 @@ import {
   FlatList,
 } from 'react-native';
 import { Search } from 'lucide-react';
-import { colors, typography, spacing } from '../design';
+import { colors, typography, spacing, borderRadius } from '../design';
 import { usePlatform } from '../hooks/usePlatform';
 import { useAppContext } from '../context/AppContext';
 import { Card, Badge } from '../components';
@@ -60,7 +60,7 @@ export const DashboardsMobileScreen: React.FC<DashboardsMobileScreenProps> = ({
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: colors.light.bgSecondary,
-      borderRadius: 10,
+      borderRadius: borderRadius.sm,
       paddingHorizontal: spacing.md,
       borderWidth: 1,
       borderColor: colors.light.lightGray,

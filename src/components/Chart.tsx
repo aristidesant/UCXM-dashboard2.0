@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { colors, spacing } from '../design';
+import { colors, spacing, borderRadius } from '../design';
 
 interface ChartProps {
   data: number[];
@@ -23,7 +23,7 @@ export const Chart: React.FC<ChartProps> = ({
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: colors.light.bgSecondary,
-      borderRadius: 12,
+      borderRadius: borderRadius.md,
       marginVertical: spacing.md,
     },
   });

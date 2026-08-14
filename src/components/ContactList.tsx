@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
-import { colors, typography, spacing } from '../design';
+import { colors, typography, spacing, borderRadius } from '../design';
 import { Contact } from '../data/mockContacts';
 import { Card } from './Card';
 
@@ -21,7 +21,7 @@ export const ContactList: React.FC<ContactListProps> = ({
     },
     contactItem: {
       padding: spacing.md,
-      borderRadius: 12,
+      borderRadius: borderRadius.md,
       backgroundColor: colors.light.bgSecondary,
       flexDirection: 'row',
       justifyContent: 'space-between',

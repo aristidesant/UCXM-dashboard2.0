@@ -11,3 +11,4 @@ export { PlatformToggle } from './PlatformToggle';
 export { TabBar } from './TabBar';
 export { BottomNavBar } from './BottomNavBar';
 export { DeviceFrame } from './DeviceFrame';
+export { AnimatedKPICard } from './AnimatedKPICard';

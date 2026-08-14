@@ -1,0 +1,325 @@
+<!-- @dsCard group="CMX Dashboard" viewport="390x700" -->
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<title>CMX Dashboard</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+html,body{margin:0;font-family:var(--font-sans);background:var(--gray-900)}
+#phone{width:390px;height:700px;margin:0 auto;background:var(--surface-app);background-image:var(--bg-app-gradient);
+  overflow-y:auto;position:relative;box-shadow:0 0 0 1px var(--border-subtle)}
+button{font-family:var(--font-sans)}
+</style>
+</head><body>
+<div id="phone"></div>
+<script type="text/plain" id="app-src">
+const { useState } = React;
+
+function Icon(p){ return <i data-lucide={p.name} style={{width:p.size||18,height:p.size||18,...p.style}}></i>; }
+
+function Header({ title, onBack }) {
+  return (
+    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"16px 16px 8px"}}>
+      <button onClick={onBack} style={{background:"none",border:"none",padding:0,width:32,cursor:onBack?"pointer":"default",color:"var(--text-secondary)"}}>
+        {onBack && <Icon name="chevron-left" size={22} />}
+      </button>
+      <div style={{font:"var(--text-heading)",color:"var(--text-primary)"}}>{title}</div>
+      <div style={{width:32}} />
+    </div>
+  );
+}
+
+function BottomNav({ active, onChange }) {
+  const items = [
+    {k:"dash",icon:"layout-grid",label:"Dashboards"},{k:"cal",icon:"badge-check",label:"Calidad"},
+    {k:"comp",icon:"shield-check",label:"Cumplimiento"},{k:"ins",icon:"lightbulb",label:"Insights"},{k:"set",icon:"settings",label:"Ajustes"}
+  ];
+  return (
+    <div style={{position:"sticky",bottom:0,padding:"8px 12px 14px",background:"transparent"}}>
+      <div style={{display:"flex",background:"var(--surface-card)",borderRadius:"var(--radius-lg)",boxShadow:"var(--shadow-card)",padding:"8px 4px"}}>
+        {items.map(it=>(
+          <button key={it.k} onClick={()=>onChange(it.k)} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:4,
+            background:"none",border:"none",padding:"6px 2px",cursor:"pointer",color:active===it.k?"var(--accent-interactive)":"var(--text-secondary)"}}>
+            <Icon name={it.icon} size={18} />
+            <span style={{font:"11px/1.3 var(--font-sans)",fontWeight:active===it.k?700:400}}>{it.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DashboardsScreen({ onOpen, onFilter }) {
+  return (
+    <div style={{padding:"16px 16px 0",display:"flex",flexDirection:"column",gap:16}}>
+      <div style={{font:"var(--text-title)",textAlign:"center",color:"var(--text-primary)"}}>Dashboards</div>
+      <div style={{display:"flex",gap:10}}>
+        <div style={{flex:1,display:"flex",alignItems:"center",gap:8,background:"var(--surface-row)",borderRadius:"var(--radius-md)",padding:"10px 14px"}}>
+          <Icon name="search" style={{color:"var(--text-secondary)"}} />
+          <span style={{font:"var(--text-body)",color:"var(--text-tertiary)"}}>Buscar dashboards...</span>
+        </div>
+        <button onClick={onFilter} style={{width:44,height:44,borderRadius:"var(--radius-pill)",border:"none",background:"var(--gray-900)",color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,cursor:"pointer"}}>
+          <Icon name="sliders-horizontal" />
+        </button>
+      </div>
+      <div>
+        <div style={{font:"700 15px/1.4 var(--font-sans)",color:"var(--text-primary)"}}>Tus dashboards</div>
+        <div style={{font:"var(--text-caption)",color:"var(--text-secondary)"}}>2 dashboards</div>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:2,background:"var(--surface-card)",borderRadius:"var(--radius-lg)",boxShadow:"var(--shadow-card)",overflow:"hidden"}}>
+        {[["Localizacion","Inactiva","var(--gray-400)"],["Localizacion Mayo","Activa","var(--accent-primary)"]].map(([name,status,dot],i)=>(
+          <button key={name} onClick={onOpen} style={{display:"flex",alignItems:"center",gap:12,padding:"14px 16px",background:"none",border:"none",borderTop:i?"1px solid var(--border-subtle)":"none",cursor:"pointer",textAlign:"left"}}>
+            <div style={{width:40,height:40,borderRadius:"var(--radius-pill)",background:"var(--accent-primary)",color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name="phone-call" /></div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{font:"700 15px/1.4 var(--font-sans)",color:"var(--text-primary)"}}>{name}</div>
+              <div style={{display:"flex",gap:6,alignItems:"center",font:"var(--text-caption)",color:"var(--text-secondary)"}}>
+                <span style={{width:6,height:6,borderRadius:"50%",background:dot,display:"inline-block"}} />{status}
+              </div>
+            </div>
+            <Icon name="chevron-right" style={{color:"var(--text-tertiary)"}} />
+          </button>
+        ))}
+      </div>
+      <div style={{textAlign:"center",font:"var(--text-caption)",color:"var(--text-secondary)"}}>Actualizado 13/08/2026 12:11 p.m.</div>
+    </div>
+  );
+}
+
+function StatCard({ label, value, delta, meta }) {
+  return (
+    <div style={{background:"var(--surface-card)",borderRadius:"var(--radius-lg)",boxShadow:"var(--shadow-card)",padding:16,flex:1,display:"flex",flexDirection:"column",gap:8}}>
+      <div style={{width:24,height:3,borderRadius:2,background:"var(--accent-interactive-tint)"}} />
+      <div style={{font:"var(--text-caption)",fontWeight:600,color:"var(--text-secondary)"}}>{label}</div>
+      <div style={{font:"700 22px/1.15 var(--font-sans)",color:"var(--text-primary)"}}>{value}</div>
+      {(delta||meta) && <div style={{display:"flex",gap:6,font:"var(--text-caption)",color:"var(--text-secondary)",flexWrap:"wrap"}}>
+        {delta && <span style={{color:"var(--text-negative)",fontWeight:700}}>{delta}</span>}{meta && <span>{meta}</span>}
+      </div>}
+    </div>
+  );
+}
+
+function IndicadoresTab() {
+  return (
+    <div style={{padding:"0 16px",display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 16px",borderRadius:"var(--radius-md)",border:"1px solid var(--border-subtle)",background:"var(--surface-card)"}}>
+        <span style={{display:"flex",gap:8,alignItems:"center",font:"700 15px/1.4 var(--font-sans)"}}><Icon name="list-filter" size={18} />Filtros</span>
+        <Icon name="chevron-right" size={16} style={{color:"var(--text-secondary)"}} />
+      </div>
+      <div style={{display:"flex",gap:10}}>
+        <StatCard label="Porcentaje de Buzon de Voz" value="0.00%" meta="La semana pasada" />
+        <StatCard label="Porcentaje de Contacto" value="70.00%" delta="-30.0%" meta="La seman..." />
+      </div>
+    </div>
+  );
+}
+
+function DetallesTab({ view, setView }) {
+  const contacts = [
+    ["Yamilet Sanchez","Enviar Dirección Cliente",true],["Kerlis Sanchez","Enviar Dirección Cliente",true],
+    ["Steve Socorro","Enviar Dirección Cliente",true],["Enmanuel Placido","Enviar Dirección Cliente",true],
+  ];
+  return (
+    <div style={{padding:"0 16px",display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{display:"flex",background:"var(--surface-row)",borderRadius:"var(--radius-pill)",padding:4}}>
+        {["Reporte","Contactos"].map((o,i)=>(
+          <button key={o} onClick={()=>setView(i)} style={{flex:1,padding:"10px 12px",border:"none",cursor:"pointer",borderRadius:"var(--radius-pill)",
+            background:view===i?"var(--surface-card)":"transparent",boxShadow:view===i?"var(--shadow-card)":"none",
+            font:"700 15px/1.4 var(--font-sans)",color:view===i?"var(--text-primary)":"var(--text-secondary)"}}>{o}</button>
+        ))}
+      </div>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 16px",borderRadius:"var(--radius-md)",border:"1px solid var(--border-subtle)",background:"var(--surface-card)"}}>
+        <span style={{display:"flex",gap:8,alignItems:"center",font:"700 15px/1.4 var(--font-sans)"}}><Icon name="list-filter" size={18} />Filtros</span>
+        <Icon name="chevron-right" size={16} style={{color:"var(--text-secondary)"}} />
+      </div>
+      {view===0 ? (
+        <div style={{background:"var(--surface-card)",borderRadius:"var(--radius-lg)",boxShadow:"var(--shadow-card)",padding:16,display:"flex",flexDirection:"column",gap:10}}>
+          <div style={{font:"700 15px/1.4 var(--font-sans)",color:"var(--text-primary)"}}>Listas de contactos incluidas</div>
+          {["Joel220626 · Ola 1","2026072301 · Ola 2","Test Elvyn Soriano · Ola 1"].map(t=>(
+            <div key={t} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background:"var(--surface-row)",borderRadius:"var(--radius-md)"}}>
+              <Icon name="users" style={{color:"var(--accent-primary)"}} />
+              <span style={{font:"700 14px/1.4 var(--font-sans)",color:"var(--text-primary)"}}>{t}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          <div style={{display:"flex",gap:8}}>
+            <span style={{display:"inline-flex",gap:6,padding:"8px 14px",borderRadius:"var(--radius-pill)",background:"var(--accent-primary-tint)",color:"var(--accent-primary)",font:"700 13px/1.35 var(--font-sans)"}}><Icon name="check-circle-2" size={14}/>Todos (15)</span>
+            <span style={{padding:"8px 14px",borderRadius:"var(--radius-pill)",background:"var(--surface-row)",font:"700 13px/1.35 var(--font-sans)"}}>Efectivo (11)</span>
+          </div>
+          {contacts.map(([n,s])=>(
+            <div key={n} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background:"var(--surface-card)",borderRadius:"var(--radius-md)",boxShadow:"var(--shadow-card)"}}>
+              <Icon name="circle-user" style={{color:"var(--text-secondary)"}} />
+              <div style={{flex:1}}>
+                <div style={{font:"700 14px/1.4 var(--font-sans)",color:"var(--text-primary)"}}>{n}</div>
+                <div style={{font:"var(--text-caption)",color:"var(--text-positive)"}}>{s}</div>
+              </div>
+              <Icon name="chevron-right" size={16} style={{color:"var(--text-tertiary)"}} />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function LocalizacionScreen({ onBack }) {
+  const [tab, setTab] = useState(0);
+  const [view, setView] = useState(0);
+  return (
+    <div style={{paddingBottom:16}}>
+      <Header title="Localizacion" onBack={onBack} />
+      <div style={{display:"flex",borderBottom:"1px solid var(--border-subtle)",margin:"0 16px 14px"}}>
+        {["Indicadores","Detalles de contacto"].map((t,i)=>(
+          <button key={t} onClick={()=>setTab(i)} style={{flex:1,padding:"10px 4px",background:"none",border:"none",cursor:"pointer",
+            font:"var(--text-body)",fontWeight:tab===i?700:400,color:tab===i?"var(--text-primary)":"var(--text-secondary)",
+            borderBottom:tab===i?"2px solid var(--accent-interactive)":"2px solid transparent"}}>{t}</button>
+        ))}
+      </div>
+      {tab===0 ? <IndicadoresTab /> : <DetallesTab view={view} setView={setView} />}
+    </div>
+  );
+}
+
+function Toggle({ checked, onChange }) {
+  return (
+    <button onClick={()=>onChange(!checked)} style={{width:51,height:31,borderRadius:"var(--radius-pill)",border:"none",padding:2,cursor:"pointer",
+      background:checked?"var(--accent-primary)":"var(--gray-200)",display:"flex",justifyContent:checked?"flex-end":"flex-start"}}>
+      <span style={{width:27,height:27,borderRadius:"var(--radius-pill)",background:"#fff",boxShadow:"0 1px 3px rgba(0,0,0,0.25)"}} />
+    </button>
+  );
+}
+function RadioDot({ selected, onSelect }) {
+  return (
+    <button onClick={onSelect} style={{width:22,height:22,borderRadius:"var(--radius-pill)",border:selected?"none":"2px solid var(--gray-300)",
+      background:selected?"var(--accent-primary)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",padding:0}}>
+      {selected && <span style={{width:8,height:8,borderRadius:"var(--radius-pill)",background:"#fff"}} />}
+    </button>
+  );
+}
+function SettingsRow({ icon, title, subtitle, control, danger }) {
+  return (
+    <div style={{display:"flex",alignItems:"center",gap:12,padding:"14px 16px",background:"var(--surface-row)",borderRadius:"var(--radius-md)"}}>
+      {icon && <div style={{width:32,height:32,borderRadius:"var(--radius-pill)",background:"var(--accent-primary-tint)",display:"flex",alignItems:"center",justifyContent:"center",color:"var(--accent-primary)",flexShrink:0}}><Icon name={icon} size={16} /></div>}
+      <div style={{flex:1,minWidth:0}}>
+        <div style={{font:"700 15px/1.4 var(--font-sans)",color:danger?"var(--text-negative)":"var(--text-primary)"}}>{title}</div>
+        {subtitle && <div style={{font:"var(--text-caption)",color:"var(--text-secondary)",marginTop:2}}>{subtitle}</div>}
+      </div>
+      {control}
+    </div>
+  );
+}
+
+function AjustesScreen({ theme, setTheme }) {
+  const [bio, setBio] = useState(true);
+  return (
+    <div style={{paddingBottom:16}}>
+      <Header title="Ajustes" />
+      <div style={{padding:"0 16px",display:"flex",flexDirection:"column",gap:18}}>
+        <div style={{background:"var(--surface-card)",borderRadius:"var(--radius-lg)",boxShadow:"var(--shadow-card)",padding:16,display:"flex",alignItems:"center",gap:12}}>
+          <div style={{width:48,height:48,borderRadius:"var(--radius-pill)",background:"var(--accent-primary)",color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",font:"var(--text-heading)",flexShrink:0}}>AS</div>
+          <div>
+            <div style={{font:"700 15px/1.4 var(--font-sans)",color:"var(--text-primary)"}}>Aristides Santana</div>
+            <div style={{font:"var(--text-caption)",color:"var(--text-secondary)"}}>aristides.santana@newtechsa.com</div>
+            <div style={{display:"flex",gap:6,marginTop:6}}>
+              <span style={{font:"11px/1.3 var(--font-sans)",fontWeight:700,color:"var(--text-secondary)",background:"var(--surface-row)",padding:"2px 8px",borderRadius:"var(--radius-pill)"}}>Estado</span>
+              <span style={{font:"700 13px/1.35 var(--font-sans)",color:"var(--text-primary)"}}>Sesión iniciada</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style={{font:"11px/1.3 var(--font-sans)",fontWeight:700,letterSpacing:"0.04em",textTransform:"uppercase",color:"var(--text-secondary)",marginBottom:8}}>Cuenta</div>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}>
+            <SettingsRow icon="building-2" title="Cambiar cliente" subtitle="Newtech SRL" control={<Icon name="chevron-right" style={{color:"var(--text-tertiary)"}} />} />
+            <SettingsRow icon="key-round" title="Cambiar contraseña" subtitle="Actualiza tu contraseña" control={<Icon name="chevron-right" style={{color:"var(--text-tertiary)"}} />} />
+          </div>
+        </div>
+        <div>
+          <div style={{font:"11px/1.3 var(--font-sans)",fontWeight:700,letterSpacing:"0.04em",textTransform:"uppercase",color:"var(--text-secondary)",marginBottom:8}}>Seguridad</div>
+          <SettingsRow icon="scan-face" title="Inicio de sesión biométrico" subtitle="Usa Face ID o Touch ID" control={<Toggle checked={bio} onChange={setBio} />} />
+        </div>
+        <div>
+          <div style={{font:"11px/1.3 var(--font-sans)",fontWeight:700,letterSpacing:"0.04em",textTransform:"uppercase",color:"var(--text-secondary)",marginBottom:8}}>Apariencia · Tema</div>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}>
+            {["Sistema","Claro","Oscuro"].map(t=>(
+              <SettingsRow key={t} icon={t==="Claro"?"sun":t==="Oscuro"?"moon":"contrast"} title={t} control={<RadioDot selected={theme===t} onSelect={()=>setTheme(t)} />} />
+            ))}
+          </div>
+        </div>
+        <SettingsRow title="Cerrar sesión" danger control={<Icon name="log-out" style={{color:"var(--text-negative)"}} />} />
+      </div>
+    </div>
+  );
+}
+
+function Button({ label, tone, onClick }) {
+  return (
+    <button onClick={onClick} style={{flex:1,padding:"12px 16px",borderRadius:"var(--radius-pill)",border:"none",cursor:"pointer",
+      background:tone==="primary"?"var(--accent-primary)":"var(--accent-interactive)",color:"#fff",font:"700 15px/1.4 var(--font-sans)"}}>{label}</button>
+  );
+}
+
+function FiltersSheet({ onClose }) {
+  const [estado, setEstado] = useState("Cualquiera");
+  return (
+    <div style={{position:"absolute",inset:0,background:"var(--surface-app)",backgroundImage:"var(--bg-app-gradient)",display:"flex",flexDirection:"column",overflowY:"auto"}}>
+      <Header title="Dashboards" onBack={onClose} />
+      <div style={{padding:"0 16px",display:"flex",flexDirection:"column",gap:16}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,background:"var(--surface-row)",borderRadius:"var(--radius-md)",padding:"10px 14px"}}>
+          <Icon name="search" style={{color:"var(--text-secondary)"}} /><span style={{font:"var(--text-body)",color:"var(--text-tertiary)"}}>Buscar dashboards...</span>
+        </div>
+        <div>
+          <div style={{font:"700 15px/1.4 var(--font-sans)",color:"var(--text-primary)",marginBottom:8}}>Estado</div>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}>
+            {["Cualquiera","Activa","Inactiva","Fallida","Pausada","Completada"].map(o=>(
+              <button key={o} onClick={()=>setEstado(o)} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 14px",borderRadius:"var(--radius-md)",border:"none",cursor:"pointer",textAlign:"left",
+                background:estado===o?"var(--accent-interactive-tint)":"var(--surface-row)",font:"700 14px/1.4 var(--font-sans)",color:"var(--text-primary)"}}>
+                {o}{estado===o && <Icon name="check" size={16} style={{color:"var(--accent-interactive)"}} />}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div style={{display:"flex",gap:10,paddingBottom:16}}>
+          <Button label="Cancelar" tone="secondary" onClick={onClose} />
+          <Button label="Limpiar" tone="secondary" onClick={()=>setEstado("Cualquiera")} />
+          <Button label="Aplicar" tone="primary" onClick={onClose} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [screen, setScreen] = useState("dash");
+  const [showFilters, setShowFilters] = useState(false);
+  const [theme, setTheme] = useState("Claro");
+  const dark = theme === "Oscuro";
+  return (
+    <div data-theme={dark ? "dark" : undefined} style={{position:"relative",minHeight:"100%",display:"flex",flexDirection:"column",
+      background:"var(--surface-app)",backgroundImage:"var(--bg-app-gradient)"}}>
+      <div style={{flex:1}}>
+        {screen==="dash" && <DashboardsScreen onOpen={()=>setScreen("loc")} onFilter={()=>setShowFilters(true)} />}
+        {screen==="loc" && <LocalizacionScreen onBack={()=>setScreen("dash")} />}
+        {screen==="set" && <AjustesScreen theme={theme} setTheme={setTheme} />}
+        {(screen==="cal"||screen==="comp"||screen==="ins") && (
+          <div style={{padding:60,textAlign:"center",font:"var(--text-body)",color:"var(--text-secondary)"}}>Not screenshotted — omitted.</div>
+        )}
+      </div>
+      <BottomNav active={screen} onChange={setScreen} />
+      {showFilters && <FiltersSheet onClose={()=>setShowFilters(false)} />}
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("phone")).render(React.createElement(App));
+setInterval(()=>lucide.createIcons(), 200);
+</script>
+<script>
+const src = document.getElementById("app-src").textContent;
+const out = Babel.transform(src, { presets: [["react", { runtime: "classic" }]] }).code;
+(0, eval)(out);
+</script>
+</body></html>
