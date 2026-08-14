@@ -44,6 +44,9 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
   const [activeTab, setActiveTab] = useState<'indicadores' | 'contactos'>(
     'indicadores'
   );
+  const [operationSubTab, setOperationSubTab] = useState<'llamadas' | 'gestion' | 'calidad'>(
+    'llamadas'
+  );
 
   const metrics = useMockData(currentDashboard || '', infoType);
   const dashboard = mockDashboards.find((d) => d.id === currentDashboard);
@@ -123,61 +126,160 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
     } as ViewStyle,
   });
 
-  const renderIndicadores = () => {
-    if (infoType === 'operation' && 'healthStatus' in metrics) {
-      const operationMetrics = metrics as OperationMetrics;
-      const getHealthBadgeColor = () => {
-        switch (operationMetrics.healthStatus) {
-          case 'Healthy':
-            return themeColors.success;
-          case 'At Risk':
-            return themeColors.warning;
-          case 'Critical':
-            return themeColors.danger;
-        }
-      };
+  const renderOperationSubTabs = () => {
+    const operationMetrics = metrics as OperationMetrics;
 
+    return (
+      <View style={styles.tabContainer}>
+        {['llamadas', 'gestion', 'calidad'].map((tab) => (
+          <TouchableOpacity
+            key={tab}
+            style={[styles.tab, operationSubTab === tab && styles.activeTab]}
+            onPress={() => setOperationSubTab(tab as 'llamadas' | 'gestion' | 'calidad')}
+            activeOpacity={0.7}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                operationSubTab === tab && styles.activeTabText,
+              ]}
+            >
+              {tab === 'llamadas' ? 'Llamadas' : tab === 'gestion' ? 'Gestión y Resultados' : 'Calidad'}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    );
+  };
+
+  const renderOperationContent = () => {
+    const operationMetrics = metrics as OperationMetrics;
+
+    if (operationSubTab === 'llamadas') {
       return (
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           <View style={styles.metricsGrid}>
             <View style={[styles.metricColumn, !isMobile && { marginRight: spacing.md }]}>
               <MetricCard
-                label="System Health"
-                value={operationMetrics.healthStatus}
+                label="Total Llamadas Salientes"
+                value={`${(operationMetrics.calls.totalOutgoing / 1000).toFixed(1)}k`}
               />
             </View>
             <View style={styles.metricColumn}>
               <MetricCard
-                label="System Uptime"
-                value={`${operationMetrics.systemUptime.toFixed(2)}%`}
+                label="Total Llamadas Contestadas"
+                value={`${(operationMetrics.calls.totalAnswered / 1000).toFixed(1)}k`}
               />
             </View>
           </View>
+
+          <Card style={{ marginBottom: spacing.lg }}>
+            <Text style={[typography.heading, { marginBottom: spacing.md }]}>Llamadas por Idioma</Text>
+            <View style={{ gap: spacing.md }}>
+              {operationMetrics.calls.byLanguage.map((lang, idx) => (
+                <View key={idx} style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: spacing.sm, borderBottomWidth: idx < operationMetrics.calls.byLanguage.length - 1 ? 1 : 0, borderBottomColor: themeColors.whisperBorder }}>
+                  <Text style={[typography.body, { color: themeColors.steelSecondary }]}>{lang.language}</Text>
+                  <View style={{ flexDirection: 'row', gap: spacing.lg }}>
+                    <Text style={typography.body}>{lang.quantity}</Text>
+                    <Text style={[typography.body, { color: themeColors.steelSecondary }]}>{lang.percentage}%</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </Card>
+        </ScrollView>
+      );
+    }
+
+    if (operationSubTab === 'gestion') {
+      return (
+        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           <View style={styles.metricsGrid}>
             <View style={[styles.metricColumn, !isMobile && { marginRight: spacing.md }]}>
               <MetricCard
-                label="Performance Score"
-                value={`${operationMetrics.performanceScore}%`}
+                label="Tasa de Escalación"
+                value={`${operationMetrics.management.escalationRate.value}%`}
+                trend={operationMetrics.management.escalationRate.trend}
+                trendLabel={`${Math.abs(operationMetrics.management.escalationRate.trend)}% vs ayer`}
               />
             </View>
             <View style={styles.metricColumn}>
               <MetricCard
-                label="Resource Usage"
-                value={`${operationMetrics.resourceUsage}%`}
+                label="Tasa de Conversión"
+                value={`${operationMetrics.management.conversionRate.value}%`}
+                trend={operationMetrics.management.conversionRate.trend}
+                trendLabel={`${Math.abs(operationMetrics.management.conversionRate.trend)}% vs ayer`}
               />
             </View>
           </View>
-          <View style={[styles.fullWidth, { marginBottom: spacing.lg }]}>
-            <Chart data={operationMetrics.trend} height={200} />
+
+          <View style={styles.metricsGrid}>
+            <View style={[styles.metricColumn, !isMobile && { marginRight: spacing.md }]}>
+              <MetricCard
+                label="Tasa de Contacto"
+                value={`${operationMetrics.management.contactRate.value}%`}
+                trend={operationMetrics.management.contactRate.trend}
+                trendLabel={`${Math.abs(operationMetrics.management.contactRate.trend)}% vs ayer`}
+              />
+            </View>
+            <View style={styles.metricColumn}>
+              <MetricCard
+                label="Tiempo Promedio de Manejo"
+                value={`${operationMetrics.management.averageHandleTime.minutes}:${String(operationMetrics.management.averageHandleTime.seconds).padStart(2, '0')}`}
+                trend={operationMetrics.management.averageHandleTime.trend}
+                trendLabel={`${Math.abs(operationMetrics.management.averageHandleTime.trend)}% vs ayer`}
+              />
+            </View>
           </View>
-          <Card>
-            {operationMetrics.alerts.map((alert, idx) => (
-              <Text key={idx} style={[typography.body, { marginBottom: spacing.sm }]}>
-                • {alert}
-              </Text>
-            ))}
+
+          <Card style={{ marginBottom: spacing.lg }}>
+            <Text style={[typography.heading, { marginBottom: spacing.md }]}>Llamadas por Disposición</Text>
+            <View style={{ gap: spacing.md }}>
+              {operationMetrics.management.callsByDisposition.map((disp, idx) => (
+                <View key={idx} style={{ gap: spacing.sm }}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text style={[typography.body, { color: themeColors.steelSecondary }]}>{disp.disposition}</Text>
+                    <Text style={typography.body}>{disp.count} ({disp.percentage}%)</Text>
+                  </View>
+                  <View style={{ height: 8, backgroundColor: themeColors.whisperBorder, borderRadius: 4, overflow: 'hidden' }}>
+                    <View style={{ height: '100%', width: `${disp.percentage}%`, backgroundColor: themeColors.newtechGreen }} />
+                  </View>
+                </View>
+              ))}
+            </View>
           </Card>
+
+          <MetricCard
+            label="Cierre en Primera Llamada"
+            value={`${operationMetrics.management.firstCallResolution.value}%`}
+            trend={operationMetrics.management.firstCallResolution.trend}
+            trendLabel={`${Math.abs(operationMetrics.management.firstCallResolution.trend)}% vs ayer`}
+          />
         </ScrollView>
+      );
+    }
+
+    if (operationSubTab === 'calidad') {
+      return (
+        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+          <MetricCard
+            label="Satisfacción"
+            value={`${operationMetrics.quality.satisfaction.rating}/${operationMetrics.quality.satisfaction.maxRating}`}
+            trend={operationMetrics.quality.satisfaction.trend}
+            trendLabel={`${Math.abs(operationMetrics.quality.satisfaction.trend)}% vs ayer`}
+          />
+        </ScrollView>
+      );
+    }
+  };
+
+  const renderIndicadores = () => {
+    if (infoType === 'operation' && 'calls' in metrics) {
+      return (
+        <View style={{ flex: 1 }}>
+          {renderOperationSubTabs()}
+          {renderOperationContent()}
+        </View>
       );
     }
 

@@ -25,12 +25,22 @@ export interface ComplianceMetrics {
 }
 
 export interface OperationMetrics {
-  healthStatus: 'Healthy' | 'At Risk' | 'Critical';
-  systemUptime: number;
-  performanceScore: number;
-  resourceUsage: number;
-  trend: number[];
-  alerts: string[];
+  calls: {
+    totalOutgoing: number;
+    totalAnswered: number;
+    byLanguage: Array<{ language: string; quantity: number; percentage: number }>;
+  };
+  management: {
+    escalationRate: { value: number; trend: number };
+    conversionRate: { value: number; trend: number };
+    contactRate: { value: number; trend: number };
+    averageHandleTime: { minutes: number; seconds: number; trend: number };
+    callsByDisposition: Array<{ disposition: string; count: number; percentage: number }>;
+    firstCallResolution: { value: number; trend: number };
+  };
+  quality: {
+    satisfaction: { rating: number; maxRating: number; trend: number };
+  };
 }
 
 export type Metrics = QAMetrics | EmotionMetrics | ComplianceMetrics | OperationMetrics;
@@ -57,12 +67,29 @@ export const mockMetrics: Record<string, Record<InfoType, Metrics>> = {
       alerts: ['Rule A violated twice', 'Coverage target met'],
     },
     operation: {
-      healthStatus: 'Healthy',
-      systemUptime: 99.8,
-      performanceScore: 92,
-      resourceUsage: 68,
-      trend: [88, 89, 90, 91, 92, 92, 92],
-      alerts: ['CPU usage: 68%', 'Memory: Normal', 'All services running'],
+      calls: {
+        totalOutgoing: 38500,
+        totalAnswered: 28300,
+        byLanguage: [
+          { language: 'Inglés', quantity: 245, percentage: 62 },
+          { language: 'Español', quantity: 150, percentage: 38 },
+        ],
+      },
+      management: {
+        escalationRate: { value: 73.5, trend: 0 },
+        conversionRate: { value: 89.3, trend: 4.3 },
+        contactRate: { value: 73.5, trend: 0 },
+        averageHandleTime: { minutes: 4, seconds: 45, trend: 4.3 },
+        callsByDisposition: [
+          { disposition: 'Contacto efectivo', count: 180, percentage: 45 },
+          { disposition: 'Contacto no efectivo', count: 128, percentage: 32 },
+          { disposition: 'No contacto', count: 92, percentage: 23 },
+        ],
+        firstCallResolution: { value: 89.5, trend: 0 },
+      },
+      quality: {
+        satisfaction: { rating: 4.6, maxRating: 5, trend: 2.8 },
+      },
     },
   },
   'loc-mayo': {
@@ -86,12 +113,29 @@ export const mockMetrics: Record<string, Record<InfoType, Metrics>> = {
       alerts: ['All compliance rules met'],
     },
     operation: {
-      healthStatus: 'Healthy',
-      systemUptime: 99.95,
-      performanceScore: 96,
-      resourceUsage: 54,
-      trend: [92, 93, 94, 95, 95, 96, 96],
-      alerts: ['CPU usage: 54%', 'Memory: Excellent', 'All services running optimal'],
+      calls: {
+        totalOutgoing: 52000,
+        totalAnswered: 45600,
+        byLanguage: [
+          { language: 'Inglés', quantity: 380, percentage: 58 },
+          { language: 'Español', quantity: 220, percentage: 42 },
+        ],
+      },
+      management: {
+        escalationRate: { value: 65.2, trend: -2.1 },
+        conversionRate: { value: 92.5, trend: 3.2 },
+        contactRate: { value: 88.9, trend: 1.5 },
+        averageHandleTime: { minutes: 4, seconds: 12, trend: 2.5 },
+        callsByDisposition: [
+          { disposition: 'Contacto efectivo', count: 320, percentage: 52 },
+          { disposition: 'Contacto no efectivo', count: 180, percentage: 29 },
+          { disposition: 'No contacto', count: 115, percentage: 19 },
+        ],
+        firstCallResolution: { value: 91.2, trend: 1.8 },
+      },
+      quality: {
+        satisfaction: { rating: 4.8, maxRating: 5, trend: 3.1 },
+      },
     },
   },
 };
