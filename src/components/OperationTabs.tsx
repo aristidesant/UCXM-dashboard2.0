@@ -25,7 +25,7 @@ export const OperationTabs: React.FC<OperationTabsProps> = ({
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
-      gap: spacing.lg,
+      gap: spacing.xl,
       paddingHorizontal: spacing.lg,
       paddingVertical: 4,
       backgroundColor: themeColors.canvasFrost,
