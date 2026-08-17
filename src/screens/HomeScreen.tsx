@@ -47,11 +47,11 @@ export const HomeScreen: React.FC = () => {
   };
 
   const emotionMetric = {
-    title: 'Emociones',
+    title: 'Tono Gral de Agentes',
     value: aggregatedMetrics.emotion.agentPredominantEmotion === 'professional'
       ? 'Profesional'
       : 'Satisfecho',
-    description: 'Estado del Agente',
+    description: 'Predominante',
   };
 
   const formatHandlingTime = (minutes: number, seconds: number) => {
