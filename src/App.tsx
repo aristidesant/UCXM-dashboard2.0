@@ -4,7 +4,7 @@ import { Home, BarChart3, Briefcase, Settings, TrendingUp } from 'lucide-react';
 import { PlatformProvider } from './context/PlatformContext';
 import { AppProvider } from './context/AppContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import { PlatformToggle, TabBar, BottomNavBar, DeviceFrame, StatusBar, BackgroundLayer } from './components';
+import { PlatformToggle, TabBar, BottomNavBar, DeviceFrame, StatusBar } from './components';
 import {
   DashboardsScreen,
   CampaignDashboardScreen,
@@ -206,16 +206,13 @@ const AppContent: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <>
-      <BackgroundLayer />
-      <PlatformProvider>
-        <AuthProvider>
-          <AppProvider>
-            <AppContent />
-          </AppProvider>
-        </AuthProvider>
-      </PlatformProvider>
-    </>
+    <PlatformProvider>
+      <AuthProvider>
+        <AppProvider>
+          <AppContent />
+        </AppProvider>
+      </AuthProvider>
+    </PlatformProvider>
   );
 };
 

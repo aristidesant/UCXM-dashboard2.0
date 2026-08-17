@@ -36,4 +36,3 @@ export { AnalyticsQuickView } from './AnalyticsQuickView';
 export { FilterModal } from './FilterModal';
 export type { FilterValues } from './FilterModal';
 export { OperationalIndicator } from './OperationalIndicator';
-export { BackgroundLayer } from './BackgroundLayer';
