@@ -29,6 +29,7 @@ import {
   EmotionMetricsPanel,
   ComplianceMetricsPanel,
   BusinessInsightsPanel,
+  ResponsiveContainer,
 } from '../components';
 import { CallsListScreen } from './CallsListScreen';
 import { mockDashboards } from '../data/mockDashboards';
@@ -518,7 +519,8 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
         />
       )}
 
-      <View style={styles.contentWrapper}>
+      <ResponsiveContainer>
+        <View style={styles.contentWrapper}>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <TouchableOpacity
@@ -579,7 +581,8 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
             />
           </View>
         )}
-      </View>
+        </View>
+      </ResponsiveContainer>
     </View>
   );
 };
