@@ -149,23 +149,19 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
     >
       {/* Agent Emotion */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Emoción del Agente</Text>
+        <Text style={styles.sectionTitle}>Sentimiento del Agente</Text>
         <View style={styles.emotionCard}>
-          <Text style={styles.emotionLabel}>Emoción Predominante</Text>
+          <Text style={styles.emotionLabel}>Sentimiento</Text>
           <Text style={styles.emotionValue}>{metrics.agentPredominantEmotion}</Text>
-          <Text style={styles.confidenceLabel}>Confianza de Predicción:</Text>
-          <Text style={styles.confidenceValue}>{metrics.agentConfidenceScore}%</Text>
         </View>
       </View>
 
       {/* Client Emotion */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Emoción del Cliente</Text>
+        <Text style={styles.sectionTitle}>Sentimiento del Cliente</Text>
         <View style={styles.emotionCard}>
-          <Text style={styles.emotionLabel}>Emoción Predominante</Text>
+          <Text style={styles.emotionLabel}>Sentimiento</Text>
           <Text style={styles.emotionValue}>{metrics.clientPredominantEmotion}</Text>
-          <Text style={styles.confidenceLabel}>Confianza de Predicción:</Text>
-          <Text style={styles.confidenceValue}>{metrics.clientConfidenceScore}%</Text>
         </View>
       </View>
 
