@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ViewStyle, ScrollView } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { usePlatform } from '../hooks/usePlatform';
 import { colors } from '../design';
 import { useTheme } from '../context/ThemeContext';
@@ -41,14 +41,19 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
   });
 
   return (
-    <ScrollView
-      style={{ flex: 1, backgroundColor: themeColors.bgSecondary }}
-      contentContainerStyle={{ alignItems: 'center', paddingTop: 40, paddingBottom: 100, paddingHorizontal: 20 }}
-      showsVerticalScrollIndicator={true}
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: themeColors.bgSecondary,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+      }}
     >
       <View style={styles.deviceBezel}>
         <View style={styles.screenContent}>{children}</View>
       </View>
-    </ScrollView>
+    </View>
   );
 };
