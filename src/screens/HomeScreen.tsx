@@ -43,10 +43,12 @@ export const HomeScreen: React.FC = () => {
     chartColumn: {
       flex: 1,
       minWidth: isDesktop ? '50%' : '100%',
+      alignSelf: 'stretch',
     } as ViewStyle,
     analyticsColumn: {
       flex: 1,
       minWidth: isDesktop ? '50%' : '100%',
+      alignSelf: 'stretch',
     } as ViewStyle,
   });
 
