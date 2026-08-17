@@ -70,7 +70,7 @@ export const DataVisualizationDashboard: React.FC = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-slate-950' : 'bg-slate-50'} p-8`}>
+    <div className={`flex flex-col min-h-screen overflow-y-auto ${isDark ? 'bg-slate-950' : 'bg-slate-50'} p-8`}>
       {/* Header */}
       <div className="mb-12">
         <h1 className={`text-5xl font-bold mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
