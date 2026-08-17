@@ -1,11 +1,12 @@
 // src/components/ContactList.tsx
 
-import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
-import { colors, typography, spacing, borderRadius } from '../design';
+import React, { useState, useMemo } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, ScrollView, ViewStyle, TextStyle } from 'react-native';
+import { colors, typography, spacing, borderRadius, fontSize } from '../design';
 import { Contact } from '../data/mockContacts';
 import { Card } from './Card';
 import { useTheme } from '../context/ThemeContext';
+import { ContactListFilter } from './ContactListFilter';
 
 interface ContactListProps {
   contacts: Contact[];
@@ -20,10 +21,41 @@ export const ContactList: React.FC<ContactListProps> = ({
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
 
+  // Get unique lists from contacts
+  const availableLists = useMemo(() => {
+    const lists = new Set(contacts.map((c) => c.listName));
+    return Array.from(lists).sort();
+  }, [contacts]);
+
+  // State for selected lists
+  const [selectedLists, setSelectedLists] = useState<string[]>(availableLists);
+
+  // Handle list selection toggle
+  const handleListSelect = (listName: string) => {
+    setSelectedLists((prev) =>
+      prev.includes(listName)
+        ? prev.filter((l) => l !== listName)
+        : [...prev, listName]
+    );
+  };
+
+  // Filter contacts based on selected lists
+  const filteredContacts = useMemo(() => {
+    if (selectedLists.length === 0) return [];
+    return contacts.filter((c) => selectedLists.includes(c.listName));
+  }, [contacts, selectedLists]);
+
   const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    } as ViewStyle,
+    scrollContent: {
+      paddingBottom: spacing.lg,
+    } as ViewStyle,
     listContainer: {
       gap: spacing.sm,
-    },
+      paddingHorizontal: spacing.lg,
+    } as ViewStyle,
     contactItem: {
       padding: spacing.md,
       borderRadius: borderRadius.md,
@@ -31,25 +63,37 @@ export const ContactList: React.FC<ContactListProps> = ({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-    },
+    } as ViewStyle,
     contactInfo: {
       flex: 1,
-    },
+    } as ViewStyle,
     contactName: {
       ...typography.body,
       color: themeColors.darkGray,
       fontWeight: '600',
       marginBottom: spacing.xs,
-    },
+    } as TextStyle,
     contactAction: {
       ...typography.caption,
       color: themeColors.successGreen,
       fontWeight: '600',
-    },
+    } as TextStyle,
     chevron: {
       ...typography.body,
       color: themeColors.mediumGray,
-    },
+    } as TextStyle,
+    emptyState: {
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.lg,
+      textAlign: 'center',
+    } as ViewStyle,
+    emptyStateText: {
+      fontSize: fontSize.sm,
+      fontWeight: '500',
+      color: themeColors.steelSecondary,
+      textAlign: 'center',
+      lineHeight: 18,
+    } as TextStyle,
   });
 
   const renderContact = ({ item }: { item: Contact }) => (
@@ -67,12 +111,32 @@ export const ContactList: React.FC<ContactListProps> = ({
   );
 
   return (
-    <FlatList
-      data={contacts}
-      renderItem={renderContact}
-      keyExtractor={(item) => item.id}
-      scrollEnabled={false}
-      contentContainerStyle={styles.listContainer}
-    />
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.scrollContent}
+      showsVerticalScrollIndicator={false}
+    >
+      <ContactListFilter
+        availableLists={availableLists}
+        selectedLists={selectedLists}
+        onListSelect={handleListSelect}
+      />
+
+      {filteredContacts.length > 0 ? (
+        <FlatList
+          data={filteredContacts}
+          renderItem={renderContact}
+          keyExtractor={(item) => item.id}
+          scrollEnabled={false}
+          contentContainerStyle={styles.listContainer}
+        />
+      ) : (
+        <View style={styles.emptyState}>
+          <Text style={styles.emptyStateText}>
+            No hay contactos en las listas seleccionadas
+          </Text>
+        </View>
+      )}
+    </ScrollView>
   );
 };

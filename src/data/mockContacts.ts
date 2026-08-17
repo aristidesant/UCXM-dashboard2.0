@@ -7,6 +7,7 @@ export interface Contact {
   role?: string;
   status?: string;
   action: string;
+  listName: string;
 }
 
 export const mockContacts: Contact[] = [
@@ -15,47 +16,55 @@ export const mockContacts: Contact[] = [
     name: 'Yamilet Sanchez',
     avatar: '👤',
     action: 'Enviar Dirección Cliente',
+    listName: 'Prospectos',
   },
   {
     id: 'contact-2',
     name: 'Kerlis Sanchez',
     avatar: '👤',
     action: 'Enviar Dirección Cliente',
+    listName: 'Clientes Activos',
   },
   {
     id: 'contact-3',
     name: 'Steve Socorro',
     avatar: '👤',
     action: 'Enviar Dirección Cliente',
+    listName: 'Prospectos',
   },
   {
     id: 'contact-4',
     name: 'Enmanuel Placido',
     avatar: '👤',
     action: 'Enviar Dirección Cliente',
+    listName: 'Clientes Inactivos',
   },
   {
     id: 'contact-5',
     name: 'Elvyn Soriano',
     avatar: '👤',
     action: 'Enviar Dirección Cliente',
+    listName: 'Clientes Activos',
   },
   {
     id: 'contact-6',
     name: 'Elvyn Soriano',
     avatar: '👤',
     action: 'Enviar Dirección Cliente',
+    listName: 'Prospectos',
   },
   {
     id: 'contact-7',
     name: 'Elvyn Soriano',
     avatar: '👤',
     action: 'Llamada finalizo antes de tiempo',
+    listName: 'Clientes Activos',
   },
   {
     id: 'contact-8',
     name: 'Elvyn Soriano',
     avatar: '👤',
     action: 'Llamada finalizo antes de tiempo',
+    listName: 'Clientes Inactivos',
   },
 ];
