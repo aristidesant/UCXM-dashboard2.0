@@ -4,7 +4,7 @@ import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { Card, MetricCard } from './index';
 import type { EmotionMetrics } from '../data/mockMetrics';
-import { getSentimentLevel } from '../utils/homeScreenMetrics';
+import { getSentimentLevel, getEmotionLabel } from '../utils/homeScreenMetrics';
 
 interface EmotionMetricsPanelProps {
   metrics: EmotionMetrics;
@@ -153,7 +153,7 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
         <Text style={styles.sectionTitle}>Sentimiento Predominante del Agente</Text>
         <View style={styles.emotionCard}>
           <Text style={styles.emotionLabel}>Sentimiento</Text>
-          <Text style={styles.emotionValue}>{getSentimentLevel(metrics.agentPredominantEmotion)} - {metrics.agentPredominantEmotion}</Text>
+          <Text style={styles.emotionValue}>{getSentimentLevel(metrics.agentPredominantEmotion)} - {getEmotionLabel(metrics.agentPredominantEmotion)}</Text>
         </View>
       </View>
 
@@ -162,7 +162,7 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
         <Text style={styles.sectionTitle}>Sentimiento Predominante del Cliente</Text>
         <View style={styles.emotionCard}>
           <Text style={styles.emotionLabel}>Sentimiento</Text>
-          <Text style={styles.emotionValue}>{getSentimentLevel(metrics.clientPredominantEmotion)} - {metrics.clientPredominantEmotion}</Text>
+          <Text style={styles.emotionValue}>{getSentimentLevel(metrics.clientPredominantEmotion)} - {getEmotionLabel(metrics.clientPredominantEmotion)}</Text>
         </View>
       </View>
 

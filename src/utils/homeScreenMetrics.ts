@@ -1,5 +1,23 @@
 import type { EmotionMetrics, OperationMetrics, ComplianceMetrics } from '../data/mockMetrics';
 
+export const getEmotionLabel = (emotion: string): string => {
+  const emotionLabels: Record<string, string> = {
+    joy: 'Alegría',
+    satisfaction: 'Satisfacción',
+    professional: 'Profesionalismo',
+    satisfied: 'Satisfecho',
+    positive: 'Positivo',
+    neutral: 'Neutral',
+    negative: 'Negativo',
+    frustrated: 'Frustrado',
+    angry: 'Enojado',
+    empathetic: 'Empatía',
+    polite: 'Amable',
+    casual: 'Casual',
+  };
+  return emotionLabels[emotion] || emotion;
+};
+
 export const getSentimentLevel = (emotion: string): string => {
   const emotionMap: Record<string, string> = {
     professional: 'Muy Positivo',
