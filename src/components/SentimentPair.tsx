@@ -70,13 +70,15 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
       backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.6)',
       borderWidth: 1,
       borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.8)',
+      justifyContent: 'flex-start',
     } as ViewStyle,
     label: {
       fontSize: fontSize.sm,
       fontWeight: '600',
       color: themeColors.steelSecondary,
-      marginBottom: spacing.md,
+      marginBottom: spacing.lg,
       lineHeight: 18,
+      minHeight: 18,
     } as TextStyle,
     sentimentTag: {
       flexDirection: 'row',
@@ -88,6 +90,7 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
       marginBottom: 0,
       alignSelf: 'flex-start',
       backgroundColor: 'transparent',
+      minHeight: 32,
     } as ViewStyle,
     sentimentText: {
       fontSize: fontSize.lg,
@@ -135,7 +138,7 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
         <Text style={styles.title}>Análisis de Sentimiento</Text>
         <View style={styles.grid}>
           <Card style={styles.card}>
-            <Text style={styles.label}>Sentimiento Gral Agente</Text>
+            <Text style={styles.label}>Sentimiento Gral Agentes</Text>
             <View style={styles.sentimentTag}>
               <View
                 style={[styles.sentimentIconWrapper, { className: getAnimationClass(agentLevel) }]}
