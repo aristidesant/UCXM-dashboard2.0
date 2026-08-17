@@ -80,67 +80,60 @@ export const AnalysisTypeSelector: React.FC<AnalysisSelectorProps> = ({
 
   const styles = StyleSheet.create({
     container: {
+      flex: 1,
       backgroundColor: themeColors.canvasFrost,
+      padding: spacing.lg,
     } as ViewStyle,
-    scrollContent: {
-      paddingHorizontal: spacing.lg,
-      paddingVertical: spacing.md,
+    grid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
       gap: spacing.md,
+      justifyContent: 'space-between',
     } as ViewStyle,
     card: {
+      width: '48%',
       backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
       borderRadius: borderRadius.lg,
       borderWidth: 1,
       borderColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
-      paddingHorizontal: spacing.lg,
-      paddingVertical: spacing.lg,
-      marginBottom: spacing.sm,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+      padding: spacing.lg,
+      justifyContent: 'center',
       alignItems: 'center',
+      aspectRatio: 1,
     } as ViewStyle,
     cardContent: {
-      flex: 1,
-      marginRight: spacing.lg,
+      alignItems: 'center',
+      width: '100%',
     } as ViewStyle,
     cardLabel: {
-      fontSize: 18,
+      fontSize: 16,
       fontWeight: '700',
       color: themeColors.inkPrimary,
+      marginTop: spacing.md,
       marginBottom: spacing.xs,
-      lineHeight: 26,
+      textAlign: 'center',
+      lineHeight: 22,
     } as TextStyle,
     cardDescription: {
-      fontSize: 14,
+      fontSize: 12,
       fontWeight: '400',
       color: themeColors.steelSecondary,
-      lineHeight: 20,
+      textAlign: 'center',
+      lineHeight: 16,
     } as TextStyle,
     iconContainer: {
-      width: 56,
-      height: 56,
+      width: 48,
+      height: 48,
       borderRadius: borderRadius.md,
       justifyContent: 'center',
       alignItems: 'center',
-      marginRight: spacing.md,
       backgroundColor: isDark ? `rgba(255, 255, 255, 0.05)` : `rgba(0, 0, 0, 0.02)`,
-    } as ViewStyle,
-    leftContent: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      flex: 1,
-    } as ViewStyle,
-    chevron: {
-      opacity: 0.4,
     } as ViewStyle,
   });
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
+      <View style={styles.grid}>
         {analysisTypes.map((item) => (
           <TouchableOpacity
             key={item.id}
@@ -148,19 +141,14 @@ export const AnalysisTypeSelector: React.FC<AnalysisSelectorProps> = ({
             onPress={() => onSelectAnalysis(item.id)}
             activeOpacity={0.7}
           >
-            <View style={styles.leftContent}>
-              <View style={styles.iconContainer}>{item.icon}</View>
-              <View style={styles.cardContent}>
-                <Text style={styles.cardLabel}>{item.label}</Text>
-                <Text style={styles.cardDescription}>{item.description}</Text>
-              </View>
-            </View>
-            <View style={styles.chevron}>
-              <ChevronRight size={24} color={themeColors.steelSecondary} />
+            <View style={styles.iconContainer}>{item.icon}</View>
+            <View style={styles.cardContent}>
+              <Text style={styles.cardLabel}>{item.label}</Text>
+              <Text style={styles.cardDescription}>{item.description}</Text>
             </View>
           </TouchableOpacity>
         ))}
-      </ScrollView>
+      </View>
     </View>
   );
 };
