@@ -54,9 +54,8 @@ const AppContent: React.FC = () => {
 
   const navItems = [
     { id: 'kpi', icon: <Home size={24} color={currentScreen === 'kpi' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
-    { id: 'dashboards', icon: <BarChart3 size={24} color={currentScreen === 'dashboards' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
+    { id: 'dashboards', icon: <Briefcase size={24} color={currentScreen === 'dashboards' || currentScreen === 'campaign' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
     { id: 'analytics', icon: <TrendingUp size={24} color={currentScreen === 'analytics' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
-    { id: 'campaign', icon: <Briefcase size={24} color={currentScreen === 'campaign' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
     { id: 'settings', icon: <Settings size={24} color={currentScreen === 'settings' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
   ];
 
@@ -149,9 +148,8 @@ const AppContent: React.FC = () => {
             onSelectScreen={(screen) => setCurrentScreen(screen as Screen)}
             tabs={[
               { id: 'kpi', label: 'Home', icon: '🏠' },
-              { id: 'dashboards', label: 'Dashboards', icon: '📈' },
+              { id: 'dashboards', label: 'Campaigns', icon: '💼' },
               { id: 'analytics', label: 'Analytics', icon: '📊' },
-              { id: 'campaign', label: 'Campaign', icon: '✓' },
               { id: 'settings', label: 'Settings', icon: '⚙️' },
             ]}
           />
