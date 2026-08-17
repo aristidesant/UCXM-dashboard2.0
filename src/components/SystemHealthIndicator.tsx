@@ -106,8 +106,12 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     } as TextStyle,
     metricsGrid: {
       gap: spacing.md,
+      flexDirection: 'row',
+      flexWrap: 'wrap',
     } as ViewStyle,
     metricCard: {
+      flex: 1,
+      minWidth: 200,
       backgroundColor: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.15)',
       borderRadius: borderRadius.sm,
       padding: spacing.md,
