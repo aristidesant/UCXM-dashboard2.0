@@ -230,7 +230,7 @@ export const App: React.FC = () => {
           zIndex: 0,
         }}
       />
-      <div style={{ position: 'relative', zIndex: 1 }}>
+      <div style={{ position: 'relative', zIndex: 1, backgroundColor: 'transparent', width: '100%', height: '100%' }}>
         <PlatformProvider>
           <AuthProvider>
             <AppProvider>
