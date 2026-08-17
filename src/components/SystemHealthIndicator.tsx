@@ -37,15 +37,6 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
       minWidth: '48%',
       marginBottom: spacing.lg,
     } as ViewStyle,
-    title: {
-      fontSize: 12,
-      fontWeight: '600',
-      color: themeColors.steelSecondary,
-      marginBottom: spacing.md,
-      textTransform: 'uppercase',
-      letterSpacing: 0.5,
-      lineHeight: 18,
-    } as TextStyle,
     card: {
       backgroundColor: variantColors[variant],
       borderRadius: borderRadius.md,
@@ -60,13 +51,14 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
       shadowRadius: 12,
       elevation: 4,
     } as ViewStyle,
-    label: {
+    title: {
       fontSize: 12,
       fontWeight: '600',
       color: themeColors.mutedSlate,
       marginBottom: spacing.md,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
       lineHeight: 18,
-      letterSpacing: 0.06,
     } as TextStyle,
     valueContainer: {
       flexDirection: 'row',
@@ -90,9 +82,8 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>System Health</Text>
       <Card style={styles.card}>
-        <Text style={styles.label}>{level}</Text>
+        <Text style={styles.title}>System Health</Text>
         <View style={styles.valueContainer}>
           <Text style={styles.value}>{score}</Text>
           <Text style={styles.suffix}>%</Text>
