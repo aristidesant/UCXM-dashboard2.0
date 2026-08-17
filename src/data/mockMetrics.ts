@@ -208,6 +208,14 @@ export const mockMetrics: Record<string, Record<InfoType, Metrics>> = {
   },
   'loc-mayo': {
     qa: {
+      effectiveContacts: 17,
+      ineffectiveContacts: 3,
+      effectivePercentage: 85,
+      ecn: { name: 'Error crítico de negocio', value: 88, threshold: 90, status: 'warning' },
+      enc: { name: 'Error no crítico', value: 84, threshold: 85, status: 'warning' },
+      ecc: { name: 'Error crítico de cumplimiento', value: 98, threshold: 100, status: 'ok' },
+      ecuf: { name: 'Error crítico usuario final', value: 96, threshold: 98, status: 'ok' },
+      // Legacy for backward compatibility
       contactPercentage: 85,
       voiceMailboxPercentage: 5,
       totalAnalyzed: 20,

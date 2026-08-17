@@ -101,7 +101,7 @@ export const QAMetricsPanel: React.FC<QAMetricsPanelProps> = ({ metrics }) => {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Métricas de Errores</Text>
         <View style={styles.metricsGrid}>
-          {[metrics.ecn, metrics.enc, metrics.ecc, metrics.ecuf].map((error) => (
+          {[metrics.ecn, metrics.enc, metrics.ecc, metrics.ecuf].filter(Boolean).map((error) => (
             <View key={error.name} style={styles.metricColumn}>
               <MetricCard
                 label={error.name}
