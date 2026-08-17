@@ -8,13 +8,13 @@ import {
   ViewStyle,
   TextStyle,
   FlatList,
+  CheckBox,
 } from 'react-native';
 import { ChevronLeft } from 'lucide-react';
 import { colors, spacing, typography } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { usePlatform } from '../hooks/usePlatform';
-import { Call, getCallsForCampaign, getAgentsForCampaign, getContactsForCampaign } from '../data/mockCalls';
-import { FilterButton } from '../components';
+import { Call, getCallsForCampaign, getContactListsForCampaign } from '../data/mockCalls';
 
 interface CallsListScreenProps {
   campaignId: string;
@@ -35,20 +35,35 @@ export const CallsListScreen: React.FC<CallsListScreenProps> = ({
   const { platform } = usePlatform();
   const isMobile = platform === 'mobile';
 
-  const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
-  const [selectedContact, setSelectedContact] = useState<string | null>(null);
+  const [selectedContactLists, setSelectedContactLists] = useState<string[]>([]);
+  const [outcomeFilter, setOutcomeFilter] = useState<'todos' | 'efectivo' | 'no_efectivo'>('todos');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // Get available agents and contacts
-  const agents = useMemo(() => getAgentsForCampaign(campaignId), [campaignId]);
-  const contacts = useMemo(() => getContactsForCampaign(campaignId), [campaignId]);
+  // Get available contact lists
+  const contactLists = useMemo(() => getContactListsForCampaign(campaignId), [campaignId]);
 
-  // Get filtered calls
+  // Get all campaign calls
+  const campaignCalls = useMemo(() => getCallsForCampaign(campaignId), [campaignId]);
+
+  // Get filtered calls based on contact lists and outcome
   const allCalls = useMemo(() => {
-    let calls = getCallsForCampaign(campaignId, selectedAgent || undefined, selectedContact || undefined);
-    return calls;
-  }, [campaignId, selectedAgent, selectedContact]);
+    let filtered = campaignCalls;
+
+    // Filter by selected contact lists (if any are selected)
+    if (selectedContactLists.length > 0) {
+      filtered = filtered.filter((call) => selectedContactLists.includes(call.contactList));
+    }
+
+    // Filter by outcome
+    if (outcomeFilter === 'efectivo') {
+      filtered = filtered.filter((call) => call.outcome === 'efectivo');
+    } else if (outcomeFilter === 'no_efectivo') {
+      filtered = filtered.filter((call) => call.outcome === 'no_efectivo');
+    }
+
+    return filtered;
+  }, [campaignCalls, selectedContactLists, outcomeFilter]);
 
   // Pagination
   const totalPages = Math.ceil(allCalls.length / itemsPerPage);
@@ -97,32 +112,67 @@ export const CallsListScreen: React.FC<CallsListScreenProps> = ({
       borderBottomColor: themeColors.whisperBorder,
       backgroundColor: themeColors.pureSurface,
     } as ViewStyle,
-    filterRow: {
-      flexDirection: 'row',
-      gap: spacing.md,
-    } as ViewStyle,
     filterSection: {
-      flex: 1,
+      gap: spacing.sm,
+      marginBottom: spacing.md,
     } as ViewStyle,
     filterLabel: {
       ...typography.micro,
       color: themeColors.mutedSlate,
-      marginBottom: spacing.sm,
       textTransform: 'uppercase',
+      fontWeight: '600',
     } as TextStyle,
-    filterDropdown: {
+    contactListsSection: {
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
       borderRadius: 8,
-      paddingHorizontal: spacing.md,
-      paddingVertical: spacing.sm,
+      padding: spacing.md,
       backgroundColor: themeColors.pureSurface,
-      minHeight: 40,
+      gap: spacing.sm,
+    } as ViewStyle,
+    contactListsContainer: {
+      gap: spacing.sm,
+    } as ViewStyle,
+    contactListItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+      borderRadius: 6,
+      backgroundColor: themeColors.canvasFrost,
+    } as ViewStyle,
+    contactListItemText: {
+      ...typography.body,
+      color: themeColors.inkPrimary,
+      marginLeft: spacing.sm,
+      flex: 1,
+    } as TextStyle,
+    outcomeButtonsContainer: {
+      flexDirection: 'row',
+      gap: spacing.sm,
+    } as ViewStyle,
+    outcomeButton: {
+      flex: 1,
+      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.md,
+      borderRadius: 6,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+      backgroundColor: themeColors.pureSurface,
+      alignItems: 'center',
       justifyContent: 'center',
     } as ViewStyle,
-    filterDropdownText: {
-      ...typography.body,
-      color: selectedAgent || selectedContact ? themeColors.inkPrimary : themeColors.mutedSlate,
+    outcomeButtonActive: {
+      backgroundColor: themeColors.newtechGreen,
+      borderColor: themeColors.newtechGreen,
+    } as ViewStyle,
+    outcomeButtonText: {
+      ...typography.micro,
+      color: themeColors.mutedSlate,
+      fontWeight: '600',
+    } as TextStyle,
+    outcomeButtonTextActive: {
+      color: '#FFFFFF',
     } as TextStyle,
     contentContainer: {
       flex: 1,
@@ -237,13 +287,17 @@ export const CallsListScreen: React.FC<CallsListScreenProps> = ({
     } as TextStyle,
   });
 
-  const handleAgentSelect = (agent: string) => {
-    setSelectedAgent(selectedAgent === agent ? null : agent);
+  const handleContactListToggle = (contactList: string) => {
+    setSelectedContactLists((prev) =>
+      prev.includes(contactList)
+        ? prev.filter((item) => item !== contactList)
+        : [...prev, contactList]
+    );
     setCurrentPage(1);
   };
 
-  const handleContactSelect = (contact: string) => {
-    setSelectedContact(selectedContact === contact ? null : contact);
+  const handleOutcomeFilter = (outcome: 'todos' | 'efectivo' | 'no_efectivo') => {
+    setOutcomeFilter(outcome);
     setCurrentPage(1);
   };
 
@@ -310,46 +364,61 @@ export const CallsListScreen: React.FC<CallsListScreenProps> = ({
       </View>
 
       {/* Filters */}
-      <View style={styles.filtersContainer}>
-        <View style={styles.filterRow}>
-          <View style={styles.filterSection}>
-            <Text style={styles.filterLabel}>Agente</Text>
+      <ScrollView style={styles.filtersContainer}>
+        {/* Contact Lists Filter */}
+        <View style={styles.filterSection}>
+          <Text style={styles.filterLabel}>Listas de Contacto</Text>
+          <View style={styles.contactListsSection}>
+            <View style={styles.contactListsContainer}>
+              {contactLists.map((contactList) => (
+                <View key={contactList} style={styles.contactListItem}>
+                  <CheckBox
+                    value={selectedContactLists.includes(contactList)}
+                    onValueChange={() => handleContactListToggle(contactList)}
+                    tintColor={themeColors.newtechGreen}
+                    onCheckColor={themeColors.newtechGreen}
+                  />
+                  <Text style={styles.contactListItemText}>{contactList}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        </View>
+
+        {/* Outcome Filter */}
+        <View style={styles.filterSection}>
+          <Text style={styles.filterLabel}>Resultado de Llamada</Text>
+          <View style={styles.outcomeButtonsContainer}>
             <TouchableOpacity
-              style={styles.filterDropdown}
-              onPress={() => {
-                // In a real app, this would open a picker or dropdown
-                // For now, we'll cycle through agents
-                const currentIndex = agents.indexOf(selectedAgent || '');
-                const nextIndex = (currentIndex + 1) % (agents.length + 1);
-                setSelectedAgent(nextIndex === agents.length ? null : agents[nextIndex]);
-                setCurrentPage(1);
-              }}
+              style={[styles.outcomeButton, outcomeFilter === 'todos' && styles.outcomeButtonActive]}
+              onPress={() => handleOutcomeFilter('todos')}
+              activeOpacity={0.7}
             >
-              <Text style={styles.filterDropdownText}>
-                {selectedAgent || 'Todos'}
+              <Text style={[styles.outcomeButtonText, outcomeFilter === 'todos' && styles.outcomeButtonTextActive]}>
+                Todos
               </Text>
             </TouchableOpacity>
-          </View>
-
-          <View style={styles.filterSection}>
-            <Text style={styles.filterLabel}>Contacto</Text>
             <TouchableOpacity
-              style={styles.filterDropdown}
-              onPress={() => {
-                // In a real app, this would open a picker or dropdown
-                const currentIndex = contacts.indexOf(selectedContact || '');
-                const nextIndex = (currentIndex + 1) % (contacts.length + 1);
-                setSelectedContact(nextIndex === contacts.length ? null : contacts[nextIndex]);
-                setCurrentPage(1);
-              }}
+              style={[styles.outcomeButton, outcomeFilter === 'efectivo' && styles.outcomeButtonActive]}
+              onPress={() => handleOutcomeFilter('efectivo')}
+              activeOpacity={0.7}
             >
-              <Text style={styles.filterDropdownText}>
-                {selectedContact || 'Todos'}
+              <Text style={[styles.outcomeButtonText, outcomeFilter === 'efectivo' && styles.outcomeButtonTextActive]}>
+                Efectivo
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.outcomeButton, outcomeFilter === 'no_efectivo' && styles.outcomeButtonActive]}
+              onPress={() => handleOutcomeFilter('no_efectivo')}
+              activeOpacity={0.7}
+            >
+              <Text style={[styles.outcomeButtonText, outcomeFilter === 'no_efectivo' && styles.outcomeButtonTextActive]}>
+                No Efectivo
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </ScrollView>
 
       {/* Calls List */}
       <View style={styles.contentContainer}>

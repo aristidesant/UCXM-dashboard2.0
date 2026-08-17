@@ -20,6 +20,8 @@ export interface Call {
   aiSummary: string; // AI-generated call summary
   features: string[]; // Features used: ["Localizacion", ...]
   ola: number; // SLA metric
+  contactList: string; // Contact list group: "Localizacion", "Test Data Debito V2", etc.
+  outcome: 'efectivo' | 'no_efectivo'; // Call result: successful or not
 }
 
 export const mockCalls: Record<string, Call[]> = {
@@ -43,6 +45,8 @@ export const mockCalls: Record<string, Call[]> = {
       aiSummary: 'El cliente confirmó la dirección de residencia y la referencia para la entrega de la tarjeta, completando la gestión.',
       features: ['Localizacion'],
       ola: 1,
+      contactList: 'Localizacion',
+      outcome: 'efectivo',
     },
     {
       id: 'call-loc1-002',
@@ -63,6 +67,8 @@ export const mockCalls: Record<string, Call[]> = {
       aiSummary: 'Se proporcionó información sobre la cuenta del cliente y se resolvieron sus dudas sobre el estado.',
       features: [],
       ola: 1,
+      contactList: 'Test Data Debito V2',
+      outcome: 'efectivo',
     },
     {
       id: 'call-loc1-003',
@@ -83,6 +89,8 @@ export const mockCalls: Record<string, Call[]> = {
       aiSummary: 'Se agendó exitosamente una cita para atención al cliente en la sucursal local.',
       features: ['Localizacion'],
       ola: 2,
+      contactList: 'Localizacion',
+      outcome: 'efectivo',
     },
     {
       id: 'call-loc1-004',
@@ -103,6 +111,8 @@ export const mockCalls: Record<string, Call[]> = {
       aiSummary: 'Llamada no contestada. Cliente no respondió durante el tiempo de espera.',
       features: [],
       ola: 3,
+      contactList: 'Test Localizacion Debito 001',
+      outcome: 'no_efectivo',
     },
     {
       id: 'call-loc1-005',
@@ -123,6 +133,8 @@ export const mockCalls: Record<string, Call[]> = {
       aiSummary: 'Se identificó y resolvió un problema de transacción en la tarjeta de crédito del cliente.',
       features: [],
       ola: 1,
+      contactList: 'Test Data Debito V2',
+      outcome: 'efectivo',
     },
     {
       id: 'call-loc1-006',
@@ -143,6 +155,8 @@ export const mockCalls: Record<string, Call[]> = {
       aiSummary: 'Customer requested and was approved for a new credit card product. Application process initiated.',
       features: ['Localizacion'],
       ola: 1,
+      contactList: 'Localizacion',
+      outcome: 'efectivo',
     },
   ],
   'loc-mayo': [
@@ -165,6 +179,8 @@ export const mockCalls: Record<string, Call[]> = {
       aiSummary: 'Se explicaron las tasas de interés vigentes y se ofrecieron opciones de ahorro.',
       features: [],
       ola: 1,
+      contactList: 'Test Localizacion Debito 001',
+      outcome: 'efectivo',
     },
     {
       id: 'call-mayo-002',
@@ -185,6 +201,8 @@ export const mockCalls: Record<string, Call[]> = {
       aiSummary: 'Se solicitó y acordó envío de documentación requerida para completar el proceso.',
       features: ['Localizacion'],
       ola: 2,
+      contactList: 'Localizacion',
+      outcome: 'efectivo',
     },
     {
       id: 'call-mayo-003',
@@ -205,6 +223,8 @@ export const mockCalls: Record<string, Call[]> = {
       aiSummary: 'Llamada perdida. Cliente no estaba disponible en el momento.',
       features: [],
       ola: 3,
+      contactList: 'Test Localizacion Debito 001',
+      outcome: 'no_efectivo',
     },
   ],
 };
@@ -246,4 +266,13 @@ export const getContactsForCampaign = (campaignId: string): string[] => {
   const calls = mockCalls[campaignId] || [];
   const contacts = new Set(calls.map((call) => call.contactName));
   return Array.from(contacts).sort();
+};
+
+/**
+ * Get unique contact lists for a campaign
+ */
+export const getContactListsForCampaign = (campaignId: string): string[] => {
+  const calls = mockCalls[campaignId] || [];
+  const contactLists = new Set(calls.map((call) => call.contactList));
+  return Array.from(contactLists).sort();
 };
