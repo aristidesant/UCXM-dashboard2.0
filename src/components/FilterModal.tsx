@@ -25,6 +25,7 @@ interface FilterModalProps {
 export interface FilterValues {
   campaignType: string[];
   campaignStatus: string[];
+  disposition: string[];
   startDate: string;
   endDate: string;
 }
@@ -48,12 +49,14 @@ export const FilterModal: React.FC<FilterModalProps> = ({
   const [filters, setFilters] = useState<FilterValues>({
     campaignType: [],
     campaignStatus: [],
+    disposition: [],
     startDate: '',
     endDate: '',
   });
 
   const campaignTypes = ['Localización', 'Evaluación de Clientes', 'Retención', 'Satisfacción'];
   const campaignStatuses = ['Activa', 'Pausada', 'Completada', 'Planeada'];
+  const dispositions = ['Contacto Efectivo', 'Contacto No Efectivo', 'Todos'];
 
   const handleToggleCampaignType = (type: string) => {
     setFilters((prev) => ({
@@ -70,6 +73,15 @@ export const FilterModal: React.FC<FilterModalProps> = ({
       campaignStatus: prev.campaignStatus.includes(status)
         ? prev.campaignStatus.filter((s) => s !== status)
         : [...prev.campaignStatus, status],
+    }));
+  };
+
+  const handleToggleDisposition = (disp: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      disposition: prev.disposition.includes(disp)
+        ? prev.disposition.filter((d) => d !== disp)
+        : [...prev.disposition, disp],
     }));
   };
 
@@ -305,6 +317,43 @@ export const FilterModal: React.FC<FilterModalProps> = ({
                       ]}
                     >
                       {status}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+
+            {/* Disposition Filter */}
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Disposición</Text>
+              <View style={styles.optionsContainer}>
+                {dispositions.map((disp) => (
+                  <TouchableOpacity
+                    key={disp}
+                    onPress={() => handleToggleDisposition(disp)}
+                    style={[
+                      styles.optionButton,
+                      filters.disposition.includes(disp) && styles.optionButtonSelected,
+                    ]}
+                    activeOpacity={0.7}
+                  >
+                    <View
+                      style={[
+                        styles.checkbox,
+                        filters.disposition.includes(disp) && styles.checkboxChecked,
+                      ]}
+                    >
+                      {filters.disposition.includes(disp) && (
+                        <Text style={styles.checkmark}>✓</Text>
+                      )}
+                    </View>
+                    <Text
+                      style={[
+                        styles.optionLabel,
+                        filters.disposition.includes(disp) && styles.optionLabelSelected,
+                      ]}
+                    >
+                      {disp}
                     </Text>
                   </TouchableOpacity>
                 ))}
