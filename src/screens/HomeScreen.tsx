@@ -65,9 +65,7 @@ export const HomeScreen: React.FC = () => {
 
   const emotionMetric = {
     title: 'Tono Gral de Agentes',
-    value: aggregatedMetrics.emotion.agentPredominantEmotion === 'professional'
-      ? 'Profesional'
-      : 'Satisfecho',
+    value: 'Profesional',
     description: 'Predominante',
   };
 
