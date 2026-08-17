@@ -32,14 +32,14 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
       borderWidth: 1,
       borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
       padding: bezelSize - 1, // Adjust for border width
-      overflow: 'hidden',
+      overflow: 'visible',
       elevation: 20,
     } as ViewStyle,
     screenContent: {
       flex: 1,
       borderRadius: Math.max(0, dimensions.borderRadius - bezelSize),
       backgroundColor: 'transparent',
-      overflow: 'hidden',
+      overflow: 'visible',
       margin: 0,
     } as ViewStyle,
   });
