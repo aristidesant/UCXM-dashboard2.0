@@ -70,8 +70,6 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     container: {
       marginBottom: spacing.lg,
       width: '100%',
-      maxWidth: isDesktop ? '90%' : '100%',
-      alignSelf: 'center',
     } as ViewStyle,
     card: {
       backgroundColor: themeColors.successBg,

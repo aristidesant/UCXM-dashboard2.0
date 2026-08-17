@@ -25,7 +25,7 @@ export const ResponsiveContainer: React.FC<ResponsiveContainerProps> = ({
   const containerStyle: ViewStyle = {
     flex: 1,
     width: '100%',
-    maxWidth: isDesktop ? maxWidth : '100%',
+    maxWidth: isDesktop ? '90%' : '100%',
     alignSelf: 'center',
     paddingHorizontal: padding ? (isDesktop ? spacing.xl : spacing.lg) : 0,
     backgroundColor: themeColors.canvasFrost,
