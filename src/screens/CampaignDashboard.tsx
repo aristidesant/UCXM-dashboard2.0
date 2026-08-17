@@ -68,6 +68,15 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
   const campaignCalls = mockCalls[currentDashboard as keyof typeof mockCalls] || [];
   const totalCalls = campaignCalls.length;
 
+  // Analysis type display labels
+  const analysisTypeLabels: Record<InfoType, string> = {
+    operation: 'Operacional',
+    qa: 'QA - Control de Calidad',
+    emotion: 'Emoción y Sentimiento',
+    compliance: 'Cumplimiento',
+    insights: 'Business Insights',
+  };
+
   if (!metrics || !dashboard) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -105,13 +114,33 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
       justifyContent: 'center',
       alignItems: 'center',
     } as ViewStyle,
+    titleContainer: {
+      flex: 1,
+      marginRight: spacing.md,
+    } as ViewStyle,
     title: {
       fontSize: 32,
       fontWeight: '700',
       color: themeColors.inkPrimary,
       lineHeight: 40,
       letterSpacing: -0.02,
+      flexWrap: 'wrap',
     },
+    titleLarge: {
+      fontSize: 28,
+      lineHeight: 36,
+    } as TextStyle,
+    titleMedium: {
+      fontSize: 24,
+      lineHeight: 32,
+    } as TextStyle,
+    analysisTypeSubtitle: {
+      fontSize: 14,
+      fontWeight: '500',
+      color: themeColors.steelSecondary,
+      marginTop: spacing.xs,
+      lineHeight: 20,
+    } as TextStyle,
     viewCallsButton: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -379,7 +408,21 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
             >
               <ChevronLeft size={24} color={themeColors.newtechGreen} />
             </TouchableOpacity>
-            <Text style={styles.title}>{dashboard.name}</Text>
+            <View style={styles.titleContainer}>
+              <Text
+                style={[
+                  styles.title,
+                  dashboard.name.length > 20 && styles.titleMedium,
+                  dashboard.name.length > 30 && { fontSize: 20, lineHeight: 28 },
+                ]}
+                numberOfLines={2}
+              >
+                {dashboard.name}
+              </Text>
+              <Text style={styles.analysisTypeSubtitle}>
+                {analysisTypeLabels[infoType]}
+              </Text>
+            </View>
           </View>
         </View>
 
