@@ -563,7 +563,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
             activeOpacity={0.7}
           >
             <Text style={[styles.tabLabel, mainTab === 'detalles' && styles.activeTabLabel]}>
-              Detalles de contacto ({totalCalls})
+              Detalles de contacto
             </Text>
           </TouchableOpacity>
         </View>
