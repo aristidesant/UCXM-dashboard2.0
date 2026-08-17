@@ -27,7 +27,7 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
       width: totalWidth,
       height: totalHeight,
       borderRadius: dimensions.borderRadius,
-      backgroundColor: '#1a1a1a',
+      backgroundColor: 'transparent',
       padding: bezelSize,
       overflow: 'hidden',
       elevation: 20,
@@ -35,7 +35,7 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
     screenContent: {
       flex: 1,
       borderRadius: Math.max(0, dimensions.borderRadius - bezelSize),
-      backgroundColor: themeColors.bgPrimary,
+      backgroundColor: 'transparent',
       overflow: 'hidden',
     } as ViewStyle,
   });
