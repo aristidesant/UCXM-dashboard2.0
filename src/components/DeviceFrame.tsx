@@ -24,12 +24,12 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
 
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      minHeight: '100vh',
       alignItems: 'center',
-      justifyContent: 'flex-start',
       backgroundColor: themeColors.bgSecondary,
-      padding: 20,
-      paddingTop: 40,
+      paddingVertical: 40,
+      paddingHorizontal: 20,
+      overflowY: 'auto' as any,
     } as ViewStyle,
     deviceBezel: {
       width: totalWidth,
@@ -39,6 +39,7 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
       padding: bezelSize,
       overflow: 'hidden',
       elevation: 20,
+      flexShrink: 0,
     } as ViewStyle,
     screenContent: {
       flex: 1,
