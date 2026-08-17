@@ -89,6 +89,8 @@ export const FilterModal: React.FC<FilterModalProps> = ({
       justifyContent: 'flex-end',
     } as ViewStyle,
     modalContent: {
+      flex: 1,
+      justifyContent: 'flex-end',
       paddingHorizontal: isMobile ? spacing.md : 0,
     } as ViewStyle,
     container: {
@@ -99,7 +101,6 @@ export const FilterModal: React.FC<FilterModalProps> = ({
       borderBottomRightRadius: isMobile ? borderRadius.lg : 0,
       maxHeight: isMobile ? screenHeight * 0.65 : screenHeight * 0.85,
       paddingTop: isMobile ? spacing.md : spacing.lg,
-      width: '100%',
     } as ViewStyle,
     header: {
       flexDirection: 'row',
