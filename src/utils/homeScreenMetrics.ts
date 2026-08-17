@@ -2,16 +2,16 @@ import type { EmotionMetrics, OperationMetrics, ComplianceMetrics } from '../dat
 
 export const getSentimentLevel = (emotion: string): string => {
   const emotionMap: Record<string, string> = {
-    professional: 'Very Positive',
-    satisfied: 'Very Positive',
-    positive: 'Positive',
+    professional: 'Muy Positivo',
+    satisfied: 'Muy Positivo',
+    positive: 'Positivo',
     neutral: 'Neutral',
-    negative: 'Negative',
-    frustrated: 'Very Negative',
-    angry: 'Very Negative',
-    empathetic: 'Very Positive',
-    polite: 'Positive',
-    casual: 'Positive',
+    negative: 'Negativo',
+    frustrated: 'Muy Negativo',
+    angry: 'Muy Negativo',
+    empathetic: 'Muy Positivo',
+    polite: 'Positivo',
+    casual: 'Positivo',
   };
   return emotionMap[emotion] || emotion;
 };

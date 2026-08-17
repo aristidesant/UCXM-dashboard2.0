@@ -93,12 +93,15 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
       fontSize: fontSize.sm,
       fontWeight: '700',
       lineHeight: 18,
+      minHeight: 20,
     } as TextStyle,
     percentage: {
       fontSize: fontSize.sm,
       fontWeight: '600',
       color: themeColors.steelSecondary,
       lineHeight: 18,
+      minHeight: 20,
+      marginTop: spacing.sm,
     } as TextStyle,
   });
 
@@ -154,7 +157,7 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
                 {agentLevel}
               </Text>
             </View>
-            <Text style={styles.percentage}>{agentConfidence}% confidence</Text>
+            <Text style={styles.percentage}>{agentConfidence}% confianza</Text>
           </Card>
 
           <Card style={styles.card}>
@@ -172,7 +175,7 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
                 {clientLevel}
               </Text>
             </View>
-            <Text style={styles.percentage}>{clientConfidence}% confidence</Text>
+            <Text style={styles.percentage}>{clientConfidence}% confianza</Text>
           </Card>
         </View>
       </View>

@@ -53,25 +53,27 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     } as TextStyle,
     metricsGrid: {
       flexDirection: 'row',
-      gap: spacing.lg,
-      justifyContent: 'space-around',
+      gap: spacing.xl,
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
     } as ViewStyle,
     metricItem: {
       flex: 1,
-      alignItems: 'center',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
     } as ViewStyle,
     metricLabel: {
       fontSize: fontSize.sm,
       fontWeight: '500',
       color: themeColors.steelSecondary,
       marginBottom: spacing.sm,
-      lineHeight: 18,
+      lineHeight: 16,
     } as TextStyle,
     metricValue: {
-      fontSize: fontSize.xl,
+      fontSize: fontSize.lg,
       fontWeight: '700',
       color: themeColors.newtechGreen,
-      lineHeight: 28,
+      lineHeight: 26,
     } as TextStyle,
   });
 

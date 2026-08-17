@@ -69,12 +69,12 @@ export const WelcomeCard: React.FC<WelcomeCardProps> = ({ userName = 'User' }) =
   return (
     <View style={styles.container}>
       <View style={styles.greeting}>
-        <Text style={styles.greetingText}>Welcome, </Text>
+        <Text style={styles.greetingText}>Bienvenido, </Text>
         <Text style={styles.userName}>{userName}</Text>
       </View>
       <View style={styles.tagContainer}>
         <View style={styles.dot} />
-        <Text style={styles.tagText}>Real time</Text>
+        <Text style={styles.tagText}>Tiempo real</Text>
       </View>
     </View>
   );
