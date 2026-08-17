@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
 import { colors, spacing, borderRadius } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { Card } from './Card';
+import { Badge } from './Badge';
 
 interface SystemHealthIndicatorProps {
   level: string;
@@ -29,6 +30,12 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     success: themeColors.newtechGreen,
     warning: themeColors.warning,
     danger: themeColors.danger,
+  };
+
+  const badgeStatusMap = {
+    success: 'success' as const,
+    warning: 'warning' as const,
+    danger: 'danger' as const,
   };
 
   const styles = StyleSheet.create({
@@ -60,34 +67,13 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
       letterSpacing: 0.5,
       lineHeight: 18,
     } as TextStyle,
-    valueContainer: {
-      flexDirection: 'row',
-      alignItems: 'baseline',
-      gap: spacing.xs,
-    } as ViewStyle,
-    value: {
-      color: variantAccents[variant],
-      fontWeight: '700',
-      fontSize: 32,
-      lineHeight: 40,
-    } as TextStyle,
-    suffix: {
-      fontSize: 15,
-      fontWeight: '400',
-      color: themeColors.steelSecondary,
-      marginBottom: spacing.xs,
-      lineHeight: 22,
-    } as TextStyle,
   });
 
   return (
     <View style={styles.container}>
       <Card style={styles.card}>
         <Text style={styles.title}>System Health</Text>
-        <View style={styles.valueContainer}>
-          <Text style={styles.value}>{score}</Text>
-          <Text style={styles.suffix}>%</Text>
-        </View>
+        <Badge status={badgeStatusMap[variant]} label={level} />
       </Card>
     </View>
   );
