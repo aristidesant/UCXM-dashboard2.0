@@ -205,14 +205,39 @@ const AppContent: React.FC = () => {
 };
 
 export const App: React.FC = () => {
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+
+  const backgroundGradient = isDark
+    ? `radial-gradient(circle at 95% 5%, rgba(38, 211, 102, 0.15) 0%, rgba(11, 15, 20, 0) 25%),
+       radial-gradient(ellipse 900px 700px at 50% 120%, rgba(38, 211, 102, 0.1) 0%, rgba(11, 15, 20, 0) 45%),
+       radial-gradient(ellipse 800px 900px at -20% 105%, rgba(38, 211, 102, 0.1) 0%, rgba(11, 15, 20, 0) 55%)`
+    : `radial-gradient(circle at 95% 5%, rgba(27, 181, 74, 0.1) 0%, rgba(247, 248, 250, 0) 25%),
+       radial-gradient(ellipse 900px 700px at 50% 120%, rgba(27, 181, 74, 0.08) 0%, rgba(247, 248, 250, 0) 45%),
+       radial-gradient(ellipse 800px 900px at -20% 105%, rgba(27, 181, 74, 0.08) 0%, rgba(247, 248, 250, 0) 55%)`;
+
   return (
-    <PlatformProvider>
-      <AuthProvider>
-        <AppProvider>
-          <AppContent />
-        </AppProvider>
-      </AuthProvider>
-    </PlatformProvider>
+    <>
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: backgroundGradient,
+          pointerEvents: 'none',
+          zIndex: -1,
+        }}
+      />
+      <PlatformProvider>
+        <AuthProvider>
+          <AppProvider>
+            <AppContent />
+          </AppProvider>
+        </AuthProvider>
+      </PlatformProvider>
+    </>
   );
 };
 
