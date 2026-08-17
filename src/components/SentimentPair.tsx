@@ -1,9 +1,20 @@
-import React from 'react';
-import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, ViewStyle, TextStyle, Animated } from 'react-native';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { Card } from './Card';
 import { getSentimentLevel, getSentimentColor } from '../utils/homeScreenMetrics';
+import {
+  Heart,
+  SmilePlus,
+  Frown,
+  Meh,
+  ThumbsUp,
+  Briefcase,
+  Handshake,
+  MessageCircle,
+  Zap,
+} from 'lucide-react';
 
 interface SentimentPairProps {
   agentEmotion: string;
@@ -12,19 +23,28 @@ interface SentimentPairProps {
   clientConfidence: number;
 }
 
-const getSentimentIcon = (level: string): string => {
-  const iconMap: Record<string, string> = {
-    'Very Negative': '😢',
-    'Negative': '😐',
-    'Neutral': '😑',
-    'Positive': '🙂',
-    'Very Positive': '😊',
-    'Professional': '💼',
-    'Empathetic': '❤️',
-    'Polite': '👋',
-    'Casual': '💬',
-  };
-  return iconMap[level] || '😐';
+const getSentimentIcon = (
+  level: string,
+  type: 'client' | 'agent'
+): React.ReactNode => {
+  if (type === 'client') {
+    const clientIconMap: Record<string, React.ReactNode> = {
+      'Very Negative': <Frown size={20} />,
+      'Negative': <Meh size={20} />,
+      'Neutral': <Meh size={20} />,
+      'Positive': <SmilePlus size={20} />,
+      'Very Positive': <Heart size={20} />,
+    };
+    return clientIconMap[level] || <Meh size={20} />;
+  } else {
+    const agentIconMap: Record<string, React.ReactNode> = {
+      'Professional': <Briefcase size={20} />,
+      'Empathetic': <Heart size={20} />,
+      'Polite': <Handshake size={20} />,
+      'Casual': <MessageCircle size={20} />,
+    };
+    return agentIconMap[level] || <Briefcase size={20} />;
+  }
 };
 
 export const SentimentPair: React.FC<SentimentPairProps> = ({
@@ -36,6 +56,31 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
   const { effectiveTheme } = useTheme();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
+
+  const [agentScale] = useState(new Animated.Value(1));
+  const [clientScale] = useState(new Animated.Value(1));
+
+  useEffect(() => {
+    const createPulseAnimation = (animatedValue: Animated.Value) => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(animatedValue, {
+            toValue: 1.1,
+            duration: 600,
+            useNativeDriver: true,
+          }),
+          Animated.timing(animatedValue, {
+            toValue: 1,
+            duration: 600,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    };
+
+    createPulseAnimation(agentScale);
+    createPulseAnimation(clientScale);
+  }, [agentScale, clientScale]);
 
   const styles = StyleSheet.create({
     container: {
@@ -80,8 +125,9 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
       alignSelf: 'flex-start',
     } as ViewStyle,
     sentimentIcon: {
-      fontSize: 18,
-    } as TextStyle,
+      justifyContent: 'center',
+      alignItems: 'center',
+    } as ViewStyle,
     sentimentText: {
       fontSize: fontSize.sm,
       fontWeight: '700',
@@ -99,15 +145,15 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
   const clientLevel = getSentimentLevel(clientEmotion);
   const agentColor = getSentimentColor(agentEmotion);
   const clientColor = getSentimentColor(clientEmotion);
-  const agentIcon = getSentimentIcon(agentLevel);
-  const clientIcon = getSentimentIcon(clientLevel);
+  const agentIcon = getSentimentIcon(agentLevel, 'agent');
+  const clientIcon = getSentimentIcon(clientLevel, 'client');
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sentiment Analysis</Text>
       <View style={styles.grid}>
         <Card style={styles.card}>
-          <Text style={styles.label}>Agent Sentiment</Text>
+          <Text style={styles.label}>Agent Tone</Text>
           <View
             style={[
               styles.sentimentTag,
@@ -118,7 +164,16 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
               },
             ]}
           >
-            <Text style={styles.sentimentIcon}>{agentIcon}</Text>
+            <Animated.View
+              style={[
+                styles.sentimentIcon,
+                { transform: [{ scale: agentScale }] },
+              ]}
+            >
+              {React.cloneElement(agentIcon as React.ReactElement, {
+                color: agentColor,
+              })}
+            </Animated.View>
             <Text style={[styles.sentimentText, { color: agentColor }]}>
               {agentLevel}
             </Text>
@@ -138,7 +193,16 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
               },
             ]}
           >
-            <Text style={styles.sentimentIcon}>{clientIcon}</Text>
+            <Animated.View
+              style={[
+                styles.sentimentIcon,
+                { transform: [{ scale: clientScale }] },
+              ]}
+            >
+              {React.cloneElement(clientIcon as React.ReactElement, {
+                color: clientColor,
+              })}
+            </Animated.View>
             <Text style={[styles.sentimentText, { color: clientColor }]}>
               {clientLevel}
             </Text>
