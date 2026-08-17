@@ -44,7 +44,7 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: themeColors.bgSecondary,
+        backgroundColor: 'transparent',
         alignItems: 'center',
         justifyContent: 'center',
         padding: 5,
