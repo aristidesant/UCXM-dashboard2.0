@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Eye, ChevronLeft, Phone } from 'lucide-react';
-import { colors, typography, spacing } from '../design';
+import { colors, typography, spacing, borderRadius } from '../design';
 import { usePlatform } from '../hooks/usePlatform';
 import { useInfoType } from '../hooks/useInfoType';
 import { useMockData } from '../hooks/useMockData';
