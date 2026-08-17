@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ViewStyle, TextStyle, Animated } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { Card } from './Card';
@@ -9,11 +9,9 @@ import {
   SmilePlus,
   Frown,
   Meh,
-  ThumbsUp,
   Briefcase,
   Handshake,
   MessageCircle,
-  Zap,
 } from 'lucide-react';
 
 interface SentimentPairProps {
@@ -57,31 +55,6 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
 
-  const [agentScale] = useState(new Animated.Value(1));
-  const [clientScale] = useState(new Animated.Value(1));
-
-  useEffect(() => {
-    const createPulseAnimation = (animatedValue: Animated.Value) => {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(animatedValue, {
-            toValue: 1.1,
-            duration: 600,
-            useNativeDriver: true,
-          }),
-          Animated.timing(animatedValue, {
-            toValue: 1,
-            duration: 600,
-            useNativeDriver: true,
-          }),
-        ])
-      ).start();
-    };
-
-    createPulseAnimation(agentScale);
-    createPulseAnimation(clientScale);
-  }, [agentScale, clientScale]);
-
   const styles = StyleSheet.create({
     container: {
       marginBottom: spacing.lg,
@@ -124,9 +97,11 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
       marginBottom: spacing.md,
       alignSelf: 'flex-start',
     } as ViewStyle,
-    sentimentIcon: {
+    sentimentIconWrapper: {
       justifyContent: 'center',
       alignItems: 'center',
+      width: 20,
+      height: 20,
     } as ViewStyle,
     sentimentText: {
       fontSize: fontSize.sm,
@@ -164,16 +139,11 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
               },
             ]}
           >
-            <Animated.View
-              style={[
-                styles.sentimentIcon,
-                { transform: [{ scale: agentScale }] },
-              ]}
-            >
+            <View style={styles.sentimentIconWrapper}>
               {React.cloneElement(agentIcon as React.ReactElement, {
                 color: agentColor,
               })}
-            </Animated.View>
+            </View>
             <Text style={[styles.sentimentText, { color: agentColor }]}>
               {agentLevel}
             </Text>
@@ -193,16 +163,11 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
               },
             ]}
           >
-            <Animated.View
-              style={[
-                styles.sentimentIcon,
-                { transform: [{ scale: clientScale }] },
-              ]}
-            >
+            <View style={styles.sentimentIconWrapper}>
               {React.cloneElement(clientIcon as React.ReactElement, {
                 color: clientColor,
               })}
-            </Animated.View>
+            </View>
             <Text style={[styles.sentimentText, { color: clientColor }]}>
               {clientLevel}
             </Text>
