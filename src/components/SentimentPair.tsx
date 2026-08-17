@@ -4,6 +4,12 @@ import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { Card } from './Card';
 import { getSentimentLevel, getSentimentColor } from '../utils/homeScreenMetrics';
+import {
+  Frown,
+  Meh,
+  Smile,
+  Laugh,
+} from 'lucide-react';
 
 interface SentimentPairProps {
   agentEmotion: string;
@@ -12,15 +18,15 @@ interface SentimentPairProps {
   clientConfidence: number;
 }
 
-const getSentimentIcon = (level: string): string => {
-  const iconMap: Record<string, string> = {
-    'Very Negative': '☹️',
-    'Negative': '😕',
-    'Neutral': '😐',
-    'Positive': '🙂',
-    'Very Positive': '☺️',
+const getSentimentIcon = (level: string): React.ReactNode => {
+  const iconMap: Record<string, React.ReactNode> = {
+    'Very Negative': <Frown size={24} strokeWidth={1.5} />,
+    'Negative': <Meh size={24} strokeWidth={1.5} />,
+    'Neutral': <Meh size={24} strokeWidth={1.5} />,
+    'Positive': <Smile size={24} strokeWidth={1.5} />,
+    'Very Positive': <Laugh size={24} strokeWidth={1.5} />,
   };
-  return iconMap[level] || '😐';
+  return iconMap[level] || <Meh size={24} strokeWidth={1.5} />;
 };
 
 const getAnimationClass = (level: string): string => {
@@ -82,10 +88,6 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
       marginBottom: spacing.md,
       alignSelf: 'flex-start',
     } as ViewStyle,
-    sentimentIcon: {
-      fontSize: 28,
-      fontWeight: '700',
-    } as TextStyle,
     sentimentText: {
       fontSize: fontSize.sm,
       fontWeight: '700',
@@ -148,12 +150,14 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
                 },
               ]}
             >
-              <Text
-                style={[styles.sentimentIcon, { color: agentColor }]}
-                className={getAnimationClass(agentLevel)}
+              <View
+                style={[styles.sentimentIconWrapper, { className: getAnimationClass(agentLevel) }]}
               >
-                {agentIcon}
-              </Text>
+                {React.cloneElement(agentIcon as React.ReactElement, {
+                  color: agentColor,
+                  strokeWidth: 1.5,
+                })}
+              </View>
               <Text style={[styles.sentimentText, { color: agentColor }]}>
                 {agentLevel}
               </Text>
@@ -173,12 +177,14 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
                 },
               ]}
             >
-              <Text
-                style={[styles.sentimentIcon, { color: clientColor }]}
-                className={getAnimationClass(clientLevel)}
+              <View
+                style={[styles.sentimentIconWrapper, { className: getAnimationClass(clientLevel) }]}
               >
-                {clientIcon}
-              </Text>
+                {React.cloneElement(clientIcon as React.ReactElement, {
+                  color: clientColor,
+                  strokeWidth: 1.5,
+                })}
+              </View>
               <Text style={[styles.sentimentText, { color: clientColor }]}>
                 {clientLevel}
               </Text>
