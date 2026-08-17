@@ -38,37 +38,15 @@ export const ComplianceMetricsPanel: React.FC<ComplianceMetricsPanelProps> = ({ 
     metricsGrid: {
       flexDirection: 'row',
       gap: spacing.md,
-      marginBottom: spacing.md,
       flexWrap: 'wrap',
     } as ViewStyle,
     metricColumn: {
       flex: 1,
-      minWidth: 150,
+      minWidth: '48%',
     } as ViewStyle,
-    complianceAreaCard: {
-      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
-      borderRadius: borderRadius.lg,
-      padding: spacing.lg,
-      marginBottom: spacing.md,
-      borderLeftWidth: 4,
-      borderLeftColor: themeColors.newtechGreen,
+    metricColumnFull: {
+      width: '100%',
     } as ViewStyle,
-    areaName: {
-      fontSize: fontSize.sm,
-      fontWeight: '500',
-      color: themeColors.steelSecondary,
-      marginBottom: spacing.sm,
-    } as TextStyle,
-    areaScore: {
-      fontSize: fontSize.xl,
-      fontWeight: '700',
-      color: themeColors.inkPrimary,
-      marginBottom: spacing.xs,
-    } as TextStyle,
-    areaViolations: {
-      fontSize: fontSize.xs,
-      color: themeColors.steelSecondary,
-    } as TextStyle,
     riskContainer: {
       backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
       borderRadius: borderRadius.lg,
@@ -97,17 +75,6 @@ export const ComplianceMetricsPanel: React.FC<ComplianceMetricsPanelProps> = ({ 
       fontWeight: '700',
       color: themeColors.inkPrimary,
     } as TextStyle,
-    riskBadge: {
-      paddingHorizontal: spacing.sm,
-      paddingVertical: spacing.xs,
-      borderRadius: borderRadius.sm,
-      marginLeft: spacing.sm,
-    } as ViewStyle,
-    riskBadgeText: {
-      fontSize: fontSize.xs,
-      fontWeight: '600',
-      color: '#FFFFFF',
-    } as TextStyle,
   });
 
   return (
@@ -132,9 +99,7 @@ export const ComplianceMetricsPanel: React.FC<ComplianceMetricsPanelProps> = ({ 
               value={`${metrics.adherenceRate}%`}
             />
           </View>
-        </View>
-        <View style={styles.metricsGrid}>
-          <View style={styles.metricColumn}>
+          <View style={[styles.metricColumn, styles.metricColumnFull]}>
             <MetricCard
               label="Violaciones Detectadas"
               value={metrics.violationCount.toString()}
@@ -143,24 +108,25 @@ export const ComplianceMetricsPanel: React.FC<ComplianceMetricsPanelProps> = ({ 
         </View>
       </View>
 
-      {/* Compliance Areas */}
+      {/* Compliance Areas - 2 Column Grid with MetricCard */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Áreas de Cumplimiento</Text>
-
-        {[
-          { name: 'Protección de Datos', data: metrics.dataProtection },
-          { name: 'Cumplimiento de Grabación', data: metrics.recordingCompliance },
-          { name: 'Cumplimiento de Divulgación', data: metrics.disclosureCompliance },
-          { name: 'Requisitos Regulatorios', data: metrics.regulatoryRequirements },
-        ].map((area) => (
-          <View key={area.name} style={styles.complianceAreaCard}>
-            <Text style={styles.areaName}>{area.name}</Text>
-            <Text style={styles.areaScore}>{area.data.score}%</Text>
-            <Text style={styles.areaViolations}>
-              {area.data.violations === 0 ? '✓ Sin violaciones' : `⚠ ${area.data.violations} violación(es)`}
-            </Text>
-          </View>
-        ))}
+        <View style={styles.metricsGrid}>
+          {[
+            { name: 'Protección de Datos', data: metrics.dataProtection },
+            { name: 'Cumplimiento de Grabación', data: metrics.recordingCompliance },
+            { name: 'Cumplimiento de Divulgación', data: metrics.disclosureCompliance },
+            { name: 'Requisitos Regulatorios', data: metrics.regulatoryRequirements },
+          ].map((area) => (
+            <View key={area.name} style={styles.metricColumn}>
+              <MetricCard
+                label={area.name}
+                value={`${area.data.score}%`}
+                trendLabel={area.data.violations === 0 ? '✓ Sin violaciones' : `⚠ ${area.data.violations} violación(es)`}
+              />
+            </View>
+          ))}
+        </View>
       </View>
 
       {/* Risk Indicators */}
