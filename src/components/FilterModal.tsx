@@ -8,10 +8,12 @@ import {
   ScrollView,
   ViewStyle,
   TextStyle,
+  Dimensions,
 } from 'react-native';
 import { X } from 'lucide-react';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
+import { usePlatform } from '../hooks/usePlatform';
 import { Button } from './Button';
 
 interface FilterModalProps {
@@ -33,8 +35,10 @@ export const FilterModal: React.FC<FilterModalProps> = ({
   onApply,
 }) => {
   const { effectiveTheme } = useTheme();
+  const { isMobile } = usePlatform();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
+  const screenHeight = Dimensions.get('window').height;
 
   const [filters, setFilters] = useState<FilterValues>({
     campaignType: [],
@@ -88,14 +92,14 @@ export const FilterModal: React.FC<FilterModalProps> = ({
       backgroundColor: themeColors.pureSurface,
       borderTopLeftRadius: borderRadius.lg,
       borderTopRightRadius: borderRadius.lg,
-      maxHeight: '90%',
+      maxHeight: isMobile ? screenHeight * 0.75 : screenHeight * 0.85,
       paddingTop: spacing.lg,
     } as ViewStyle,
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      paddingHorizontal: spacing.lg,
+      paddingHorizontal: isMobile ? spacing.md : spacing.lg,
       paddingBottom: spacing.lg,
       borderBottomWidth: 1,
       borderBottomColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
@@ -110,7 +114,7 @@ export const FilterModal: React.FC<FilterModalProps> = ({
       padding: spacing.sm,
     } as ViewStyle,
     content: {
-      paddingHorizontal: spacing.lg,
+      paddingHorizontal: isMobile ? spacing.md : spacing.lg,
       paddingTop: spacing.lg,
       paddingBottom: spacing.lg,
     } as ViewStyle,
@@ -192,9 +196,9 @@ export const FilterModal: React.FC<FilterModalProps> = ({
       fontWeight: '500',
     } as TextStyle,
     footer: {
-      flexDirection: 'row',
+      flexDirection: isMobile ? 'column' : 'row',
       gap: spacing.md,
-      paddingHorizontal: spacing.lg,
+      paddingHorizontal: isMobile ? spacing.md : spacing.lg,
       paddingBottom: spacing.lg,
       paddingTop: spacing.md,
       borderTopWidth: 1,
