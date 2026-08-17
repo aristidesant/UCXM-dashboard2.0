@@ -481,7 +481,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
           <View style={{ flex: 1, paddingHorizontal: spacing.lg }}>
             <ContactList
               contacts={mockContacts}
-              onSelectContact={handleSelectContact}
+              onSelectContact={(contact) => handleSelectContact(contact.id)}
             />
           </View>
         )}
