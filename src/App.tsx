@@ -12,7 +12,7 @@ import {
   SettingsScreen,
   LoginScreen,
   DashboardsMobileScreen,
-  ExecutiveDashboardRedesign,
+  DataVisualizationDashboard,
 } from './screens';
 import { useAppContext } from './context/AppContext';
 import { usePlatform } from './hooks/usePlatform';
@@ -79,7 +79,7 @@ const AppContent: React.FC = () => {
   const renderScreen = () => {
     switch (currentScreen) {
       case 'kpi':
-        return <ExecutiveDashboardRedesign />;
+        return <DataVisualizationDashboard />;
       case 'dashboards':
         return currentDashboard ? (
           <CampaignDashboardScreen

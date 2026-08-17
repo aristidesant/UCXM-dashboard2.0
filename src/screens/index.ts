@@ -8,3 +8,4 @@ export { KPIDashboardScreen } from './KPIDashboard';
 export { ExecutiveDashboardScreen } from './ExecutiveDashboard';
 export { CallsListScreen } from './CallsListScreen';
 export { ExecutiveDashboardRedesign } from './ExecutiveDashboardRedesign';
+export { DataVisualizationDashboard } from './DataVisualizationDashboard';
