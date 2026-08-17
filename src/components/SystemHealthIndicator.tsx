@@ -99,7 +99,7 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
           </View>
 
           <View style={styles.metricItem}>
-            <Text style={styles.metricLabel}>Avg. Handling Time</Text>
+            <Text style={styles.metricLabel}>AHT</Text>
             <Text style={styles.metricValue}>{avgHandlingTime}</Text>
           </View>
         </View>
