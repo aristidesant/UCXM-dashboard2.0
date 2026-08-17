@@ -22,6 +22,13 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
   const peakIndex = data.indexOf(maxValue);
   const peakLabel = labels[peakIndex];
 
+  // Generate Y-axis labels
+  const yAxisSteps = 4;
+  const yAxisLabels = Array.from({ length: yAxisSteps + 1 }, (_, i) => {
+    const value = Math.round((maxValue / yAxisSteps) * i);
+    return formatCallVolume(value);
+  }).reverse();
+
   const styles = StyleSheet.create({
     container: {
       marginBottom: spacing.lg,
@@ -42,12 +49,30 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
       borderWidth: 1,
       borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.8)',
     } as ViewStyle,
+    chartWrapper: {
+      flexDirection: 'row',
+      marginBottom: spacing.lg,
+      gap: spacing.sm,
+    } as ViewStyle,
+    yAxis: {
+      width: 50,
+      height: 200,
+      justifyContent: 'space-between',
+      paddingRight: spacing.sm,
+    } as ViewStyle,
+    yAxisLabel: {
+      fontSize: fontSize.xs,
+      fontWeight: '500',
+      color: themeColors.steelSecondary,
+      textAlign: 'right',
+      lineHeight: 16,
+    } as TextStyle,
     chartContainer: {
+      flex: 1,
       height: 200,
       flexDirection: 'row',
       alignItems: 'flex-end',
       justifyContent: 'space-around',
-      marginBottom: spacing.lg,
       gap: spacing.sm,
     } as ViewStyle,
     bar: {
@@ -95,19 +120,31 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
     <View style={styles.container}>
       <Text style={styles.title}>Weekly Call Volume</Text>
       <Card style={styles.card}>
-        <View style={styles.chartContainer}>
-          {data.map((value, index) => (
-            <View key={index} style={{ flex: 1 }}>
-              <View
-                style={[
-                  styles.bar,
-                  index === peakIndex && styles.barActive,
-                  { height: Math.max((value / maxValue) * 160, 20) },
-                ]}
-              />
-              <Text style={styles.barLabel}>{labels[index]}</Text>
-            </View>
-          ))}
+        <View style={styles.chartWrapper}>
+          {/* Y-Axis Labels */}
+          <View style={styles.yAxis}>
+            {yAxisLabels.map((label, index) => (
+              <Text key={index} style={styles.yAxisLabel}>
+                {label}
+              </Text>
+            ))}
+          </View>
+
+          {/* Chart Bars */}
+          <View style={styles.chartContainer}>
+            {data.map((value, index) => (
+              <View key={index} style={{ flex: 1 }}>
+                <View
+                  style={[
+                    styles.bar,
+                    index === peakIndex && styles.barActive,
+                    { height: Math.max((value / maxValue) * 160, 20) },
+                  ]}
+                />
+                <Text style={styles.barLabel}>{labels[index]}</Text>
+              </View>
+            ))}
+          </View>
         </View>
 
         <View style={styles.peakInfo}>

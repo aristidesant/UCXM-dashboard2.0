@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, ViewStyle } from 'react-native';
+import { StyleSheet, View, ScrollView, ViewStyle, StyleProp } from 'react-native';
 import { colors, spacing } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import {
@@ -67,17 +67,37 @@ export const HomeScreen: React.FC = () => {
     description: 'Agent Status',
   };
 
+  const styles2Col = StyleSheet.create({
+    grid: {
+      flexDirection: 'row',
+      gap: spacing.md,
+      flexWrap: 'wrap',
+      marginBottom: spacing.lg,
+    } as ViewStyle,
+    column: {
+      flex: 1,
+      minWidth: '48%',
+    } as ViewStyle,
+  });
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       {/* Welcome Card */}
       <WelcomeCard userName="Client" />
 
-      {/* System Health */}
-      <SystemHealthIndicator
-        level={health.level}
-        score={health.score}
-        variant={health.variant}
-      />
+      {/* System Health & Compliance Violations - 2 Column */}
+      <View style={styles2Col.grid}>
+        <View style={styles2Col.column}>
+          <SystemHealthIndicator
+            level={health.level}
+            score={health.score}
+            variant={health.variant}
+          />
+        </View>
+        <View style={styles2Col.column}>
+          <ComplianceWidget violations={aggregatedMetrics.compliance.violationCount} />
+        </View>
+      </View>
 
       {/* Sentiment Metrics */}
       <SentimentPair
@@ -85,12 +105,6 @@ export const HomeScreen: React.FC = () => {
         agentConfidence={aggregatedMetrics.emotion.agentConfidenceScore}
         clientEmotion={aggregatedMetrics.emotion.clientPredominantEmotion}
         clientConfidence={aggregatedMetrics.emotion.clientConfidenceScore}
-      />
-
-      {/* Contact Rate & Compliance */}
-      <ComplianceWidget
-        violations={aggregatedMetrics.compliance.violationCount}
-        adherenceRate={aggregatedMetrics.compliance.adherenceRate}
       />
 
       {/* Weekly Call Volume Chart */}

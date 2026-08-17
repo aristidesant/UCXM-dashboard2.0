@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
-import { colors, spacing, borderRadius, fontSize } from '../design';
+import { colors, spacing, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
-import { Card } from './Card';
 
 interface WelcomeCardProps {
   userName?: string;
@@ -23,38 +22,34 @@ export const WelcomeCard: React.FC<WelcomeCardProps> = ({ userName = 'User' }) =
 
   const styles = StyleSheet.create({
     container: {
-      padding: spacing.lg,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
       marginBottom: spacing.lg,
-      borderRadius: borderRadius.lg,
-      backgroundColor: isDark ? 'rgba(27, 181, 74, 0.08)' : 'rgba(27, 181, 74, 0.05)',
-      borderWidth: 1,
-      borderColor: isDark ? 'rgba(27, 181, 74, 0.2)' : 'rgba(27, 181, 74, 0.15)',
-    } as ViewStyle,
-    header: {
-      marginBottom: spacing.md,
+      paddingVertical: spacing.md,
     } as ViewStyle,
     greeting: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.xs,
+      flex: 1,
+    } as ViewStyle,
+    greetingText: {
       fontSize: fontSize.xl,
       fontWeight: '700',
       color: themeColors.inkPrimary,
-      marginBottom: spacing.sm,
       lineHeight: 32,
     } as TextStyle,
     userName: {
       fontSize: fontSize.xl,
-      fontWeight: '700',
-      color: themeColors.newtechGreen,
+      fontWeight: '400',
+      color: themeColors.inkPrimary,
       lineHeight: 32,
     } as TextStyle,
     tagContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: spacing.sm,
-      backgroundColor: isDark ? 'rgba(27, 181, 74, 0.15)' : 'rgba(27, 181, 74, 0.1)',
-      paddingHorizontal: spacing.md,
-      paddingVertical: spacing.sm,
-      borderRadius: borderRadius.md,
-      alignSelf: 'flex-start',
+      gap: spacing.xs,
     } as ViewStyle,
     dot: {
       width: 8,
@@ -72,15 +67,15 @@ export const WelcomeCard: React.FC<WelcomeCardProps> = ({ userName = 'User' }) =
   });
 
   return (
-    <Card style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.greeting}>Welcome, </Text>
+    <View style={styles.container}>
+      <View style={styles.greeting}>
+        <Text style={styles.greetingText}>Welcome, </Text>
         <Text style={styles.userName}>{userName}</Text>
       </View>
       <View style={styles.tagContainer}>
         <View style={styles.dot} />
         <Text style={styles.tagText}>Real time</Text>
       </View>
-    </Card>
+    </View>
   );
 };
