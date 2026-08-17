@@ -38,6 +38,7 @@ export const HomeScreen: React.FC = () => {
       flexDirection: 'row',
       gap: spacing.lg,
       flexWrap: isDesktop ? 'nowrap' : 'wrap',
+      alignItems: 'flex-end',
     } as ViewStyle,
     chartColumn: {
       flex: 1,
