@@ -4,15 +4,6 @@ import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { Card } from './Card';
 import { getSentimentLevel, getSentimentColor } from '../utils/homeScreenMetrics';
-import {
-  Heart,
-  SmilePlus,
-  Frown,
-  Meh,
-  Briefcase,
-  Handshake,
-  MessageCircle,
-} from 'lucide-react';
 
 interface SentimentPairProps {
   agentEmotion: string;
@@ -21,28 +12,22 @@ interface SentimentPairProps {
   clientConfidence: number;
 }
 
-const getSentimentIcon = (
-  level: string,
-  type: 'client' | 'agent'
-): React.ReactNode => {
-  if (type === 'client') {
-    const clientIconMap: Record<string, React.ReactNode> = {
-      'Very Negative': <Frown size={20} />,
-      'Negative': <Meh size={20} />,
-      'Neutral': <Meh size={20} />,
-      'Positive': <SmilePlus size={20} />,
-      'Very Positive': <Heart size={20} />,
-    };
-    return clientIconMap[level] || <Meh size={20} />;
-  } else {
-    const agentIconMap: Record<string, React.ReactNode> = {
-      'Professional': <Briefcase size={20} />,
-      'Empathetic': <Heart size={20} />,
-      'Polite': <Handshake size={20} />,
-      'Casual': <MessageCircle size={20} />,
-    };
-    return agentIconMap[level] || <Briefcase size={20} />;
-  }
+const getSentimentIcon = (level: string): string => {
+  const iconMap: Record<string, string> = {
+    'Very Negative': '😢',
+    'Negative': '😞',
+    'Neutral': '😐',
+    'Positive': '🙂',
+    'Very Positive': '😄',
+  };
+  return iconMap[level] || '😐';
+};
+
+const getAnimationClass = (level: string): string => {
+  if (level === 'Very Negative') return 'sentiment-cry';
+  if (level === 'Positive') return 'sentiment-smile';
+  if (level === 'Very Positive') return 'sentiment-excited';
+  return 'sentiment-none';
 };
 
 export const SentimentPair: React.FC<SentimentPairProps> = ({
@@ -97,12 +82,10 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
       marginBottom: spacing.md,
       alignSelf: 'flex-start',
     } as ViewStyle,
-    sentimentIconWrapper: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: 20,
-      height: 20,
-    } as ViewStyle,
+    sentimentIcon: {
+      fontSize: 28,
+      fontWeight: '700',
+    } as TextStyle,
     sentimentText: {
       fontSize: fontSize.sm,
       fontWeight: '700',
@@ -120,61 +103,90 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
   const clientLevel = getSentimentLevel(clientEmotion);
   const agentColor = getSentimentColor(agentEmotion);
   const clientColor = getSentimentColor(clientEmotion);
-  const agentIcon = getSentimentIcon(agentLevel, 'agent');
-  const clientIcon = getSentimentIcon(clientLevel, 'client');
+  const agentIcon = getSentimentIcon(agentLevel);
+  const clientIcon = getSentimentIcon(clientLevel);
+
+  // Add inline styles for animations
+  const animationStyles = `
+    @keyframes cry {
+      0%, 100% { transform: scaleY(1); }
+      25% { transform: scaleY(1.1); }
+      50% { transform: scaleY(0.95); }
+      75% { transform: scaleY(1.05); }
+    }
+    @keyframes smile {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.15) rotate(5deg); }
+    }
+    @keyframes excited {
+      0%, 100% { transform: scale(1) translateY(0); }
+      25% { transform: scale(1.2) translateY(-3px); }
+      50% { transform: scale(1.15) translateY(0); }
+      75% { transform: scale(1.2) translateY(-3px); }
+    }
+    .sentiment-cry { animation: cry 2s infinite; }
+    .sentiment-smile { animation: smile 1.5s infinite; }
+    .sentiment-excited { animation: excited 1.2s infinite; }
+    .sentiment-none { animation: none; }
+  `;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sentiment Analysis</Text>
-      <View style={styles.grid}>
-        <Card style={styles.card}>
-          <Text style={styles.label}>Agent Tone</Text>
-          <View
-            style={[
-              styles.sentimentTag,
-              {
-                backgroundColor: `${agentColor}20`,
-                borderWidth: 1,
-                borderColor: agentColor,
-              },
-            ]}
-          >
-            <View style={styles.sentimentIconWrapper}>
-              {React.cloneElement(agentIcon as React.ReactElement, {
-                color: agentColor,
-              })}
+    <>
+      <style>{animationStyles}</style>
+      <View style={styles.container}>
+        <Text style={styles.title}>Sentiment Analysis</Text>
+        <View style={styles.grid}>
+          <Card style={styles.card}>
+            <Text style={styles.label}>Agent Sentiment</Text>
+            <View
+              style={[
+                styles.sentimentTag,
+                {
+                  backgroundColor: `${agentColor}20`,
+                  borderWidth: 1,
+                  borderColor: agentColor,
+                },
+              ]}
+            >
+              <Text
+                style={[styles.sentimentIcon, { color: agentColor }]}
+                className={getAnimationClass(agentLevel)}
+              >
+                {agentIcon}
+              </Text>
+              <Text style={[styles.sentimentText, { color: agentColor }]}>
+                {agentLevel}
+              </Text>
             </View>
-            <Text style={[styles.sentimentText, { color: agentColor }]}>
-              {agentLevel}
-            </Text>
-          </View>
-          <Text style={styles.percentage}>{agentConfidence}% confidence</Text>
-        </Card>
+            <Text style={styles.percentage}>{agentConfidence}% confidence</Text>
+          </Card>
 
-        <Card style={styles.card}>
-          <Text style={styles.label}>Client Sentiment</Text>
-          <View
-            style={[
-              styles.sentimentTag,
-              {
-                backgroundColor: `${clientColor}20`,
-                borderWidth: 1,
-                borderColor: clientColor,
-              },
-            ]}
-          >
-            <View style={styles.sentimentIconWrapper}>
-              {React.cloneElement(clientIcon as React.ReactElement, {
-                color: clientColor,
-              })}
+          <Card style={styles.card}>
+            <Text style={styles.label}>Client Sentiment</Text>
+            <View
+              style={[
+                styles.sentimentTag,
+                {
+                  backgroundColor: `${clientColor}20`,
+                  borderWidth: 1,
+                  borderColor: clientColor,
+                },
+              ]}
+            >
+              <Text
+                style={[styles.sentimentIcon, { color: clientColor }]}
+                className={getAnimationClass(clientLevel)}
+              >
+                {clientIcon}
+              </Text>
+              <Text style={[styles.sentimentText, { color: clientColor }]}>
+                {clientLevel}
+              </Text>
             </View>
-            <Text style={[styles.sentimentText, { color: clientColor }]}>
-              {clientLevel}
-            </Text>
-          </View>
-          <Text style={styles.percentage}>{clientConfidence}% confidence</Text>
-        </Card>
+            <Text style={styles.percentage}>{clientConfidence}% confidence</Text>
+          </Card>
+        </View>
       </View>
-    </View>
+    </>
   );
 };

@@ -2,16 +2,16 @@ import type { EmotionMetrics, OperationMetrics, ComplianceMetrics } from '../dat
 
 export const getSentimentLevel = (emotion: string): string => {
   const emotionMap: Record<string, string> = {
-    professional: 'Professional',
+    professional: 'Very Positive',
     satisfied: 'Very Positive',
     positive: 'Positive',
     neutral: 'Neutral',
     negative: 'Negative',
     frustrated: 'Very Negative',
     angry: 'Very Negative',
-    empathetic: 'Empathetic',
-    polite: 'Polite',
-    casual: 'Casual',
+    empathetic: 'Very Positive',
+    polite: 'Positive',
+    casual: 'Positive',
   };
   return emotionMap[emotion] || emotion;
 };
@@ -27,7 +27,7 @@ export const getSentimentColor = (emotion: string): string => {
     angry: '#FF4D4F',
     empathetic: '#1BB54A',
     polite: '#52C41A',
-    casual: '#1890FF',
+    casual: '#52C41A',
   };
   return colors[emotion] || '#1BB54A';
 };
