@@ -133,9 +133,9 @@ export const mockMetrics: Record<string, Record<InfoType, Metrics>> = {
       results: { effective: 7, ineffective: 3 },
     },
     emotion: {
-      agentPredominantEmotion: 'professional',
+      agentPredominantEmotion: 'joy',
       agentConfidenceScore: 87,
-      clientPredominantEmotion: 'satisfied',
+      clientPredominantEmotion: 'satisfaction',
       clientConfidenceScore: 92,
       emotionDistribution: { joy: 20, satisfaction: 35, neutral: 30, frustration: 10, anger: 5 },
       agentToneDistribution: {
