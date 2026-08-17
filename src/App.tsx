@@ -152,7 +152,6 @@ const AppContent: React.FC = () => {
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row' }}>
-          <StatusBar />
           <PlatformToggle />
           <SidebarNav
             activeScreen={currentScreen as any}
