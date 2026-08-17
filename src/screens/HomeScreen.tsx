@@ -83,7 +83,7 @@ export const HomeScreen: React.FC = () => {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       {/* Welcome Card */}
-      <WelcomeCard userName="Client" />
+      <WelcomeCard userName="José Perdomo" />
 
       {/* System Health & Compliance Violations - 2 Column */}
       <View style={styles2Col.grid}>
