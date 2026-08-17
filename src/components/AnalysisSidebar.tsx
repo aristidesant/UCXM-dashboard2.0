@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ViewStyle } from 'react-native';
 import { Shield, CheckCircle, Smile, Activity } from 'lucide-react';
-import { colors, spacing } from '../design';
+import { colors, spacing, borderRadius, fontSize, lineHeight, opacity, iconSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { InfoType } from '../context/AppContext';
 
@@ -16,6 +16,8 @@ interface AnalysisSidebarProps {
   onSelectAnalysis: (id: InfoType) => void;
 }
 
+const SIDEBAR_WIDTH = 240;
+
 export const AnalysisSidebar: React.FC<AnalysisSidebarProps> = ({
   activeAnalysis,
   onSelectAnalysis,
@@ -28,32 +30,36 @@ export const AnalysisSidebar: React.FC<AnalysisSidebarProps> = ({
     {
       id: 'operation',
       label: 'Operation',
-      icon: <Shield size={24} color={themeColors.steelSecondary} />,
+      icon: <Shield size={iconSize.md} color={themeColors.steelSecondary} />,
     },
     {
       id: 'qa',
       label: 'QA',
-      icon: <CheckCircle size={24} color={themeColors.steelSecondary} />,
+      icon: <CheckCircle size={iconSize.md} color={themeColors.steelSecondary} />,
     },
     {
       id: 'emotion',
       label: 'Emotion',
-      icon: <Smile size={24} color={themeColors.steelSecondary} />,
+      icon: <Smile size={iconSize.md} color={themeColors.steelSecondary} />,
     },
     {
       id: 'compliance',
       label: 'Compliance',
-      icon: <Activity size={24} color={themeColors.steelSecondary} />,
+      icon: <Activity size={iconSize.md} color={themeColors.steelSecondary} />,
     },
   ];
 
+  const brandGreenOpacity = isDark ? opacity.lg : opacity.md;
+
   const styles = StyleSheet.create({
     container: {
-      width: 240,
-      backgroundColor: isDark ? 'rgba(20, 26, 34, 0.65)' : 'rgba(255, 255, 255, 0.75)',
+      width: SIDEBAR_WIDTH,
+      backgroundColor: isDark
+        ? `rgba(20, 26, 34, ${opacity['2xl']})`
+        : `rgba(255, 255, 255, ${opacity['4xl']})`,
       backdropFilter: 'blur(24px)',
       borderRightWidth: 1,
-      borderRightColor: isDark ? 'rgba(27, 181, 74, 0.15)' : 'rgba(27, 181, 74, 0.12)',
+      borderRightColor: `rgba(27, 181, 74, ${brandGreenOpacity})`,
       paddingVertical: spacing.lg,
       paddingHorizontal: spacing.md,
       gap: spacing.md,
@@ -69,26 +75,24 @@ export const AnalysisSidebar: React.FC<AnalysisSidebarProps> = ({
       alignItems: 'center',
       paddingVertical: spacing.md,
       paddingHorizontal: spacing.md,
-      borderRadius: 12,
+      borderRadius: borderRadius.lg,
       gap: spacing.md,
       borderWidth: 1,
       borderColor: 'transparent',
       transition: 'all 200ms ease-out',
     } as ViewStyle,
     activeButton: {
-      backgroundColor: isDark
-        ? 'rgba(27, 181, 74, 0.2)'
-        : 'rgba(27, 181, 74, 0.15)',
+      backgroundColor: `rgba(27, 181, 74, ${opacity.xl})`,
       borderColor: themeColors.newtechGreen,
     } as ViewStyle,
     inactiveButton: {
       backgroundColor: 'transparent',
     } as ViewStyle,
     label: {
-      fontSize: 14,
+      fontSize: fontSize.base,
       fontWeight: '500',
       color: themeColors.steelSecondary,
-      lineHeight: 20,
+      lineHeight: lineHeight.normal,
     },
     activeLabel: {
       color: themeColors.newtechGreen,
@@ -110,7 +114,7 @@ export const AnalysisSidebar: React.FC<AnalysisSidebarProps> = ({
             onPress={() => onSelectAnalysis(analysis.id)}
             activeOpacity={0.7}
           >
-            <View style={{ opacity: isActive ? 1 : 0.6 }}>
+            <View style={{ opacity: isActive ? 1 : opacity.half }}>
               {React.cloneElement(analysis.icon as React.ReactElement, {
                 color: isActive ? themeColors.newtechGreen : themeColors.steelSecondary,
               })}

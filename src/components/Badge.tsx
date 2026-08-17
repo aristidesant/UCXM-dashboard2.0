@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { colors, spacing } from '../design';
+import { colors, spacing, borderRadius, fontSize, lineHeight } from '../design';
 import { useTheme } from '../context/ThemeContext';
 
 interface BadgeProps {
@@ -22,6 +22,8 @@ const defaultLabels: Record<string, string> = {
   warning: 'Warning',
   danger: 'Error',
 };
+
+const DOT_SIZE = 6;
 
 export const Badge: React.FC<BadgeProps> = ({ status, label }) => {
   const { effectiveTheme } = useTheme();
@@ -71,28 +73,26 @@ export const Badge: React.FC<BadgeProps> = ({ status, label }) => {
   const statusStyles = getStatusStyles();
 
   const styles = StyleSheet.create({
-    // DESIGN.md: border-radius: 999px, padding: 2px 8px, font-size: 12px, font-weight: 600, line-height: 18px
     badge: {
       flexDirection: 'row',
       alignItems: 'center',
-      paddingVertical: 2,
-      paddingHorizontal: 8,
-      borderRadius: 999,
+      paddingVertical: spacing.xs,
+      paddingHorizontal: spacing.sm,
+      borderRadius: borderRadius.pill,
       backgroundColor: statusStyles.backgroundColor,
-      gap: 6,
+      gap: spacing.xs,
     },
-    // DESIGN.md: Dot indicator - pseudo-element 6px de color currentColor antes del label
     dot: {
-      width: 6,
-      height: 6,
-      borderRadius: 3,
+      width: DOT_SIZE,
+      height: DOT_SIZE,
+      borderRadius: DOT_SIZE / 2,
       backgroundColor: statusStyles.dotColor,
     },
     text: {
-      fontSize: 12,
+      fontSize: fontSize.sm,
       fontWeight: '600',
       color: statusStyles.textColor,
-      lineHeight: 18,
+      lineHeight: lineHeight.normal,
     },
   });
 

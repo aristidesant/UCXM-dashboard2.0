@@ -18,3 +18,7 @@ export { SegmentedControl } from './SegmentedControl';
 export { OperationTabs } from './OperationTabs';
 export { ContactCardHeader } from './ContactCardHeader';
 export { CallDetailModal } from './CallDetailModal';
+export { CampaignPerformanceCard } from './CampaignPerformanceCard';
+export { AgentSentimentCard } from './AgentSentimentCard';
+export { ClientSentimentCard } from './ClientSentimentCard';
+export { QAIssuesCard } from './QAIssuesCard';

@@ -9,3 +9,4 @@ export { ExecutiveDashboardScreen } from './ExecutiveDashboard';
 export { CallsListScreen } from './CallsListScreen';
 export { ExecutiveDashboardRedesign } from './ExecutiveDashboardRedesign';
 export { DataVisualizationDashboard } from './DataVisualizationDashboard';
+export { QADashboard } from './QADashboard';

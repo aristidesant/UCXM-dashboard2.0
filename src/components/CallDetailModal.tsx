@@ -10,7 +10,7 @@ import {
   Modal,
 } from 'react-native';
 import { X, Play, Pause, Volume2 } from 'lucide-react';
-import { colors, spacing, typography } from '../design';
+import { colors, spacing, typography, borderRadius, opacity, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import type { Call } from '../data/mockCalls';
 
@@ -38,7 +38,7 @@ export const CallDetailModal: React.FC<CallDetailModalProps> = ({
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: isDark ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.5)',
+      backgroundColor: isDark ? `rgba(0, 0, 0, ${opacity['4xl']})` : `rgba(0, 0, 0, ${opacity.md})`,
     } as ViewStyle,
     modal: {
       flex: 1,
@@ -46,8 +46,8 @@ export const CallDetailModal: React.FC<CallDetailModalProps> = ({
     } as ViewStyle,
     content: {
       backgroundColor: themeColors.pureSurface,
-      borderTopLeftRadius: 16,
-      borderTopRightRadius: 16,
+      borderTopLeftRadius: borderRadius.lg,
+      borderTopRightRadius: borderRadius.lg,
       maxHeight: '90%',
       overflow: 'hidden',
     } as ViewStyle,
@@ -100,10 +100,10 @@ export const CallDetailModal: React.FC<CallDetailModalProps> = ({
       color: themeColors.inkPrimary,
     } as TextStyle,
     contactCard: {
-      backgroundColor: isDark ? 'rgba(27, 181, 74, 0.1)' : 'rgba(27, 181, 74, 0.05)',
+      backgroundColor: isDark ? `rgba(27, 181, 74, ${opacity.xs})` : `rgba(27, 181, 74, ${opacity.xs})`,
       borderWidth: 1,
       borderColor: themeColors.newtechGreen,
-      borderRadius: 8,
+      borderRadius: borderRadius.md,
       paddingVertical: spacing.md,
       paddingHorizontal: spacing.md,
       marginBottom: spacing.md,
@@ -115,23 +115,23 @@ export const CallDetailModal: React.FC<CallDetailModalProps> = ({
     } as TextStyle,
     statusBadge: {
       alignSelf: 'flex-start',
-      paddingVertical: 4,
+      paddingVertical: spacing.xs,
       paddingHorizontal: spacing.sm,
-      borderRadius: 6,
+      borderRadius: borderRadius.sm,
       marginBottom: spacing.md,
     } as ViewStyle,
     statusText: {
       ...typography.micro,
       color: '#FFFFFF',
-      fontSize: 11,
+      fontSize: fontSize.xs,
       fontWeight: '600',
     } as TextStyle,
     recordingSection: {
       marginBottom: spacing.lg,
     } as ViewStyle,
     playbackContainer: {
-      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
-      borderRadius: 8,
+      backgroundColor: isDark ? `rgba(255, 255, 255, ${opacity.xs})` : `rgba(0, 0, 0, ${opacity.xs})`,
+      borderRadius: borderRadius.md,
       padding: spacing.md,
     } as ViewStyle,
     playbackControls: {
@@ -152,7 +152,7 @@ export const CallDetailModal: React.FC<CallDetailModalProps> = ({
     speedButton: {
       paddingHorizontal: spacing.md,
       paddingVertical: spacing.sm,
-      borderRadius: 6,
+      borderRadius: borderRadius.sm,
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
       backgroundColor: themeColors.sunkenBase,
@@ -184,7 +184,7 @@ export const CallDetailModal: React.FC<CallDetailModalProps> = ({
     timeLabel: {
       ...typography.caption,
       color: themeColors.mutedSlate,
-      fontSize: 11,
+      fontSize: fontSize.xs,
     } as TextStyle,
     summaryText: {
       ...typography.body,
@@ -202,7 +202,7 @@ export const CallDetailModal: React.FC<CallDetailModalProps> = ({
       justifyContent: 'center',
       paddingVertical: spacing.md,
       paddingHorizontal: spacing.lg,
-      borderRadius: 8,
+      borderRadius: borderRadius.md,
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
       marginTop: spacing.md,

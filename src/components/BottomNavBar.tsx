@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, ViewStyle } from 'react-native';
-import { colors, spacing } from '../design';
+import { colors, spacing, borderRadius, opacity, iconSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 
 interface NavItem {
@@ -24,14 +24,16 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
 
+  const NAVBAR_BORDER_RADIUS = 20;
+
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
-      backgroundColor: isDark ? 'rgba(20, 26, 34, 0.65)' : 'rgba(255, 255, 255, 0.75)',
+      backgroundColor: isDark ? `rgba(20, 26, 34, ${opacity.lg})` : `rgba(255, 255, 255, ${opacity['2xl']})`,
       backdropFilter: 'blur(28px)',
       borderWidth: 1,
-      borderColor: isDark ? 'rgba(27, 181, 74, 0.15)' : 'rgba(27, 181, 74, 0.12)',
-      borderRadius: 20,
+      borderColor: isDark ? `rgba(27, 181, 74, ${opacity.xs})` : `rgba(27, 181, 74, ${opacity.xs})`,
+      borderRadius: NAVBAR_BORDER_RADIUS,
       height: 64,
       marginHorizontal: spacing.lg,
       marginBottom: spacing.lg,
@@ -56,18 +58,18 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
       height: 40,
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: 10,
+      borderRadius: borderRadius.md,
       backgroundColor: 'transparent',
       transition: 'all 200ms ease-out',
     } as ViewStyle,
     activeIconContainer: {
       backgroundColor: isDark
-        ? 'rgba(27, 181, 74, 0.2)'
-        : 'rgba(27, 181, 74, 0.15)',
+        ? `rgba(27, 181, 74, ${opacity.sm})`
+        : `rgba(27, 181, 74, ${opacity.xs})`,
       borderWidth: 1,
       borderColor: isDark
-        ? 'rgba(27, 181, 74, 0.3)'
-        : 'rgba(27, 181, 74, 0.25)',
+        ? `rgba(27, 181, 74, ${opacity.md})`
+        : `rgba(27, 181, 74, ${opacity.sm})`,
     } as ViewStyle,
   });
 
@@ -86,7 +88,7 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
               style={[
                 styles.iconContainer,
                 isActive && styles.activeIconContainer,
-                { opacity: isActive ? 1 : 0.5 },
+                { opacity: isActive ? 1 : opacity.half },
               ]}
             >
               {item.icon}

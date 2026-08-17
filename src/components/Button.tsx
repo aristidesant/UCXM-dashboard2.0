@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native';
-import { colors, spacing } from '../design';
+import { colors, spacing, borderRadius, fontSize, opacity } from '../design';
 import { useTheme } from '../context/ThemeContext';
 
 interface ButtonProps {
@@ -30,37 +30,57 @@ export const Button: React.FC<ButtonProps> = ({
   const getSizeStyles = () => {
     switch (size) {
       case 'sm':
-        return { paddingVertical: 6, paddingHorizontal: 12, radius: 6, fontSize: 12, fontWeight: '600' };
+        return {
+          paddingVertical: spacing.xs,
+          paddingHorizontal: spacing.sm,
+          radius: borderRadius.sm,
+          fontSize: fontSize.sm,
+          fontWeight: '600' as const,
+        };
       case 'lg':
-        return { paddingVertical: 14, paddingHorizontal: 22, radius: 12, fontSize: 16, fontWeight: '600' };
+        return {
+          paddingVertical: spacing.md,
+          paddingHorizontal: spacing.lg,
+          radius: borderRadius.md,
+          fontSize: fontSize.lg,
+          fontWeight: '600' as const,
+        };
       default:
-        // DESIGN.md Spec: padding: 10px 16px, border-radius: 8px, font-weight: 600, font-size: 14px
-        return { paddingVertical: 10, paddingHorizontal: 16, radius: 8, fontSize: 14, fontWeight: '600' };
+        return {
+          paddingVertical: spacing.sm,
+          paddingHorizontal: spacing.md,
+          radius: borderRadius.sm,
+          fontSize: fontSize.base,
+          fontWeight: '600' as const,
+        };
     }
   };
 
   const sizeStyles = getSizeStyles();
 
   const getVariantStyles = () => {
+    const outlineBorderColor = isDark ? themeColors.whisperBorder : themeColors.lightGray;
+    const textColor = themeColors.pureSurface;
+
     switch (variant) {
       case 'primary':
         return {
           backgroundColor: themeColors.newtechGreen,
           borderColor: themeColors.newtechGreen,
-          textColor: '#FFFFFF',
+          textColor,
           borderWidth: 0,
         };
       case 'secondary':
         return {
           backgroundColor: themeColors.newtechBlue,
           borderColor: themeColors.newtechBlue,
-          textColor: '#FFFFFF',
+          textColor,
           borderWidth: 0,
         };
       case 'outline':
         return {
           backgroundColor: 'transparent',
-          borderColor: '#DDE2E8',
+          borderColor: outlineBorderColor,
           textColor: themeColors.inkPrimary,
           borderWidth: 1,
         };
@@ -68,7 +88,7 @@ export const Button: React.FC<ButtonProps> = ({
         return {
           backgroundColor: themeColors.danger,
           borderColor: themeColors.danger,
-          textColor: '#FFFFFF',
+          textColor,
           borderWidth: 0,
         };
       case 'ghost':
@@ -82,13 +102,14 @@ export const Button: React.FC<ButtonProps> = ({
         return {
           backgroundColor: themeColors.newtechGreen,
           borderColor: themeColors.newtechGreen,
-          textColor: '#FFFFFF',
+          textColor,
           borderWidth: 0,
         };
     }
   };
 
   const variantStyles = getVariantStyles();
+  const disabledOpacity = disabled ? opacity.half : 1;
 
   const styles = StyleSheet.create({
     button: {
@@ -101,7 +122,7 @@ export const Button: React.FC<ButtonProps> = ({
       backgroundColor: variantStyles.backgroundColor,
       borderWidth: variantStyles.borderWidth,
       borderColor: variantStyles.borderColor,
-      opacity: disabled ? 0.5 : 1,
+      opacity: disabledOpacity,
     },
     text: {
       fontSize: sizeStyles.fontSize,

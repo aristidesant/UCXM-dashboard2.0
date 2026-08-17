@@ -12,7 +12,8 @@ import {
   SettingsScreen,
   LoginScreen,
   DashboardsMobileScreen,
-  DataVisualizationDashboard,
+  ExecutiveDashboardScreen,
+  QADashboard,
 } from './screens';
 import { useAppContext } from './context/AppContext';
 import { usePlatform } from './hooks/usePlatform';
@@ -79,7 +80,7 @@ const AppContent: React.FC = () => {
   const renderScreen = () => {
     switch (currentScreen) {
       case 'kpi':
-        return <DataVisualizationDashboard />;
+        return <QADashboard />;
       case 'dashboards':
         return currentDashboard ? (
           <CampaignDashboardScreen
@@ -143,7 +144,7 @@ const AppContent: React.FC = () => {
             currentScreen={currentScreen}
             onSelectScreen={(screen) => setCurrentScreen(screen as Screen)}
             tabs={[
-              { id: 'kpi', label: 'KPI', icon: '📊' },
+              { id: 'kpi', label: 'Home', icon: '🏠' },
               { id: 'dashboards', label: 'Dashboards', icon: '📈' },
               { id: 'campaign', label: 'Campaign', icon: '✓' },
               { id: 'settings', label: 'Settings', icon: '⚙️' },
