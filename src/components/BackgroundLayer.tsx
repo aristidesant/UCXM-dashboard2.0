@@ -15,24 +15,31 @@ export const BackgroundLayer: React.FC = () => {
 
   React.useEffect(() => {
     // Inject background style into document
-    if (!document.getElementById('background-layer-style')) {
-      const style = document.createElement('style');
-      style.id = 'background-layer-style';
-      style.textContent = `
-        body::before {
-          content: '';
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-image: ${backgroundGradient};
-          pointer-events: none;
-          z-index: 0;
-        }
-      `;
+    const styleId = 'background-layer-style';
+    let style = document.getElementById(styleId) as HTMLStyleElement | null;
+
+    if (!style) {
+      style = document.createElement('style');
+      style.id = styleId;
       document.head.appendChild(style);
     }
+
+    const cssText = `
+      html::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: ${backgroundGradient};
+        pointer-events: none;
+        z-index: -1;
+      }
+    `;
+
+    style.textContent = cssText;
+    console.log('Background layer CSS injected:', { isDark, hasGradient: !!backgroundGradient });
   }, [isDark, backgroundGradient]);
 
   return null;
