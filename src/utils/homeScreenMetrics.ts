@@ -4,6 +4,8 @@ export const getSentimentLevel = (emotion: string): string => {
   const emotionMap: Record<string, string> = {
     professional: 'Muy Positivo',
     satisfied: 'Muy Positivo',
+    'muy positivo': 'Muy Positivo',
+    positivo: 'Positivo',
     positive: 'Positivo',
     neutral: 'Neutral',
     negative: 'Negativo',
