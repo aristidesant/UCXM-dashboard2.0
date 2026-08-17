@@ -33,3 +33,5 @@ export { SentimentPair } from './SentimentPair';
 export { WeeklyCallVolumeChart } from './WeeklyCallVolumeChart';
 export { ComplianceWidget } from './ComplianceWidget';
 export { AnalyticsQuickView } from './AnalyticsQuickView';
+export { FilterModal } from './FilterModal';
+export type { FilterValues } from './FilterModal';

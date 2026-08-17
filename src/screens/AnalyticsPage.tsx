@@ -8,7 +8,7 @@ import {
   TextStyle,
   TouchableOpacity,
 } from 'react-native';
-import { TrendingUp } from 'lucide-react';
+import { Sliders } from 'lucide-react';
 import { colors, spacing, typography, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { usePlatform } from '../hooks/usePlatform';
@@ -18,12 +18,14 @@ import {
   EmotionMetricsPanel,
   ComplianceMetricsPanel,
   BusinessInsightsPanel,
+  FilterModal,
 } from '../components';
 import { OperationTabs } from '../components';
 import { aggregatedMetrics } from '../data/aggregatedMetrics';
 import type { InfoType } from '../context/AppContext';
+import type { FilterValues } from '../components/FilterModal';
 
-interface FilterState {
+interface FilterState extends FilterValues {
   dateRange: 'today' | '7days' | '30days' | 'custom';
   selectedCampaigns: string[];
 }
@@ -40,8 +42,12 @@ export const AnalyticsPage: React.FC = () => {
   const [filters, setFilters] = useState<FilterState>({
     dateRange: '7days',
     selectedCampaigns: ['localización', 'evaluación-cliente', 'retención'],
+    campaignType: [],
+    campaignStatus: [],
+    startDate: '',
+    endDate: '',
   });
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilterModal, setShowFilterModal] = useState(false);
 
   const responsivePadding = isMobile ? spacing.md : spacing.lg;
   const responsiveGap = isMobile ? spacing.sm : spacing.md;
@@ -79,27 +85,20 @@ export const AnalyticsPage: React.FC = () => {
       color: themeColors.steelSecondary,
       fontWeight: '400',
     } as TextStyle,
-    badgeContainer: {
+    filterButton: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginTop: spacing.md,
       gap: spacing.sm,
-    } as ViewStyle,
-    badge: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: spacing.xs,
       paddingHorizontal: spacing.md,
       paddingVertical: spacing.sm,
-      backgroundColor: isDark ? `rgba(27, 181, 74, 0.1)` : `rgba(27, 181, 74, 0.05)`,
       borderRadius: borderRadius.sm,
-      borderWidth: 1,
-      borderColor: themeColors.newtechGreen,
+      backgroundColor: themeColors.newtechGreen,
+      marginTop: spacing.md,
     } as ViewStyle,
-    badgeText: {
+    filterButtonText: {
       fontSize: fontSize.xs,
       fontWeight: '600',
-      color: themeColors.newtechGreen,
+      color: '#FFFFFF',
     } as TextStyle,
   });
 
@@ -360,12 +359,14 @@ export const AnalyticsPage: React.FC = () => {
           <Text style={styles.headerCaption}>
             Datos en tiempo real
           </Text>
-          <View style={styles.badgeContainer}>
-            <View style={styles.badge}>
-              <TrendingUp size={14} color={themeColors.newtechGreen} />
-              <Text style={styles.badgeText}>5 campañas activas</Text>
-            </View>
-          </View>
+          <TouchableOpacity
+            style={styles.filterButton}
+            onPress={() => setShowFilterModal(true)}
+            activeOpacity={0.7}
+          >
+            <Sliders size={16} color="#FFFFFF" strokeWidth={2} />
+            <Text style={styles.filterButtonText}>Filtros</Text>
+          </TouchableOpacity>
         </View>
 
         <SegmentedControl
@@ -373,128 +374,19 @@ export const AnalyticsPage: React.FC = () => {
           onSelectAnalysis={setInfoType}
         />
 
-        {/* Filter Section */}
-        <View
-          style={{
-            marginHorizontal: spacing.lg,
-            marginBottom: spacing.md,
-            paddingBottom: spacing.md,
-            borderBottomWidth: 1,
-            borderBottomColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
-          }}
-        >
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.sm }}>
-            <Text style={{ fontSize: fontSize.sm, fontWeight: '600', color: themeColors.steelSecondary }}>
-              Filtros
-            </Text>
-            <TouchableOpacity
-              onPress={() => setShowFilters(!showFilters)}
-              style={{
-                paddingHorizontal: spacing.sm,
-                paddingVertical: spacing.xs,
-              }}
-            >
-              <Text style={{ fontSize: fontSize.xs, color: themeColors.newtechGreen, fontWeight: '600' }}>
-                {showFilters ? 'Ocultar' : 'Mostrar'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {showFilters && (
-            <View style={{ gap: spacing.md }}>
-              {/* Date Range Filter */}
-              <View>
-                <Text style={{ fontSize: fontSize.xs, color: themeColors.steelSecondary, marginBottom: spacing.sm }}>
-                  Período
-                </Text>
-                <View style={{ flexDirection: 'row', gap: spacing.sm, flexWrap: 'wrap' }}>
-                  {(['today', '7days', '30days'] as const).map((range) => (
-                    <TouchableOpacity
-                      key={range}
-                      onPress={() => setFilters({ ...filters, dateRange: range })}
-                      style={{
-                        paddingHorizontal: spacing.md,
-                        paddingVertical: spacing.xs,
-                        borderRadius: borderRadius.sm,
-                        backgroundColor:
-                          filters.dateRange === range
-                            ? themeColors.newtechGreen
-                            : isDark
-                            ? themeColors.canvasDark
-                            : themeColors.canvasLight,
-                        borderWidth: 1,
-                        borderColor: filters.dateRange === range ? themeColors.newtechGreen : themeColors.whisperBorder,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: fontSize.xs,
-                          fontWeight: '600',
-                          color:
-                            filters.dateRange === range ? '#FFFFFF' : themeColors.steelSecondary,
-                        }}
-                      >
-                        {range === 'today' ? 'Hoy' : range === '7days' ? 'Últimos 7 días' : 'Últimos 30 días'}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
-
-              {/* Campaign Filter */}
-              <View>
-                <Text style={{ fontSize: fontSize.xs, color: themeColors.steelSecondary, marginBottom: spacing.sm }}>
-                  Campañas ({filters.selectedCampaigns.length})
-                </Text>
-                <View style={{ flexDirection: 'row', gap: spacing.sm, flexWrap: 'wrap' }}>
-                  {['localización', 'evaluación-cliente', 'retención', 'satisfacción'].map((campaign) => (
-                    <TouchableOpacity
-                      key={campaign}
-                      onPress={() => {
-                        const isSelected = filters.selectedCampaigns.includes(campaign);
-                        setFilters({
-                          ...filters,
-                          selectedCampaigns: isSelected
-                            ? filters.selectedCampaigns.filter((c) => c !== campaign)
-                            : [...filters.selectedCampaigns, campaign],
-                        });
-                      }}
-                      style={{
-                        paddingHorizontal: spacing.md,
-                        paddingVertical: spacing.xs,
-                        borderRadius: borderRadius.sm,
-                        backgroundColor: filters.selectedCampaigns.includes(campaign)
-                          ? themeColors.newtechGreen
-                          : isDark
-                          ? themeColors.canvasDark
-                          : themeColors.canvasLight,
-                        borderWidth: 1,
-                        borderColor: filters.selectedCampaigns.includes(campaign)
-                          ? themeColors.newtechGreen
-                          : themeColors.whisperBorder,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: fontSize.xs,
-                          fontWeight: '600',
-                          color: filters.selectedCampaigns.includes(campaign)
-                            ? '#FFFFFF'
-                            : themeColors.steelSecondary,
-                          textTransform: 'capitalize',
-                        }}
-                      >
-                        {campaign}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
-            </View>
-          )}
-        </View>
-
         {renderIndicadores()}
+
+        {/* Filter Modal */}
+        <FilterModal
+          visible={showFilterModal}
+          onClose={() => setShowFilterModal(false)}
+          onApply={(appliedFilters) => {
+            setFilters((prev) => ({
+              ...prev,
+              ...appliedFilters,
+            }));
+          }}
+        />
       </View>
     </View>
   );
