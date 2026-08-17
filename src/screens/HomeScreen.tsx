@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, ScrollView, ViewStyle, StyleProp } from 'react-native';
 import { colors, spacing } from '../design';
 import { useTheme } from '../context/ThemeContext';
+import { usePlatform } from '../hooks/usePlatform';
 import {
   WelcomeCard,
   SystemHealthIndicator,
@@ -20,6 +21,8 @@ export const HomeScreen: React.FC = () => {
   const { effectiveTheme } = useTheme();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
+  const { platform } = usePlatform();
+  const isDesktop = platform === 'desktop';
 
   const styles = StyleSheet.create({
     container: {
@@ -30,6 +33,19 @@ export const HomeScreen: React.FC = () => {
       paddingHorizontal: spacing.lg,
       paddingTop: spacing.md,
       paddingBottom: spacing.xl,
+    } as ViewStyle,
+    chartAndAnalyticsRow: {
+      flexDirection: 'row',
+      gap: spacing.lg,
+      flexWrap: isDesktop ? 'nowrap' : 'wrap',
+    } as ViewStyle,
+    chartColumn: {
+      flex: 1,
+      minWidth: isDesktop ? '50%' : '100%',
+    } as ViewStyle,
+    analyticsColumn: {
+      flex: 1,
+      minWidth: isDesktop ? '50%' : '100%',
     } as ViewStyle,
   });
 
@@ -111,14 +127,18 @@ export const HomeScreen: React.FC = () => {
           clientConfidence={aggregatedMetrics.emotion.clientConfidenceScore}
         />
 
-        {/* Weekly Call Volume Chart */}
-        <WeeklyCallVolumeChart data={weeklyData.data} labels={weeklyData.labels} />
-
-        {/* Analytics Quick View */}
-        <AnalyticsQuickView
-          compliance={complianceMetric}
-          emotion={emotionMetric}
-        />
+        {/* Weekly Call Volume Chart and Analytics - Side by side on desktop */}
+        <View style={styles.chartAndAnalyticsRow}>
+          <View style={styles.chartColumn}>
+            <WeeklyCallVolumeChart data={weeklyData.data} labels={weeklyData.labels} />
+          </View>
+          <View style={styles.analyticsColumn}>
+            <AnalyticsQuickView
+              compliance={complianceMetric}
+              emotion={emotionMetric}
+            />
+          </View>
+        </View>
       </ScrollView>
     </ResponsiveContainer>
   );
