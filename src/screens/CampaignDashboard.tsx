@@ -142,6 +142,62 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
       marginTop: spacing.xs,
       lineHeight: 20,
     } as TextStyle,
+    campaignMetadata: {
+      flexDirection: 'row',
+      gap: spacing.lg,
+      marginTop: spacing.md,
+      paddingTop: spacing.md,
+      borderTopWidth: 1,
+      borderTopColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
+    } as ViewStyle,
+    metadataItem: {
+      flex: 1,
+    } as ViewStyle,
+    metadataLabel: {
+      fontSize: 12,
+      fontWeight: '600',
+      color: themeColors.steelSecondary,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+      marginBottom: spacing.xs,
+    } as TextStyle,
+    metadataValue: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: themeColors.inkPrimary,
+      textTransform: 'capitalize',
+    } as TextStyle,
+    statusBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.xs,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+      borderRadius: borderRadius.sm,
+      marginTop: spacing.xs,
+    } as ViewStyle,
+    statusActive: {
+      backgroundColor: isDark ? `rgba(27, 181, 74, 0.15)` : `rgba(27, 181, 74, 0.1)`,
+    } as ViewStyle,
+    statusInactive: {
+      backgroundColor: isDark ? `rgba(156, 163, 175, 0.15)` : `rgba(156, 163, 175, 0.1)`,
+    } as ViewStyle,
+    statusPaused: {
+      backgroundColor: isDark ? `rgba(251, 146, 60, 0.15)` : `rgba(251, 146, 60, 0.1)`,
+    } as ViewStyle,
+    statusText: {
+      fontSize: 12,
+      fontWeight: '600',
+    } as TextStyle,
+    statusTextActive: {
+      color: themeColors.newtechGreen,
+    } as TextStyle,
+    statusTextInactive: {
+      color: themeColors.steelSecondary,
+    } as TextStyle,
+    statusTextPaused: {
+      color: '#FB923C',
+    } as TextStyle,
     tabsContainer: {
       flexDirection: 'row',
       gap: spacing.md,
@@ -385,6 +441,28 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
 
   // Show analysis type selector first, then detailed view
   if (showAnalysisSelector) {
+    const getStatusStyles = () => {
+      switch (dashboard.status) {
+        case 'active':
+          return [styles.statusBadge, styles.statusActive];
+        case 'paused':
+          return [styles.statusBadge, styles.statusPaused];
+        default:
+          return [styles.statusBadge, styles.statusInactive];
+      }
+    };
+
+    const getStatusTextStyles = () => {
+      switch (dashboard.status) {
+        case 'active':
+          return [styles.statusText, styles.statusTextActive];
+        case 'paused':
+          return [styles.statusText, styles.statusTextPaused];
+        default:
+          return [styles.statusText, styles.statusTextInactive];
+      }
+    };
+
     return (
       <View style={styles.container}>
         <View style={{ paddingHorizontal: spacing.lg, paddingTop: spacing.lg }}>
@@ -398,6 +476,22 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
                 <ChevronLeft size={24} color={themeColors.newtechGreen} />
               </TouchableOpacity>
               <Text style={styles.title}>{dashboard.name}</Text>
+            </View>
+          </View>
+
+          {/* Campaign Metadata */}
+          <View style={styles.campaignMetadata}>
+            <View style={styles.metadataItem}>
+              <Text style={styles.metadataLabel}>Estatus</Text>
+              <View style={getStatusStyles()}>
+                <Text style={getStatusTextStyles()}>
+                  {dashboard.status.charAt(0).toUpperCase() + dashboard.status.slice(1)}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.metadataItem}>
+              <Text style={styles.metadataLabel}>Tipo</Text>
+              <Text style={styles.metadataValue}>{dashboard.type}</Text>
             </View>
           </View>
         </View>
