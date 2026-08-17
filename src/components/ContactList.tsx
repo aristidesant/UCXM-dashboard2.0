@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, ScrollView, ViewStyle, TextStyle } from 'react-native';
+import { ChevronDown } from 'lucide-react';
 import { colors, typography, spacing, borderRadius, fontSize } from '../design';
 import { Contact } from '../data/mockContacts';
 import { Card } from './Card';
@@ -30,6 +31,9 @@ export const ContactList: React.FC<ContactListProps> = ({
   // State for selected lists
   const [selectedLists, setSelectedLists] = useState<string[]>(availableLists);
 
+  // State for filter expansion
+  const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+
   // Handle list selection toggle
   const handleListSelect = (listName: string) => {
     setSelectedLists((prev) =>
@@ -51,6 +55,36 @@ export const ContactList: React.FC<ContactListProps> = ({
     } as ViewStyle,
     scrollContent: {
       paddingBottom: spacing.lg,
+    } as ViewStyle,
+    filterHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.md,
+      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.6)',
+      borderRadius: borderRadius.md,
+      marginBottom: spacing.lg,
+      marginHorizontal: spacing.lg,
+      borderWidth: 1,
+      borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.8)',
+    } as ViewStyle,
+    filterTitle: {
+      fontSize: fontSize.sm,
+      fontWeight: '600',
+      color: themeColors.steelSecondary,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+      lineHeight: 18,
+    } as TextStyle,
+    chevronIcon: {
+      fontSize: 18,
+      color: themeColors.steelSecondary,
+      fontWeight: '600',
+    } as TextStyle,
+    filterContent: {
+      paddingHorizontal: spacing.lg,
+      marginBottom: spacing.lg,
     } as ViewStyle,
     listContainer: {
       gap: spacing.sm,
@@ -116,11 +150,33 @@ export const ContactList: React.FC<ContactListProps> = ({
       contentContainerStyle={styles.scrollContent}
       showsVerticalScrollIndicator={false}
     >
-      <ContactListFilter
-        availableLists={availableLists}
-        selectedLists={selectedLists}
-        onListSelect={handleListSelect}
-      />
+      {/* Collapsible Filter Header */}
+      <TouchableOpacity
+        style={styles.filterHeader}
+        onPress={() => setIsFilterExpanded(!isFilterExpanded)}
+        activeOpacity={0.7}
+      >
+        <Text style={styles.filterTitle}>Filtrar por Lista</Text>
+        <ChevronDown
+          size={20}
+          color={themeColors.steelSecondary}
+          strokeWidth={2}
+          style={{
+            transform: [{ rotate: isFilterExpanded ? '180deg' : '0deg' }],
+          }}
+        />
+      </TouchableOpacity>
+
+      {/* Filter Content - Collapsed by Default */}
+      {isFilterExpanded && (
+        <View style={styles.filterContent}>
+          <ContactListFilter
+            availableLists={availableLists}
+            selectedLists={selectedLists}
+            onListSelect={handleListSelect}
+          />
+        </View>
+      )}
 
       {filteredContacts.length > 0 ? (
         <FlatList
