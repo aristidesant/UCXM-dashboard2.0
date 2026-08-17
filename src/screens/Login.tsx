@@ -37,6 +37,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [faceRecognitionMode, setFaceRecognitionMode] = useState(false);
   const [error, setError] = useState('');
+  const [usernameFocused, setUsernameFocused] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
 
   const handleLogin = () => {
     if (!username.trim() || !password.trim()) {
@@ -70,6 +72,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
     }, 2000);
   };
 
+  const getInputBorderColor = (isFocused: boolean) => {
+    if (isFocused) return themeColors.newtechGreen;
+    return themeColors.whisperBorder;
+  };
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -86,37 +93,31 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
       padding: isMobile ? spacing.lg : spacing.xl,
     },
     header: {
-      fontSize: 32,
-      fontWeight: '700',
+      ...typography.display,
       color: themeColors.inkPrimary,
-      marginBottom: spacing.md,
+      marginBottom: spacing.sm,
       textAlign: 'center',
-      lineHeight: 40,
       letterSpacing: -0.02,
     },
     subtitle: {
-      fontSize: 15,
-      fontWeight: '400',
+      ...typography.body,
       color: themeColors.steelSecondary,
       marginBottom: spacing.lg,
       textAlign: 'center',
-      lineHeight: 22,
     },
     inputContainer: {
       marginBottom: spacing.lg,
     },
     label: {
-      fontSize: 12,
-      fontWeight: '600',
+      ...typography.micro,
       color: themeColors.inkPrimary,
       marginBottom: spacing.sm,
-      lineHeight: 18,
       textTransform: 'uppercase',
       letterSpacing: 0.06,
     },
     input: {
       borderWidth: 1,
-      borderColor: '#DDE2E8',
+      borderColor: themeColors.whisperBorder,
       borderRadius: 8,
       paddingVertical: spacing.sm,
       paddingHorizontal: spacing.md,
@@ -127,10 +128,19 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
       minHeight: 44,
       lineHeight: 20,
     },
+    inputFocused: {
+      borderColor: themeColors.newtechGreen,
+      shadowColor: themeColors.newtechGreen,
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.22,
+      shadowRadius: 4,
+      elevation: 3,
+    },
     rememberMeContainer: {
       flexDirection: 'row',
       alignItems: 'center',
       marginBottom: spacing.lg,
+      gap: spacing.sm,
     },
     rememberMeCheckbox: {
       width: 20,
@@ -138,7 +148,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
       borderWidth: 1,
       borderColor: themeColors.newtechGreen,
       borderRadius: 4,
-      marginRight: spacing.sm,
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: rememberMe ? themeColors.newtechGreen : 'transparent',
@@ -149,10 +158,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
       fontWeight: 'bold',
     },
     rememberMeLabel: {
-      fontSize: 15,
-      fontWeight: '400',
+      ...typography.body,
       color: themeColors.inkPrimary,
-      lineHeight: 22,
     },
     buttonContainer: {
       gap: spacing.md,
@@ -169,21 +176,22 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
       backgroundColor: themeColors.whisperBorder,
     },
     dividerText: {
-      fontSize: 12,
-      fontWeight: '600',
+      ...typography.micro,
       color: themeColors.mutedSlate,
       marginHorizontal: spacing.md,
-      lineHeight: 18,
       textTransform: 'uppercase',
       letterSpacing: 0.06,
     },
     errorText: {
-      fontSize: 12,
-      fontWeight: '400',
+      ...typography.caption,
       color: themeColors.danger,
       marginBottom: spacing.md,
       textAlign: 'center',
-      lineHeight: 18,
+      backgroundColor: themeColors.dangerBg,
+      padding: spacing.md,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: isDark ? 'rgba(248, 113, 113, 0.3)' : 'rgba(229, 57, 53, 0.2)',
     },
     faceRecognitionModal: {
       flex: 1,
@@ -207,12 +215,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
       borderColor: themeColors.newtechGreen,
     },
     scanningText: {
-      fontSize: 15,
-      fontWeight: '400',
+      ...typography.body,
       color: '#FFFFFF',
       marginTop: spacing.md,
       textAlign: 'center',
-      lineHeight: 22,
     },
   });
 
@@ -231,7 +237,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
             <View style={styles.cameraPreview}>
               {loading ? (
                 <>
-                  <ActivityIndicator size="large" color={themeColors.primaryBlue} />
+                  <ActivityIndicator size="large" color={themeColors.newtechGreen} />
                   <Text style={styles.scanningText}>Scanning face...</Text>
                 </>
               ) : (
@@ -267,11 +273,16 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Username</Text>
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                usernameFocused && styles.inputFocused,
+              ]}
               placeholder="Enter your username"
-              placeholderTextColor={themeColors.mediumGray}
+              placeholderTextColor={themeColors.mutedSlate}
               value={username}
               onChangeText={setUsername}
+              onFocus={() => setUsernameFocused(true)}
+              onBlur={() => setUsernameFocused(false)}
               editable={!loading}
             />
           </View>
@@ -279,11 +290,16 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Password</Text>
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                passwordFocused && styles.inputFocused,
+              ]}
               placeholder="Enter your password"
-              placeholderTextColor={colors.light.mediumGray}
+              placeholderTextColor={themeColors.mutedSlate}
               value={password}
               onChangeText={setPassword}
+              onFocus={() => setPasswordFocused(true)}
+              onBlur={() => setPasswordFocused(false)}
               secureTextEntry
               editable={!loading}
             />

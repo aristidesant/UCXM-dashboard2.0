@@ -16,3 +16,5 @@ export { StatusBar } from './StatusBar';
 export { AnalysisSidebar } from './AnalysisSidebar';
 export { SegmentedControl } from './SegmentedControl';
 export { OperationTabs } from './OperationTabs';
+export { ContactCardHeader } from './ContactCardHeader';
+export { CallDetailModal } from './CallDetailModal';

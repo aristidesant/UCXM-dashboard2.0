@@ -30,8 +30,8 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
   const analyses: Analysis[] = [
     {
       id: 'operation',
-      label: 'Operation',
-      icon: <Shield size={18} />,
+      label: 'Operational',
+      icon: <Activity size={18} />,
     },
     {
       id: 'qa',
@@ -46,7 +46,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
     {
       id: 'compliance',
       label: 'Compliance',
-      icon: <Activity size={18} />,
+      icon: <Shield size={18} />,
     },
   ];
 
