@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, ViewStyle, Text, TextStyle } from 'react-native';
-import { Home, FileText, BarChart3, CheckSquare, Settings, User } from 'lucide-react';
+import { Home, Briefcase, TrendingUp, Settings } from 'lucide-react';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 
@@ -20,9 +20,8 @@ interface SidebarNavProps {
 
 const NAV_ITEMS: NavItem[] = [
   { id: 'home', icon: Home, label: 'Home', screen: 'home' },
-  { id: 'campaigns', icon: FileText, label: 'Campaigns', screen: 'dashboards' },
-  { id: 'analytics', icon: BarChart3, label: 'Analytics', screen: 'analytics' },
-  { id: 'qa', icon: CheckSquare, label: 'QA', screen: 'qa' },
+  { id: 'dashboards', icon: Briefcase, label: 'Dashboards', screen: 'dashboards' },
+  { id: 'analytics', icon: TrendingUp, label: 'Analytics', screen: 'analytics' },
   { id: 'settings', icon: Settings, label: 'Settings', screen: 'settings' },
 ];
 
