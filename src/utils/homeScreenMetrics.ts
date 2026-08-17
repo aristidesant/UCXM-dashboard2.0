@@ -68,6 +68,6 @@ export const formatCallVolume = (calls: number): string => {
 export const getWeeklyCallVolume = (): { labels: string[]; data: number[] } => {
   return {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    data: [12500, 14200, 18500, 16800, 15300, 8200, 5400],
+    data: [8200, 15400, 22100, 14300, 18900, 3400, 2100],
   };
 };
