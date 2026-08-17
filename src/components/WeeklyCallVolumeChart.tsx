@@ -119,7 +119,7 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Weekly Call Volume</Text>
+      <Text style={styles.title}>Volumen de Llamadas Semanal</Text>
       <Card style={styles.card}>
         <View style={styles.chartWrapper}>
           {/* Y-Axis Labels */}
@@ -149,7 +149,7 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
         </View>
 
         <View style={styles.peakInfo}>
-          <Text style={styles.peakLabel}>Peak:</Text>
+          <Text style={styles.peakLabel}>Pico:</Text>
           <Text style={styles.peakValue}>
             {peakLabel} ({formatCallVolume(maxValue)})
           </Text>

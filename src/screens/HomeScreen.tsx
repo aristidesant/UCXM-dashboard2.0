@@ -41,29 +41,29 @@ export const HomeScreen: React.FC = () => {
   const weeklyData = getWeeklyCallVolume();
 
   const qaMetric = {
-    title: 'QA Status',
+    title: 'Estado QA',
     value: `${aggregatedMetrics.qa.effectivePercentage}%`,
-    description: 'Effective Contacts',
+    description: 'Contactos Efectivos',
   };
 
   const complianceMetric = {
-    title: 'Compliance',
+    title: 'Cumplimiento',
     value: `${aggregatedMetrics.compliance.complianceScore}%`,
-    description: 'Score',
+    description: 'Puntuación',
   };
 
   const businessMetric = {
-    title: 'Business Insights',
+    title: 'Insights Comerciales',
     value: '$456k',
-    description: 'Potential Revenue',
+    description: 'Ingresos Potenciales',
   };
 
   const emotionMetric = {
-    title: 'Emotions',
+    title: 'Emociones',
     value: aggregatedMetrics.emotion.agentPredominantEmotion === 'professional'
-      ? 'Professional'
-      : 'Satisfied',
-    description: 'Agent Status',
+      ? 'Profesional'
+      : 'Satisfecho',
+    description: 'Estado del Agente',
   };
 
   const formatHandlingTime = (minutes: number, seconds: number) => {

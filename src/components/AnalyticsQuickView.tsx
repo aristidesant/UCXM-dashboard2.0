@@ -88,7 +88,7 @@ export const AnalyticsQuickView: React.FC<AnalyticsQuickViewProps> = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Analysis Overview</Text>
+      <Text style={styles.title}>Resumen de Análisis</Text>
       <View style={styles.grid}>
         <QuickMetricItem metric={qa} />
         <QuickMetricItem metric={compliance} />

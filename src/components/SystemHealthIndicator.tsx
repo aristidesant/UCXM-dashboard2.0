@@ -79,27 +79,27 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     <View style={styles.container}>
       <Card style={styles.card}>
         <View style={styles.header}>
-          <Text style={styles.title}>System Health</Text>
-          <Badge status="success" label="Excellent" />
+          <Text style={styles.title}>Salud del Sistema</Text>
+          <Badge status="success" label="Excelente" />
         </View>
 
         <View style={styles.metricsGrid}>
           <View style={styles.metricItem}>
-            <Text style={styles.metricLabel}>Inbound Calls</Text>
+            <Text style={styles.metricLabel}>Llamadas Entrantes</Text>
             <Text style={styles.metricValue}>
               {(inboundCalls / 1000).toFixed(1)}k
             </Text>
           </View>
 
           <View style={styles.metricItem}>
-            <Text style={styles.metricLabel}>Outbound Calls</Text>
+            <Text style={styles.metricLabel}>Llamadas Salientes</Text>
             <Text style={styles.metricValue}>
               {(outboundCalls / 1000).toFixed(1)}k
             </Text>
           </View>
 
           <View style={styles.metricItem}>
-            <Text style={styles.metricLabel}>AHT</Text>
+            <Text style={styles.metricLabel}>TLM</Text>
             <Text style={styles.metricValue}>{avgHandlingTime}</Text>
           </View>
         </View>

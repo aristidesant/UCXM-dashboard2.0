@@ -45,11 +45,11 @@ export const calculateSystemHealth = (
   const avgScore = (complianceScore + effectiveContacts + contactRate) / 3;
 
   if (avgScore >= 85) {
-    return { level: 'Excellent', score: Math.round(avgScore), variant: 'success' };
+    return { level: 'Excelente', score: Math.round(avgScore), variant: 'success' };
   } else if (avgScore >= 70) {
     return { level: 'Normal', score: Math.round(avgScore), variant: 'warning' };
   }
-  return { level: 'At Risk', score: Math.round(avgScore), variant: 'danger' };
+  return { level: 'En Riesgo', score: Math.round(avgScore), variant: 'danger' };
 };
 
 export const getSentimentTrend = (confidence: number): string => {

@@ -137,10 +137,10 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
     <>
       <style>{animationStyles}</style>
       <View style={styles.container}>
-        <Text style={styles.title}>Sentiment Analysis</Text>
+        <Text style={styles.title}>Análisis de Sentimiento</Text>
         <View style={styles.grid}>
           <Card style={styles.card}>
-            <Text style={styles.label}>Agent Sentiment</Text>
+            <Text style={styles.label}>Sentimiento Gral Agente</Text>
             <View style={styles.sentimentTag}>
               <View
                 style={[styles.sentimentIconWrapper, { className: getAnimationClass(agentLevel) }]}
@@ -158,7 +158,7 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
           </Card>
 
           <Card style={styles.card}>
-            <Text style={styles.label}>Client Sentiment</Text>
+            <Text style={styles.label}>Sentimiento Gral Clientes</Text>
             <View style={styles.sentimentTag}>
               <View
                 style={[styles.sentimentIconWrapper, { className: getAnimationClass(clientLevel) }]}
