@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleSheet, View, ViewStyle, ScrollView } from 'react-native';
 import { usePlatform } from '../hooks/usePlatform';
 import { colors } from '../design';
 import { useTheme } from '../context/ThemeContext';
@@ -23,17 +23,6 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
   const totalHeight = dimensions.height + bezelSize * 2;
 
   const styles = StyleSheet.create({
-    container: {
-      minHeight: '100vh',
-      alignItems: 'center',
-      backgroundColor: themeColors.bgSecondary,
-      paddingTop: 40,
-      paddingBottom: 100,
-      paddingHorizontal: 20,
-      overflowY: 'auto' as any,
-      display: 'flex',
-      flexDirection: 'column',
-    } as ViewStyle,
     deviceBezel: {
       width: totalWidth,
       height: totalHeight,
@@ -42,7 +31,6 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
       padding: bezelSize,
       overflow: 'hidden',
       elevation: 20,
-      flexShrink: 0,
     } as ViewStyle,
     screenContent: {
       flex: 1,
@@ -53,10 +41,14 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
   });
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: themeColors.bgSecondary }}
+      contentContainerStyle={{ alignItems: 'center', paddingTop: 40, paddingBottom: 100, paddingHorizontal: 20 }}
+      showsVerticalScrollIndicator={true}
+    >
       <View style={styles.deviceBezel}>
         <View style={styles.screenContent}>{children}</View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
