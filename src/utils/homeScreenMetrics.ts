@@ -7,6 +7,8 @@ export const getSentimentLevel = (emotion: string): string => {
     'muy positivo': 'Muy Positivo',
     positivo: 'Positivo',
     positive: 'Positivo',
+    joy: 'Muy Positivo',
+    satisfaction: 'Positivo',
     neutral: 'Neutral',
     negative: 'Negativo',
     frustrated: 'Muy Negativo',

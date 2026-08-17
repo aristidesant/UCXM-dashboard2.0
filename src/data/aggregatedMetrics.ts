@@ -19,9 +19,9 @@ export const aggregatedMetrics = {
   } as QAMetrics,
 
   emotion: {
-    agentPredominantEmotion: 'muy positivo',
+    agentPredominantEmotion: 'joy',
     agentConfidenceScore: 85,
-    clientPredominantEmotion: 'positivo',
+    clientPredominantEmotion: 'satisfaction',
     clientConfidenceScore: 90,
     emotionDistribution: {
       joy: 18,
