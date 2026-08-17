@@ -80,12 +80,11 @@ export const AnalysisTypeSelector: React.FC<AnalysisSelectorProps> = ({
 
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
       backgroundColor: themeColors.canvasFrost,
     } as ViewStyle,
     scrollContent: {
       paddingHorizontal: spacing.lg,
-      paddingVertical: spacing.lg,
+      paddingVertical: spacing.md,
       gap: spacing.md,
     } as ViewStyle,
     card: {

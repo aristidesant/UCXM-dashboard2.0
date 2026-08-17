@@ -333,7 +333,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
   if (showAnalysisSelector) {
     return (
       <View style={styles.container}>
-        <View style={styles.contentWrapper}>
+        <View style={{ paddingHorizontal: spacing.lg, paddingTop: spacing.lg }}>
           <View style={styles.header}>
             <View style={styles.headerLeft}>
               <TouchableOpacity
@@ -348,12 +348,14 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
           </View>
         </View>
 
-        <AnalysisTypeSelector
-          onSelectAnalysis={(analysisType) => {
-            setInfoType(analysisType);
-            setShowAnalysisSelector(false);
-          }}
-        />
+        <View style={{ flex: 1 }}>
+          <AnalysisTypeSelector
+            onSelectAnalysis={(analysisType) => {
+              setInfoType(analysisType);
+              setShowAnalysisSelector(false);
+            }}
+          />
+        </View>
       </View>
     );
   }
