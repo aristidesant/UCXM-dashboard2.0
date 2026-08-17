@@ -75,7 +75,16 @@ const AppContent: React.FC = () => {
       setSelectedContactId(null);
     } else if (currentScreen === 'campaign') {
       setCurrentScreen('dashboards');
+      setCurrentDashboard(null);
     }
+  };
+
+  const handleNavigation = (screen: Screen) => {
+    // When navigating to dashboards from navbar, clear the selected campaign
+    if (screen === 'dashboards' && currentDashboard) {
+      setCurrentDashboard(null);
+    }
+    setCurrentScreen(screen);
   };
 
   const renderScreen = () => {
@@ -145,7 +154,7 @@ const AppContent: React.FC = () => {
           <View style={styles.content}>{renderScreen()}</View>
           <TabBar
             currentScreen={currentScreen}
-            onSelectScreen={(screen) => setCurrentScreen(screen as Screen)}
+            onSelectScreen={(screen) => handleNavigation(screen as Screen)}
             tabs={[
               { id: 'kpi', label: 'Home', icon: '🏠' },
               { id: 'dashboards', label: 'Campaigns', icon: '💼' },
@@ -169,7 +178,7 @@ const AppContent: React.FC = () => {
             <BottomNavBar
               items={navItems}
               activeItemId={currentScreen}
-              onSelectItem={(id) => setCurrentScreen(id as Screen)}
+              onSelectItem={(id) => handleNavigation(id as Screen)}
             />
           )}
         </View>
