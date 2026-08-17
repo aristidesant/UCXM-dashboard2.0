@@ -27,9 +27,12 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
       minHeight: '100vh',
       alignItems: 'center',
       backgroundColor: themeColors.bgSecondary,
-      paddingVertical: 40,
+      paddingTop: 40,
+      paddingBottom: 100,
       paddingHorizontal: 20,
       overflowY: 'auto' as any,
+      display: 'flex',
+      flexDirection: 'column',
     } as ViewStyle,
     deviceBezel: {
       width: totalWidth,
