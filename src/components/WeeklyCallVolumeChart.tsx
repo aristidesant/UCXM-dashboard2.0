@@ -74,9 +74,10 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
       alignItems: 'flex-end',
       justifyContent: 'space-around',
       gap: spacing.sm,
+      paddingBottom: spacing.sm,
     } as ViewStyle,
     bar: {
-      flex: 1,
+      width: '12%',
       backgroundColor: themeColors.primaryBlue,
       borderRadius: borderRadius.sm,
       minHeight: 20,
