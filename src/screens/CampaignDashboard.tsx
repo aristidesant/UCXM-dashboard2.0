@@ -57,6 +57,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
   const [operationSubTab, setOperationSubTab] = useState<'llamadas' | 'gestion' | 'calidad'>(
     'llamadas'
   );
+  const [mainTab, setMainTab] = useState<'indicadores' | 'detalles'>('indicadores');
   const [showCallsList, setShowCallsList] = useState(false);
   const [selectedCall, setSelectedCall] = useState<Call | null>(null);
   const [showAnalysisSelector, setShowAnalysisSelector] = useState(true);
@@ -140,6 +141,31 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
       color: themeColors.steelSecondary,
       marginTop: spacing.xs,
       lineHeight: 20,
+    } as TextStyle,
+    tabsContainer: {
+      flexDirection: 'row',
+      gap: spacing.md,
+      paddingHorizontal: spacing.lg,
+      marginBottom: spacing.lg,
+      borderBottomWidth: 1,
+      borderBottomColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
+    } as ViewStyle,
+    tabButton: {
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.sm,
+      borderBottomWidth: 2,
+      borderBottomColor: 'transparent',
+    } as ViewStyle,
+    activeTab: {
+      borderBottomColor: themeColors.newtechGreen,
+    } as ViewStyle,
+    tabLabel: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: themeColors.steelSecondary,
+    } as TextStyle,
+    activeTabLabel: {
+      color: themeColors.newtechGreen,
     } as TextStyle,
     viewCallsButton: {
       flexDirection: 'row',
@@ -426,20 +452,39 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
           </View>
         </View>
 
-        <View style={{ paddingHorizontal: spacing.lg, marginBottom: spacing.md }}>
+        {/* Tab Navigation */}
+        <View style={styles.tabsContainer}>
           <TouchableOpacity
-            style={styles.viewCallsButton}
-            onPress={() => setShowCallsList(true)}
+            style={[styles.tabButton, mainTab === 'indicadores' && styles.activeTab]}
+            onPress={() => setMainTab('indicadores')}
             activeOpacity={0.7}
           >
-            <Phone size={16} color={themeColors.newtechGreen} />
-            <Text style={styles.viewCallsButtonText}>
-              Detalles de Contacto ({totalCalls})
+            <Text style={[styles.tabLabel, mainTab === 'indicadores' && styles.activeTabLabel]}>
+              Indicadores
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tabButton, mainTab === 'detalles' && styles.activeTab]}
+            onPress={() => setMainTab('detalles')}
+            activeOpacity={0.7}
+          >
+            <Text style={[styles.tabLabel, mainTab === 'detalles' && styles.activeTabLabel]}>
+              Detalles de contacto ({totalCalls})
             </Text>
           </TouchableOpacity>
         </View>
 
-        {renderIndicadores()}
+        {/* Tab Content */}
+        {mainTab === 'indicadores' ? (
+          renderIndicadores()
+        ) : (
+          <View style={{ flex: 1, paddingHorizontal: spacing.lg }}>
+            <ContactList
+              contacts={mockContacts}
+              onSelectContact={handleSelectContact}
+            />
+          </View>
+        )}
       </View>
     </View>
   );
