@@ -40,22 +40,10 @@ export const HomeScreen: React.FC = () => {
 
   const weeklyData = getWeeklyCallVolume();
 
-  const qaMetric = {
-    title: 'Estado QA',
-    value: `${aggregatedMetrics.qa.effectivePercentage}%`,
-    description: 'Contactos Efectivos',
-  };
-
   const complianceMetric = {
     title: 'Cumplimiento',
     value: `${aggregatedMetrics.compliance.complianceScore}%`,
     description: 'Puntuación',
-  };
-
-  const businessMetric = {
-    title: 'Insights Comerciales',
-    value: '$456k',
-    description: 'Ingresos Potenciales',
   };
 
   const emotionMetric = {
@@ -126,9 +114,7 @@ export const HomeScreen: React.FC = () => {
 
       {/* Analytics Quick View */}
       <AnalyticsQuickView
-        qa={qaMetric}
         compliance={complianceMetric}
-        business={businessMetric}
         emotion={emotionMetric}
       />
     </ScrollView>

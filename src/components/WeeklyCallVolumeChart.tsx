@@ -56,25 +56,25 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
     } as ViewStyle,
     yAxis: {
       width: 50,
-      height: 200,
+      height: 120,
       justifyContent: 'space-between',
       paddingRight: spacing.sm,
     } as ViewStyle,
     yAxisLabel: {
       fontSize: fontSize.xs,
-      fontWeight: '500',
+      fontWeight: '400',
       color: themeColors.steelSecondary,
       textAlign: 'right',
-      lineHeight: 16,
+      lineHeight: 14,
     } as TextStyle,
     chartContainer: {
       flex: 1,
-      height: 200,
+      height: 120,
       flexDirection: 'row',
       alignItems: 'flex-end',
       justifyContent: 'space-around',
-      gap: spacing.sm,
-      paddingBottom: spacing.sm,
+      gap: spacing.xs,
+      paddingBottom: spacing.xs,
     } as ViewStyle,
     bar: {
       width: '12%',
@@ -139,7 +139,7 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
                   style={[
                     styles.bar,
                     index === peakIndex && styles.barActive,
-                    { height: Math.max((value / maxValue) * 160, 20) },
+                    { height: Math.max((value / maxValue) * 90, 15) },
                   ]}
                 />
                 <Text style={styles.barLabel}>{labels[index]}</Text>

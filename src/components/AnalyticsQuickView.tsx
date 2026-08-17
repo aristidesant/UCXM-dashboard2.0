@@ -11,16 +11,12 @@ interface QuickMetric {
 }
 
 interface AnalyticsQuickViewProps {
-  qa: QuickMetric;
   compliance: QuickMetric;
-  business: QuickMetric;
   emotion: QuickMetric;
 }
 
 export const AnalyticsQuickView: React.FC<AnalyticsQuickViewProps> = ({
-  qa,
   compliance,
-  business,
   emotion,
 }) => {
   const { effectiveTheme } = useTheme();
@@ -90,9 +86,7 @@ export const AnalyticsQuickView: React.FC<AnalyticsQuickViewProps> = ({
     <View style={styles.container}>
       <Text style={styles.title}>Resumen de Análisis</Text>
       <View style={styles.grid}>
-        <QuickMetricItem metric={qa} />
         <QuickMetricItem metric={compliance} />
-        <QuickMetricItem metric={business} />
         <QuickMetricItem metric={emotion} />
       </View>
     </View>
