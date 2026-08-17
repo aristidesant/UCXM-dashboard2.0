@@ -84,7 +84,10 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginBottom: spacing.lg,
+      marginBottom: spacing.md,
+    } as ViewStyle,
+    titleContainer: {
+      flex: 1,
     } as ViewStyle,
     title: {
       fontSize: 12,
@@ -93,6 +96,13 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
       textTransform: 'uppercase',
       letterSpacing: 0.5,
       lineHeight: 18,
+    } as TextStyle,
+    period: {
+      fontSize: fontSize.xs,
+      fontWeight: '400',
+      color: themeColors.steelSecondary,
+      marginTop: spacing.xs,
+      lineHeight: 14,
     } as TextStyle,
     metricsGrid: {
       gap: spacing.md,
@@ -145,6 +155,16 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
       lineHeight: 14,
     } as TextStyle,
     comparison: {
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+      gap: spacing.xs / 2,
+    } as ViewStyle,
+    comparisonLabel: {
+      fontSize: fontSize.xs - 1,
+      color: isDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.4)',
+      lineHeight: 12,
+    } as TextStyle,
+    comparisonRow: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: spacing.xs,
@@ -160,7 +180,10 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     <View style={styles.container}>
       <Card style={styles.card}>
         <View style={styles.header}>
-          <Text style={styles.title}>Salud del Sistema</Text>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Salud del Sistema</Text>
+            <Text style={styles.period}>Esta semana</Text>
+          </View>
           <Badge status={overallStatus} label={getStatusLabel(overallStatus)} />
         </View>
 
@@ -181,15 +204,18 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
                 <View style={styles.metricRight}>
                   <Text style={styles.target}>Meta: {metric.target}</Text>
                   <View style={styles.comparison}>
-                    {getTrendIcon(metric.comparison)}
-                    <Text
-                      style={[
-                        styles.comparisonText,
-                        { color: metric.comparison >= 0 ? themeColors.newtechGreen : '#EF4444' },
-                      ]}
-                    >
-                      {metric.comparison >= 0 ? '+' : ''}{metric.comparison}%
-                    </Text>
+                    <Text style={styles.comparisonLabel}>vs sem. anterior</Text>
+                    <View style={styles.comparisonRow}>
+                      {getTrendIcon(metric.comparison)}
+                      <Text
+                        style={[
+                          styles.comparisonText,
+                          { color: metric.comparison >= 0 ? themeColors.newtechGreen : '#EF4444' },
+                        ]}
+                      >
+                        {metric.comparison >= 0 ? '+' : ''}{metric.comparison}%
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </View>

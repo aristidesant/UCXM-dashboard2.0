@@ -69,7 +69,7 @@ export const HomeScreen: React.FC = () => {
       value: aggregatedMetrics.operation.calls.totalAnswered.toLocaleString(),
       unit: 'llamadas',
       target: '18k',
-      comparison: 2.5, // vs yesterday
+      comparison: 3.8, // vs previous week
       status: 'success' as const,
     },
     {
@@ -77,7 +77,7 @@ export const HomeScreen: React.FC = () => {
       value: aggregatedMetrics.operation.calls.totalOutgoing.toLocaleString(),
       unit: 'llamadas',
       target: '8k',
-      comparison: 1.2,
+      comparison: 2.1,
       status: 'success' as const,
     },
     {
