@@ -81,12 +81,13 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
     sentimentTag: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: spacing.sm,
-      paddingHorizontal: spacing.md,
-      paddingVertical: spacing.sm,
-      borderRadius: borderRadius.md,
+      gap: spacing.xs,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+      borderRadius: borderRadius.sm,
       marginBottom: spacing.md,
       alignSelf: 'flex-start',
+      backgroundColor: 'transparent',
     } as ViewStyle,
     sentimentText: {
       fontSize: fontSize.sm,
@@ -140,16 +141,7 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
         <View style={styles.grid}>
           <Card style={styles.card}>
             <Text style={styles.label}>Agent Sentiment</Text>
-            <View
-              style={[
-                styles.sentimentTag,
-                {
-                  backgroundColor: `${agentColor}20`,
-                  borderWidth: 1,
-                  borderColor: agentColor,
-                },
-              ]}
-            >
+            <View style={styles.sentimentTag}>
               <View
                 style={[styles.sentimentIconWrapper, { className: getAnimationClass(agentLevel) }]}
               >
@@ -167,16 +159,7 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
 
           <Card style={styles.card}>
             <Text style={styles.label}>Client Sentiment</Text>
-            <View
-              style={[
-                styles.sentimentTag,
-                {
-                  backgroundColor: `${clientColor}20`,
-                  borderWidth: 1,
-                  borderColor: clientColor,
-                },
-              ]}
-            >
+            <View style={styles.sentimentTag}>
               <View
                 style={[styles.sentimentIconWrapper, { className: getAnimationClass(clientLevel) }]}
               >
