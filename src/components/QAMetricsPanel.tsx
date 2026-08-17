@@ -45,44 +45,34 @@ export const QAMetricsPanel: React.FC<QAMetricsPanelProps> = ({ metrics }) => {
       marginBottom: spacing.md,
       lineHeight: 24,
     } as TextStyle,
+    distributionGrid: {
+      flexDirection: 'row',
+      gap: spacing.md,
+    } as ViewStyle,
+    distributionItem: {
+      flex: 1,
+    } as ViewStyle,
+    distributionLabel: {
+      fontSize: fontSize.sm,
+      fontWeight: '500',
+      color: themeColors.steelSecondary,
+      marginBottom: spacing.sm,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+    } as TextStyle,
+    distributionValue: {
+      fontSize: fontSize.xl,
+      fontWeight: '700',
+      color: themeColors.inkPrimary,
+    } as TextStyle,
     metricsGrid: {
       flexDirection: 'row',
       gap: spacing.md,
-      marginBottom: spacing.md,
       flexWrap: 'wrap',
     } as ViewStyle,
     metricColumn: {
       flex: 1,
-      minWidth: 150,
-    } as ViewStyle,
-    errorCard: {
-      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
-      borderRadius: borderRadius.lg,
-      padding: spacing.lg,
-      marginBottom: spacing.md,
-      borderLeftWidth: 4,
-    } as ViewStyle,
-    errorName: {
-      fontSize: fontSize.sm,
-      fontWeight: '500',
-      color: themeColors.steelSecondary,
-      marginBottom: spacing.xs,
-    } as TextStyle,
-    errorValue: {
-      fontSize: fontSize.xl,
-      fontWeight: '700',
-      marginBottom: spacing.xs,
-    } as TextStyle,
-    errorThreshold: {
-      fontSize: fontSize.xs,
-      color: themeColors.steelSecondary,
-    } as TextStyle,
-    distributionCard: {
-      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
-      borderRadius: borderRadius.lg,
-      padding: spacing.lg,
-      borderWidth: 1,
-      borderColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
+      minWidth: '48%',
     } as ViewStyle,
   });
 
@@ -92,48 +82,36 @@ export const QAMetricsPanel: React.FC<QAMetricsPanelProps> = ({ metrics }) => {
       contentContainerStyle={styles.scrollContent}
       showsVerticalScrollIndicator={false}
     >
-      {/* Analysis Distribution */}
+      {/* Analysis Distribution - Simple Formula Display */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Distribución de Análisis</Text>
-        <View style={styles.metricsGrid}>
-          <View style={styles.metricColumn}>
-            <MetricCard
-              label="Contactos Efectivos"
-              value={`${metrics.effectivePercentage}%`}
-              subValue={`${metrics.effectiveContacts} contactos`}
-            />
+        <View style={styles.distributionGrid}>
+          <View style={styles.distributionItem}>
+            <Text style={styles.distributionLabel}>Contactos Efectivos</Text>
+            <Text style={styles.distributionValue}>{metrics.effectivePercentage}%</Text>
           </View>
-          <View style={styles.metricColumn}>
-            <MetricCard
-              label="Contactos No Efectivos"
-              value={`${100 - metrics.effectivePercentage}%`}
-              subValue={`${metrics.ineffectiveContacts} contactos`}
-            />
+          <View style={styles.distributionItem}>
+            <Text style={styles.distributionLabel}>Contactos No Efectivos</Text>
+            <Text style={styles.distributionValue}>{100 - metrics.effectivePercentage}%</Text>
           </View>
         </View>
       </View>
 
-      {/* Error Metrics */}
+      {/* Error Metrics - 2-Column Grid with Metric Cards */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Métricas de Errores</Text>
-
-        {[metrics.ecn, metrics.enc, metrics.ecc, metrics.ecuf].map((error) => (
-          <View
-            key={error.name}
-            style={[
-              styles.errorCard,
-              { borderLeftColor: getStatusColor(error.status) },
-            ]}
-          >
-            <Text style={styles.errorName}>{error.name}</Text>
-            <Text style={[styles.errorValue, { color: getStatusColor(error.status) }]}>
-              {error.value}%
-            </Text>
-            <Text style={styles.errorThreshold}>
-              Umbral: {error.threshold}% - {error.status === 'ok' ? '✓ OK' : '⚠ Revisar'}
-            </Text>
-          </View>
-        ))}
+        <View style={styles.metricsGrid}>
+          {[metrics.ecn, metrics.enc, metrics.ecc, metrics.ecuf].map((error) => (
+            <View key={error.name} style={styles.metricColumn}>
+              <MetricCard
+                label={error.name}
+                value={`${error.value}%`}
+                trend={error.status === 'ok' ? 1 : error.status === 'warning' ? 0 : -1}
+                trendLabel={`Umbral: ${error.threshold}% - ${error.status === 'ok' ? '✓ OK' : '⚠ Revisar'}`}
+              />
+            </View>
+          ))}
+        </View>
       </View>
     </ScrollView>
   );
