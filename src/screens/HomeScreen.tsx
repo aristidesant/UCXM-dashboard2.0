@@ -70,6 +70,38 @@ export const HomeScreen: React.FC = () => {
     return `${minutes}m ${seconds}s`;
   };
 
+  const aht = aggregatedMetrics.operation.management.averageHandleTime;
+  const currentAHT = (aht.minutes * 60) + aht.seconds;
+  const targetAHT = 5 * 60; // 5 minutes target
+  const ahtVariance = ((currentAHT - targetAHT) / targetAHT) * 100;
+
+  const healthMetrics = [
+    {
+      label: 'Llamadas Entrantes',
+      value: aggregatedMetrics.operation.calls.totalAnswered.toLocaleString(),
+      unit: 'llamadas',
+      target: '18k',
+      comparison: 2.5, // vs yesterday
+      status: 'success' as const,
+    },
+    {
+      label: 'Llamadas Salientes',
+      value: aggregatedMetrics.operation.calls.totalOutgoing.toLocaleString(),
+      unit: 'llamadas',
+      target: '8k',
+      comparison: 1.2,
+      status: 'success' as const,
+    },
+    {
+      label: 'AHT (Tiempo Promedio)',
+      value: aht.minutes,
+      unit: `m ${aht.seconds}s`,
+      target: '5m 00s',
+      comparison: Math.round(ahtVariance),
+      status: ahtVariance < 10 ? 'success' : 'warning',
+    },
+  ];
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       {/* Welcome Card */}
@@ -77,12 +109,8 @@ export const HomeScreen: React.FC = () => {
 
       {/* System Health - Full Width */}
       <SystemHealthIndicator
-        inboundCalls={aggregatedMetrics.operation.calls.totalAnswered}
-        outboundCalls={aggregatedMetrics.operation.calls.totalOutgoing}
-        avgHandlingTime={formatHandlingTime(
-          aggregatedMetrics.operation.management.averageHandleTime.minutes,
-          aggregatedMetrics.operation.management.averageHandleTime.seconds
-        )}
+        metrics={healthMetrics}
+        overallStatus="success"
       />
 
       {/* Sentiment Metrics */}
