@@ -16,6 +16,19 @@
     </style>
   </head>
   <body>
+    <div
+      id="background-effects"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(circle at 95% 5%, rgba(38, 211, 102, 0.15) 0%, rgba(11, 15, 20, 0) 25%), radial-gradient(ellipse 900px 700px at 50% 120%, rgba(38, 211, 102, 0.1) 0%, rgba(11, 15, 20, 0) 45%), radial-gradient(ellipse 800px 900px at -20% 105%, rgba(38, 211, 102, 0.1) 0%, rgba(11, 15, 20, 0) 55%);
+        pointer-events: none;
+        z-index: 0;
+      "
+    ></div>
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>
   </body>
