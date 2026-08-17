@@ -40,6 +40,10 @@ export const FilterModal: React.FC<FilterModalProps> = ({
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
   const screenHeight = dimensions.height;
+  const screenWidth = dimensions.width;
+
+  // Calculate modal width: with margins on mobile, full width on desktop
+  const modalMaxWidth = isMobile ? screenWidth - (spacing.md * 2) : undefined;
 
   const [filters, setFilters] = useState<FilterValues>({
     campaignType: [],
@@ -92,7 +96,8 @@ export const FilterModal: React.FC<FilterModalProps> = ({
     modalContent: {
       flex: 1,
       justifyContent: 'flex-end',
-      paddingHorizontal: isMobile ? spacing.md : 0,
+      alignItems: 'center',
+      paddingHorizontal: 0,
     } as ViewStyle,
     container: {
       backgroundColor: themeColors.pureSurface,
@@ -101,7 +106,9 @@ export const FilterModal: React.FC<FilterModalProps> = ({
       borderBottomLeftRadius: isMobile ? borderRadius.lg : 0,
       borderBottomRightRadius: isMobile ? borderRadius.lg : 0,
       maxHeight: isMobile ? screenHeight * 0.65 : screenHeight * 0.85,
+      maxWidth: modalMaxWidth,
       paddingTop: isMobile ? spacing.md : spacing.lg,
+      width: isMobile ? modalMaxWidth : '100%',
     } as ViewStyle,
     header: {
       flexDirection: 'row',
