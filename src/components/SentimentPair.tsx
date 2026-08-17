@@ -14,11 +14,11 @@ interface SentimentPairProps {
 
 const getSentimentIcon = (level: string): string => {
   const iconMap: Record<string, string> = {
-    'Very Negative': '😢',
-    'Negative': '😞',
+    'Very Negative': '☹️',
+    'Negative': '😕',
     'Neutral': '😐',
     'Positive': '🙂',
-    'Very Positive': '😄',
+    'Very Positive': '☺️',
   };
   return iconMap[level] || '😐';
 };
