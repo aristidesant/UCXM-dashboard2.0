@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState } from 'react';
 
-export type InfoType = 'operation' | 'qa' | 'emotion' | 'compliance';
+export type InfoType = 'operation' | 'qa' | 'emotion' | 'compliance' | 'insights';
 
 interface AppContextType {
   currentDashboard: string | null;

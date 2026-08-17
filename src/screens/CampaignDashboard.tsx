@@ -25,6 +25,11 @@ import {
   OperationTabs,
   ContactCardHeader,
   CallDetailModal,
+  AnalysisTypeSelector,
+  QAMetricsPanel,
+  EmotionMetricsPanel,
+  ComplianceMetricsPanel,
+  BusinessInsightsPanel,
 } from '../components';
 import { CallsListScreen } from './CallsListScreen';
 import { mockDashboards } from '../data/mockDashboards';
@@ -55,6 +60,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
   );
   const [showCallsList, setShowCallsList] = useState(false);
   const [selectedCall, setSelectedCall] = useState<Call | null>(null);
+  const [showAnalysisSelector, setShowAnalysisSelector] = useState(true);
 
   const metrics = useMockData(currentDashboard || '', infoType);
   const dashboard = mockDashboards.find((d) => d.id === currentDashboard);
@@ -277,106 +283,24 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
       );
     }
 
-    if (infoType === 'qa' && 'contactPercentage' in metrics) {
+    if (infoType === 'qa') {
       const qaMetrics = metrics as QAMetrics;
-      return (
-        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <View style={styles.metricsGrid}>
-            <View style={[styles.metricColumn, !isMobile && { marginRight: spacing.md }]}>
-              <MetricCard
-                label="Porcentaje de Contacto"
-                value={`${qaMetrics.contactPercentage.toFixed(1)}%`}
-                trend={-30}
-                trendLabel="vs 100.00%"
-              />
-            </View>
-            <View style={styles.metricColumn}>
-              <MetricCard
-                label="Porcentaje de Buzón de Voz"
-                value={`${qaMetrics.voiceMailboxPercentage.toFixed(1)}%`}
-              />
-            </View>
-          </View>
-          <View style={[styles.fullWidth, { marginBottom: spacing.lg }]}>
-            <Chart data={qaMetrics.trend} height={200} />
-          </View>
-          <View style={styles.metricsGrid}>
-            <View style={[styles.metricColumn, !isMobile && { marginRight: spacing.md }]}>
-              <Card style={{ padding: spacing.md }}>
-                <Text style={typography.caption}>Numerador</Text>
-                <Text style={typography.heading}>{qaMetrics.results.effective}</Text>
-              </Card>
-            </View>
-            <View style={styles.metricColumn}>
-              <Card style={{ padding: spacing.md }}>
-                <Text style={typography.caption}>Denominador</Text>
-                <Text style={typography.heading}>{qaMetrics.results.ineffective}</Text>
-              </Card>
-            </View>
-          </View>
-        </ScrollView>
-      );
+      return <QAMetricsPanel metrics={qaMetrics} />;
     }
 
-    if (infoType === 'emotion' && 'sentiment' in metrics) {
+    if (infoType === 'emotion') {
       const emotionMetrics = metrics as EmotionMetrics;
-      return (
-        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <MetricCard
-            label="Sentiment Score"
-            value={emotionMetrics.score.toFixed(1)}
-            trend={-5}
-          />
-          <View style={[styles.fullWidth, { marginBottom: spacing.lg }]}>
-            <Chart data={emotionMetrics.trend} height={200} />
-          </View>
-          <Card>
-            {Object.entries(emotionMetrics.breakdown).map(([key, value]) => (
-              <View
-                key={key}
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  paddingVertical: spacing.sm,
-                  borderBottomWidth: 1,
-                  borderBottomColor: themeColors.whisperBorder,
-                }}
-              >
-                <Text style={{ fontSize: 15, fontWeight: '400', color: themeColors.steelSecondary, lineHeight: 22 }}>{key}</Text>
-                <Text style={{ fontSize: 15, fontWeight: '600', color: themeColors.inkPrimary, lineHeight: 22 }}>
-                  {value}%
-                </Text>
-              </View>
-            ))}
-          </Card>
-        </ScrollView>
-      );
+      return <EmotionMetricsPanel metrics={emotionMetrics} />;
     }
 
-    if (infoType === 'compliance' && 'violations' in metrics) {
+    if (infoType === 'compliance') {
       const complianceMetrics = metrics as ComplianceMetrics;
-      return (
-        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <View style={styles.metricsGrid}>
-            <View style={[styles.metricColumn, !isMobile && { marginRight: spacing.md }]}>
-              <MetricCard label="Violations" value={complianceMetrics.violations} />
-            </View>
-            <View style={styles.metricColumn}>
-              <MetricCard label="Coverage" value={`${complianceMetrics.coverage}%`} />
-            </View>
-          </View>
-          <View style={[styles.fullWidth, { marginBottom: spacing.lg }]}>
-            <Chart data={complianceMetrics.trend} height={200} />
-          </View>
-          <Card>
-            {complianceMetrics.alerts.map((alert, idx) => (
-              <Text key={idx} style={[typography.body, { marginBottom: spacing.sm }]}>
-                • {alert}
-              </Text>
-            ))}
-          </Card>
-        </ScrollView>
-      );
+      return <ComplianceMetricsPanel metrics={complianceMetrics} />;
+    }
+
+    if (infoType === 'insights') {
+      const insightsMetrics = metrics as any; // Type from BusinessInsightsMetrics
+      return <BusinessInsightsPanel metrics={insightsMetrics} />;
     }
 
     return null;
@@ -405,6 +329,35 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
     );
   }
 
+  // Show analysis type selector first, then detailed view
+  if (showAnalysisSelector) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.contentWrapper}>
+          <View style={styles.header}>
+            <View style={styles.headerLeft}>
+              <TouchableOpacity
+                style={styles.backButton}
+                onPress={onBack}
+                activeOpacity={0.7}
+              >
+                <ChevronLeft size={24} color={themeColors.newtechGreen} />
+              </TouchableOpacity>
+              <Text style={styles.title}>{dashboard.name}</Text>
+            </View>
+          </View>
+        </View>
+
+        <AnalysisTypeSelector
+          onSelectAnalysis={(analysisType) => {
+            setInfoType(analysisType);
+            setShowAnalysisSelector(false);
+          }}
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       {selectedCall && (
@@ -420,7 +373,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
           <View style={styles.headerLeft}>
             <TouchableOpacity
               style={styles.backButton}
-              onPress={onBack}
+              onPress={() => setShowAnalysisSelector(true)}
               activeOpacity={0.7}
             >
               <ChevronLeft size={24} color={themeColors.newtechGreen} />

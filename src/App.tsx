@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, SafeAreaView, ViewStyle } from 'react-native';
-import { Home, BarChart3, Briefcase, Settings } from 'lucide-react';
+import { Home, BarChart3, Briefcase, Settings, TrendingUp } from 'lucide-react';
 import { PlatformProvider } from './context/PlatformContext';
 import { AppProvider } from './context/AppContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -14,6 +14,7 @@ import {
   DashboardsMobileScreen,
   ExecutiveDashboardScreen,
   QADashboard,
+  AnalyticsPage,
 } from './screens';
 import { useAppContext } from './context/AppContext';
 import { usePlatform } from './hooks/usePlatform';
@@ -21,7 +22,7 @@ import { useTheme } from './context/ThemeContext';
 import { colors, spacing } from './design';
 import { mockContacts } from './data/mockContacts';
 
-type Screen = 'kpi' | 'dashboards' | 'campaign' | 'contact' | 'settings';
+type Screen = 'kpi' | 'dashboards' | 'campaign' | 'contact' | 'settings' | 'analytics';
 
 const AppContent: React.FC = () => {
   const { isLoggedIn } = useAuth();
@@ -54,6 +55,7 @@ const AppContent: React.FC = () => {
   const navItems = [
     { id: 'kpi', icon: <Home size={24} color={currentScreen === 'kpi' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
     { id: 'dashboards', icon: <BarChart3 size={24} color={currentScreen === 'dashboards' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
+    { id: 'analytics', icon: <TrendingUp size={24} color={currentScreen === 'analytics' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
     { id: 'campaign', icon: <Briefcase size={24} color={currentScreen === 'campaign' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
     { id: 'settings', icon: <Settings size={24} color={currentScreen === 'settings' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
   ];
@@ -92,6 +94,8 @@ const AppContent: React.FC = () => {
         ) : (
           <DashboardsScreen onSelectDashboard={handleSelectDashboard} />
         );
+      case 'analytics':
+        return <AnalyticsPage />;
       case 'campaign':
         return currentDashboard ? (
           <CampaignDashboardScreen
@@ -146,6 +150,7 @@ const AppContent: React.FC = () => {
             tabs={[
               { id: 'kpi', label: 'Home', icon: '🏠' },
               { id: 'dashboards', label: 'Dashboards', icon: '📈' },
+              { id: 'analytics', label: 'Analytics', icon: '📊' },
               { id: 'campaign', label: 'Campaign', icon: '✓' },
               { id: 'settings', label: 'Settings', icon: '⚙️' },
             ]}

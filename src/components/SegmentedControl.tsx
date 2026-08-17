@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ViewStyle, Dimensions } from 'react-native';
-import { Shield, CheckCircle, Smile, Activity } from 'lucide-react';
+import { Shield, CheckCircle, Smile, Activity, TrendingUp } from 'lucide-react';
 import { colors, spacing, typography } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { InfoType } from '../context/AppContext';
@@ -47,6 +47,11 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
       id: 'compliance',
       label: 'Compliance',
       icon: <Shield size={18} />,
+    },
+    {
+      id: 'insights',
+      label: 'Business Insights',
+      icon: <TrendingUp size={18} />,
     },
   ];
 

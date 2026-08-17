@@ -3,25 +3,95 @@
 import { InfoType } from '../context/AppContext';
 
 export interface QAMetrics {
-  contactPercentage: number;
-  voiceMailboxPercentage: number;
-  totalAnalyzed: number;
-  trend: number[];
-  results: { effective: number; ineffective: number };
+  // Analysis distribution
+  effectiveContacts: number;
+  ineffectiveContacts: number;
+  effectivePercentage: number;
+
+  // Error metrics
+  ecn: { name: string; value: number; threshold: number; status: 'ok' | 'warning' | 'critical' }; // Error crítico de negocio
+  enc: { name: string; value: number; threshold: number; status: 'ok' | 'warning' | 'critical' }; // Error no crítico
+  ecc: { name: string; value: number; threshold: number; status: 'ok' | 'warning' | 'critical' }; // Error crítico de cumplimiento
+  ecuf: { name: string; value: number; threshold: number; status: 'ok' | 'warning' | 'critical' }; // Error crítico usuario final
+
+  // Legacy fields for backward compatibility
+  contactPercentage?: number;
+  voiceMailboxPercentage?: number;
+  totalAnalyzed?: number;
+  trend?: number[];
+  results?: { effective: number; ineffective: number };
 }
 
 export interface EmotionMetrics {
-  sentiment: 'positive' | 'neutral' | 'negative';
-  score: number;
-  breakdown: Record<string, number>;
-  trend: number[];
+  // Agent emotion
+  agentPredominantEmotion: string;
+  agentConfidenceScore: number; // 0-100
+
+  // Client emotion
+  clientPredominantEmotion: string;
+  clientConfidenceScore: number; // 0-100
+
+  // Emotion distribution
+  emotionDistribution: Record<string, number>; // e.g., { joy: 20, neutral: 30, anger: 2, frustration: 1, ... }
+
+  // Agent tone distribution
+  agentToneDistribution: {
+    professional: number;
+    empathetic: number;
+    polite: number;
+    casual: number;
+  };
+
+  // Legacy fields for backward compatibility
+  sentiment?: 'positive' | 'neutral' | 'negative';
+  score?: number;
+  breakdown?: Record<string, number>;
+  trend?: number[];
 }
 
 export interface ComplianceMetrics {
-  violations: number;
-  coverage: number;
-  trend: number[];
-  alerts: string[];
+  // Core metrics
+  complianceScore: number; // Overall compliance percentage
+  adherenceRate: number; // % of calls following compliance rules
+  violationCount: number;
+
+  // Compliance areas
+  dataProtection: { score: number; violations: number };
+  recordingCompliance: { score: number; violations: number };
+  disclosureCompliance: { score: number; violations: number };
+  regulatoryRequirements: { score: number; violations: number };
+
+  // Risk indicators
+  highRiskCalls: number;
+  lowRiskCalls: number;
+
+  // Legacy fields for backward compatibility
+  violations?: number;
+  coverage?: number;
+  trend?: number[];
+  alerts?: string[];
+}
+
+export interface BusinessInsightsMetrics {
+  // Revenue metrics
+  potentialRevenue: number;
+  revenuePerCall: number;
+  conversionOpportunities: number;
+
+  // Customer metrics
+  customerSatisfactionScore: number; // 0-100
+  netPromoterScore: number; // -100 to +100
+  churnRisk: number; // percentage
+
+  // Efficiency metrics
+  agentProductivity: number; // calls per hour
+  averageHandlingTime: number; // seconds
+  costPerCall: number;
+
+  // Trend data
+  revenueGrowth: number; // % week-over-week
+  satisfactionTrend: number[];
+  productivityTrend: number[];
 }
 
 export interface OperationMetrics {
@@ -43,11 +113,19 @@ export interface OperationMetrics {
   };
 }
 
-export type Metrics = QAMetrics | EmotionMetrics | ComplianceMetrics | OperationMetrics;
+export type Metrics = QAMetrics | EmotionMetrics | ComplianceMetrics | OperationMetrics | BusinessInsightsMetrics;
 
 export const mockMetrics: Record<string, Record<InfoType, Metrics>> = {
   'loc-1': {
     qa: {
+      effectiveContacts: 76,
+      ineffectiveContacts: 19,
+      effectivePercentage: 80,
+      ecn: { name: 'Error crítico de negocio', value: 92, threshold: 90, status: 'ok' },
+      enc: { name: 'Error no crítico', value: 87, threshold: 85, status: 'ok' },
+      ecc: { name: 'Error crítico de cumplimiento', value: 100, threshold: 100, status: 'ok' },
+      ecuf: { name: 'Error crítico usuario final', value: 99, threshold: 98, status: 'ok' },
+      // Legacy for backward compatibility
       contactPercentage: 70,
       voiceMailboxPercentage: 0,
       totalAnalyzed: 10,
@@ -55,16 +133,52 @@ export const mockMetrics: Record<string, Record<InfoType, Metrics>> = {
       results: { effective: 7, ineffective: 3 },
     },
     emotion: {
+      agentPredominantEmotion: 'professional',
+      agentConfidenceScore: 87,
+      clientPredominantEmotion: 'satisfied',
+      clientConfidenceScore: 92,
+      emotionDistribution: { joy: 20, satisfaction: 35, neutral: 30, frustration: 10, anger: 5 },
+      agentToneDistribution: {
+        professional: 45,
+        empathetic: 30,
+        polite: 20,
+        casual: 5,
+      },
+      // Legacy for backward compatibility
       sentiment: 'positive',
       score: 8.5,
       breakdown: { positive: 65, neutral: 25, negative: 10 },
       trend: [6, 6.5, 7, 7.8, 8.2, 8.5, 8.3],
     },
     compliance: {
+      complianceScore: 94,
+      adherenceRate: 93,
+      violationCount: 2,
+      dataProtection: { score: 96, violations: 0 },
+      recordingCompliance: { score: 92, violations: 2 },
+      disclosureCompliance: { score: 95, violations: 0 },
+      regulatoryRequirements: { score: 94, violations: 0 },
+      highRiskCalls: 3,
+      lowRiskCalls: 92,
+      // Legacy for backward compatibility
       violations: 2,
       coverage: 95,
       trend: [90, 91, 92, 94, 95, 95, 95],
       alerts: ['Rule A violated twice', 'Coverage target met'],
+    },
+    insights: {
+      potentialRevenue: 145000,
+      revenuePerCall: 1850,
+      conversionOpportunities: 23,
+      customerSatisfactionScore: 87,
+      netPromoterScore: 62,
+      churnRisk: 8,
+      agentProductivity: 14.5,
+      averageHandlingTime: 285,
+      costPerCall: 12.50,
+      revenueGrowth: 12.5,
+      satisfactionTrend: [82, 83, 85, 86, 87, 88, 87],
+      productivityTrend: [13.2, 13.8, 14.0, 14.2, 14.4, 14.5, 14.3],
     },
     operation: {
       calls: {
