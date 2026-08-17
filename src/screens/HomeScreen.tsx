@@ -7,7 +7,6 @@ import {
   SystemHealthIndicator,
   SentimentPair,
   WeeklyCallVolumeChart,
-  ComplianceWidget,
   AnalyticsQuickView,
 } from '../components';
 import { aggregatedMetrics } from '../data/aggregatedMetrics';
@@ -67,37 +66,24 @@ export const HomeScreen: React.FC = () => {
     description: 'Agent Status',
   };
 
-  const styles2Col = StyleSheet.create({
-    grid: {
-      flexDirection: 'row',
-      gap: spacing.md,
-      flexWrap: 'wrap',
-      marginBottom: spacing.lg,
-    } as ViewStyle,
-    column: {
-      flex: 1,
-      minWidth: '48%',
-    } as ViewStyle,
-  });
+  const formatHandlingTime = (minutes: number, seconds: number) => {
+    return `${minutes}m ${seconds}s`;
+  };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       {/* Welcome Card */}
       <WelcomeCard userName="José Perdomo" />
 
-      {/* System Health & Compliance Violations - 2 Column */}
-      <View style={styles2Col.grid}>
-        <View style={styles2Col.column}>
-          <SystemHealthIndicator
-            level={health.level}
-            score={health.score}
-            variant={health.variant}
-          />
-        </View>
-        <View style={styles2Col.column}>
-          <ComplianceWidget violations={aggregatedMetrics.compliance.violationCount} />
-        </View>
-      </View>
+      {/* System Health - Full Width */}
+      <SystemHealthIndicator
+        inboundCalls={aggregatedMetrics.operation.calls.totalAnswered}
+        outboundCalls={aggregatedMetrics.operation.calls.totalOutgoing}
+        avgHandlingTime={formatHandlingTime(
+          aggregatedMetrics.operation.management.averageHandleTime.minutes,
+          aggregatedMetrics.operation.management.averageHandleTime.seconds
+        )}
+      />
 
       {/* Sentiment Metrics */}
       <SentimentPair
