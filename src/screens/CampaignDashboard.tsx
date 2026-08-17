@@ -21,7 +21,6 @@ import {
   Chart,
   ContactList,
   FilterButton,
-  SegmentedControl,
   OperationTabs,
   ContactCardHeader,
   CallDetailModal,
@@ -396,11 +395,6 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
             </Text>
           </TouchableOpacity>
         </View>
-
-        <SegmentedControl
-          activeAnalysis={infoType}
-          onSelectAnalysis={setInfoType}
-        />
 
         {renderIndicadores()}
       </View>
