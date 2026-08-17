@@ -8,7 +8,7 @@ import {
   Frown,
   Meh,
   Smile,
-  Laugh,
+  Heart,
 } from 'lucide-react';
 
 interface SentimentPairProps {
@@ -24,7 +24,7 @@ const getSentimentIcon = (level: string): React.ReactNode => {
     'Negative': <Meh size={24} strokeWidth={1.5} />,
     'Neutral': <Meh size={24} strokeWidth={1.5} />,
     'Positive': <Smile size={24} strokeWidth={1.5} />,
-    'Very Positive': <Laugh size={24} strokeWidth={1.5} />,
+    'Very Positive': <Heart size={24} strokeWidth={1.5} />,
   };
   return iconMap[level] || <Meh size={24} strokeWidth={1.5} />;
 };
@@ -81,27 +81,19 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
     sentimentTag: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: spacing.xs,
-      paddingHorizontal: spacing.sm,
-      paddingVertical: spacing.xs,
+      gap: spacing.md,
+      paddingHorizontal: 0,
+      paddingVertical: 0,
       borderRadius: borderRadius.sm,
-      marginBottom: spacing.md,
+      marginBottom: 0,
       alignSelf: 'flex-start',
       backgroundColor: 'transparent',
     } as ViewStyle,
     sentimentText: {
-      fontSize: fontSize.sm,
+      fontSize: fontSize.lg,
       fontWeight: '700',
-      lineHeight: 18,
-      minHeight: 20,
-    } as TextStyle,
-    percentage: {
-      fontSize: fontSize.sm,
-      fontWeight: '600',
-      color: themeColors.steelSecondary,
-      lineHeight: 18,
-      minHeight: 20,
-      marginTop: spacing.sm,
+      lineHeight: 24,
+      minHeight: 24,
     } as TextStyle,
   });
 
@@ -157,7 +149,6 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
                 {agentLevel}
               </Text>
             </View>
-            <Text style={styles.percentage}>{agentConfidence}% confianza</Text>
           </Card>
 
           <Card style={styles.card}>
@@ -175,7 +166,6 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
                 {clientLevel}
               </Text>
             </View>
-            <Text style={styles.percentage}>{clientConfidence}% confianza</Text>
           </Card>
         </View>
       </View>
