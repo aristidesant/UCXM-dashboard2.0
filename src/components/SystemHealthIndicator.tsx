@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
+import { usePlatform } from '../hooks/usePlatform';
 import { Card } from './Card';
 import { Badge } from './Badge';
 
@@ -27,6 +28,8 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
   const { effectiveTheme } = useTheme();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
+  const { platform } = usePlatform();
+  const isDesktop = platform === 'desktop';
 
   const getStatusColor = (status: 'success' | 'warning' | 'danger') => {
     switch (status) {
@@ -67,6 +70,8 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     container: {
       marginBottom: spacing.lg,
       width: '100%',
+      maxWidth: isDesktop ? '90%' : '100%',
+      alignSelf: 'center',
     } as ViewStyle,
     card: {
       backgroundColor: themeColors.successBg,
@@ -127,11 +132,11 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
       flex: 1,
     } as ViewStyle,
     metricLabel: {
-      fontSize: fontSize.sm,
+      fontSize: isDesktop ? fontSize.md : fontSize.sm,
       fontWeight: '600',
       color: isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)',
       marginBottom: spacing.xs,
-      lineHeight: 16,
+      lineHeight: isDesktop ? 20 : 16,
     } as TextStyle,
     metricValues: {
       flexDirection: 'row',
@@ -139,15 +144,15 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
       gap: spacing.sm,
     } as ViewStyle,
     metricValue: {
-      fontSize: fontSize.lg,
+      fontSize: isDesktop ? 28 : fontSize.lg,
       fontWeight: '700',
       color: themeColors.newtechGreen,
-      lineHeight: 26,
+      lineHeight: isDesktop ? 36 : 26,
     } as TextStyle,
     metricUnit: {
-      fontSize: fontSize.xs,
+      fontSize: isDesktop ? fontSize.sm : fontSize.xs,
       color: isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.5)',
-      lineHeight: 14,
+      lineHeight: isDesktop ? 18 : 14,
     } as TextStyle,
     metricRight: {
       alignItems: 'flex-end',
