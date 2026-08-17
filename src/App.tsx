@@ -227,16 +227,18 @@ export const App: React.FC = () => {
           bottom: 0,
           backgroundImage: backgroundGradient,
           pointerEvents: 'none',
-          zIndex: -1,
+          zIndex: 0,
         }}
       />
-      <PlatformProvider>
-        <AuthProvider>
-          <AppProvider>
-            <AppContent />
-          </AppProvider>
-        </AuthProvider>
-      </PlatformProvider>
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <PlatformProvider>
+          <AuthProvider>
+            <AppProvider>
+              <AppContent />
+            </AppProvider>
+          </AuthProvider>
+        </PlatformProvider>
+      </div>
     </>
   );
 };
