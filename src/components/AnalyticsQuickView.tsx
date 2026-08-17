@@ -25,6 +25,7 @@ export const AnalyticsQuickView: React.FC<AnalyticsQuickViewProps> = ({
 
   const styles = StyleSheet.create({
     container: {
+      flex: 1,
       marginBottom: spacing.lg,
     } as ViewStyle,
     title: {
@@ -37,6 +38,7 @@ export const AnalyticsQuickView: React.FC<AnalyticsQuickViewProps> = ({
       lineHeight: 18,
     } as TextStyle,
     grid: {
+      flex: 1,
       flexDirection: 'row',
       gap: spacing.md,
       flexWrap: 'wrap',
@@ -49,6 +51,7 @@ export const AnalyticsQuickView: React.FC<AnalyticsQuickViewProps> = ({
       backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.6)',
       borderWidth: 1,
       borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.8)',
+      justifyContent: 'center',
     } as ViewStyle,
     metricTitle: {
       fontSize: fontSize.xs,
