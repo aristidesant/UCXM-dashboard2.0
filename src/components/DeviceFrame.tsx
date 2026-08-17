@@ -26,9 +26,10 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
     container: {
       flex: 1,
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
       backgroundColor: themeColors.bgSecondary,
       padding: 20,
+      paddingTop: 40,
     } as ViewStyle,
     deviceBezel: {
       width: totalWidth,
