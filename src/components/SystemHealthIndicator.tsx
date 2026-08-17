@@ -4,10 +4,11 @@ import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { Card } from './Card';
 import { Badge } from './Badge';
+import { OperationalIndicator } from './OperationalIndicator';
 
 interface SystemHealthIndicatorProps {
-  inboundCalls: number;
-  outboundCalls: number;
+  inboundCalls?: number;
+  outboundCalls?: number;
   avgHandlingTime: string;
 }
 
@@ -87,17 +88,11 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
 
         <View style={styles.metricsGrid}>
           <View style={styles.metricItem}>
-            <Text style={styles.metricLabel}>Llamadas Entrantes</Text>
-            <Text style={styles.metricValue}>
-              {(inboundCalls / 1000).toFixed(1)}k
-            </Text>
+            <OperationalIndicator label="Llamadas Entrantes" />
           </View>
 
           <View style={styles.metricItem}>
-            <Text style={styles.metricLabel}>Llamadas Salientes</Text>
-            <Text style={styles.metricValue}>
-              {(outboundCalls / 1000).toFixed(1)}k
-            </Text>
+            <OperationalIndicator label="Llamadas Salientes" />
           </View>
 
           <View style={styles.metricItem}>
