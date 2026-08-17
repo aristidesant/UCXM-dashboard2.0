@@ -10,7 +10,7 @@ import {
   FlatList,
   CheckBox,
 } from 'react-native';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, ChevronDown } from 'lucide-react';
 import { colors, spacing, typography } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { usePlatform } from '../hooks/usePlatform';
@@ -37,6 +37,7 @@ export const CallsListScreen: React.FC<CallsListScreenProps> = ({
 
   const [selectedContactLists, setSelectedContactLists] = useState<string[]>([]);
   const [outcomeFilter, setOutcomeFilter] = useState<'todos' | 'efectivo' | 'no_efectivo'>('todos');
+  const [contactListsExpanded, setContactListsExpanded] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -122,11 +123,33 @@ export const CallsListScreen: React.FC<CallsListScreenProps> = ({
       textTransform: 'uppercase',
       fontWeight: '600',
     } as TextStyle,
-    contactListsSection: {
+    contactListsHeaderButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.md,
+      backgroundColor: themeColors.pureSurface,
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
       borderRadius: 8,
-      padding: spacing.md,
+      borderBottomLeftRadius: contactListsExpanded ? 0 : 8,
+      borderBottomRightRadius: contactListsExpanded ? 0 : 8,
+    } as ViewStyle,
+    contactListsHeaderText: {
+      ...typography.body,
+      color: themeColors.inkPrimary,
+      fontWeight: '600',
+    } as TextStyle,
+    contactListsSection: {
+      borderWidth: 1,
+      borderTopWidth: 0,
+      borderColor: themeColors.whisperBorder,
+      borderRadius: 8,
+      borderTopLeftRadius: 0,
+      borderTopRightRadius: 0,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.md,
       backgroundColor: themeColors.pureSurface,
       gap: spacing.sm,
     } as ViewStyle,
@@ -296,6 +319,17 @@ export const CallsListScreen: React.FC<CallsListScreenProps> = ({
     setCurrentPage(1);
   };
 
+  const handleSelectAllContactLists = () => {
+    if (selectedContactLists.length === contactLists.length) {
+      // If all are selected, deselect all
+      setSelectedContactLists([]);
+    } else {
+      // Select all
+      setSelectedContactLists(contactLists);
+    }
+    setCurrentPage(1);
+  };
+
   const handleOutcomeFilter = (outcome: 'todos' | 'efectivo' | 'no_efectivo') => {
     setOutcomeFilter(outcome);
     setCurrentPage(1);
@@ -365,24 +399,50 @@ export const CallsListScreen: React.FC<CallsListScreenProps> = ({
 
       {/* Filters */}
       <ScrollView style={styles.filtersContainer}>
-        {/* Contact Lists Filter */}
+        {/* Contact Lists Filter - Collapsible */}
         <View style={styles.filterSection}>
-          <Text style={styles.filterLabel}>Listas de Contacto</Text>
-          <View style={styles.contactListsSection}>
-            <View style={styles.contactListsContainer}>
-              {contactLists.map((contactList) => (
-                <View key={contactList} style={styles.contactListItem}>
+          <TouchableOpacity
+            style={styles.contactListsHeaderButton}
+            onPress={() => setContactListsExpanded(!contactListsExpanded)}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.contactListsHeaderText}>Listas de Contacto</Text>
+            <ChevronDown
+              size={20}
+              color={themeColors.inkPrimary}
+              style={{ transform: [{ rotate: contactListsExpanded ? '180deg' : '0deg' }] }}
+            />
+          </TouchableOpacity>
+
+          {contactListsExpanded && (
+            <View style={styles.contactListsSection}>
+              <View style={styles.contactListsContainer}>
+                {/* "Todas" option */}
+                <View style={styles.contactListItem}>
                   <CheckBox
-                    value={selectedContactLists.includes(contactList)}
-                    onValueChange={() => handleContactListToggle(contactList)}
+                    value={selectedContactLists.length === contactLists.length && contactLists.length > 0}
+                    onValueChange={handleSelectAllContactLists}
                     tintColor={themeColors.newtechGreen}
                     onCheckColor={themeColors.newtechGreen}
                   />
-                  <Text style={styles.contactListItemText}>{contactList}</Text>
+                  <Text style={styles.contactListItemText}>Todas</Text>
                 </View>
-              ))}
+
+                {/* Individual contact lists */}
+                {contactLists.map((contactList) => (
+                  <View key={contactList} style={styles.contactListItem}>
+                    <CheckBox
+                      value={selectedContactLists.includes(contactList)}
+                      onValueChange={() => handleContactListToggle(contactList)}
+                      tintColor={themeColors.newtechGreen}
+                      onCheckColor={themeColors.newtechGreen}
+                    />
+                    <Text style={styles.contactListItemText}>{contactList}</Text>
+                  </View>
+                ))}
+              </View>
             </View>
-          </View>
+          )}
         </View>
 
         {/* Outcome Filter */}
