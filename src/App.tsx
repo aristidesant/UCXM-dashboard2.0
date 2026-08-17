@@ -4,7 +4,7 @@ import { Home, BarChart3, Briefcase, Settings, TrendingUp } from 'lucide-react';
 import { PlatformProvider } from './context/PlatformContext';
 import { AppProvider } from './context/AppContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import { PlatformToggle, TabBar, BottomNavBar, DeviceFrame, StatusBar } from './components';
+import { PlatformToggle, TabBar, BottomNavBar, DeviceFrame, StatusBar, BackgroundLayer } from './components';
 import {
   DashboardsScreen,
   CampaignDashboardScreen,
@@ -205,40 +205,16 @@ const AppContent: React.FC = () => {
 };
 
 export const App: React.FC = () => {
-  const { effectiveTheme } = useTheme();
-  const isDark = effectiveTheme === 'dark';
-
-  const backgroundGradient = isDark
-    ? `radial-gradient(circle at 95% 5%, rgba(38, 211, 102, 0.15) 0%, rgba(11, 15, 20, 0) 25%),
-       radial-gradient(ellipse 900px 700px at 50% 120%, rgba(38, 211, 102, 0.1) 0%, rgba(11, 15, 20, 0) 45%),
-       radial-gradient(ellipse 800px 900px at -20% 105%, rgba(38, 211, 102, 0.1) 0%, rgba(11, 15, 20, 0) 55%)`
-    : `radial-gradient(circle at 95% 5%, rgba(27, 181, 74, 0.1) 0%, rgba(247, 248, 250, 0) 25%),
-       radial-gradient(ellipse 900px 700px at 50% 120%, rgba(27, 181, 74, 0.08) 0%, rgba(247, 248, 250, 0) 45%),
-       radial-gradient(ellipse 800px 900px at -20% 105%, rgba(27, 181, 74, 0.08) 0%, rgba(247, 248, 250, 0) 55%)`;
-
   return (
     <>
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: backgroundGradient,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-      <div style={{ position: 'relative', zIndex: 1, backgroundColor: 'transparent', width: '100%', height: '100%' }}>
-        <PlatformProvider>
-          <AuthProvider>
-            <AppProvider>
-              <AppContent />
-            </AppProvider>
-          </AuthProvider>
-        </PlatformProvider>
-      </div>
+      <BackgroundLayer />
+      <PlatformProvider>
+        <AuthProvider>
+          <AppProvider>
+            <AppContent />
+          </AppProvider>
+        </AuthProvider>
+      </PlatformProvider>
     </>
   );
 };
