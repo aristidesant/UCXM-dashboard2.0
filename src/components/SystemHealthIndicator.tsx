@@ -88,8 +88,8 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     } as ViewStyle,
     title: {
       fontSize: 12,
-      fontWeight: '600',
-      color: themeColors.mutedSlate,
+      fontWeight: '700',
+      color: themeColors.newtechGreen,
       textTransform: 'uppercase',
       letterSpacing: 0.5,
       lineHeight: 18,
@@ -97,24 +97,25 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     metricsGrid: {
       gap: spacing.md,
     } as ViewStyle,
-    metricRow: {
+    metricCard: {
+      backgroundColor: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.15)',
+      borderRadius: borderRadius.sm,
+      padding: spacing.md,
+      borderWidth: 1,
+      borderColor: isDark ? 'rgba(27, 181, 74, 0.2)' : 'rgba(27, 181, 74, 0.1)',
+    } as ViewStyle,
+    metricContent: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingVertical: spacing.sm,
-      borderBottomWidth: 1,
-      borderBottomColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
-    } as ViewStyle,
-    metricRowLast: {
-      borderBottomWidth: 0,
+      alignItems: 'flex-start',
     } as ViewStyle,
     metricLeft: {
       flex: 1,
     } as ViewStyle,
     metricLabel: {
       fontSize: fontSize.sm,
-      fontWeight: '500',
-      color: themeColors.steelSecondary,
+      fontWeight: '600',
+      color: isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)',
       marginBottom: spacing.xs,
       lineHeight: 16,
     } as TextStyle,
@@ -131,7 +132,7 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     } as TextStyle,
     metricUnit: {
       fontSize: fontSize.xs,
-      color: themeColors.steelSecondary,
+      color: isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.5)',
       lineHeight: 14,
     } as TextStyle,
     metricRight: {
@@ -140,7 +141,7 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     } as ViewStyle,
     target: {
       fontSize: fontSize.xs,
-      color: themeColors.steelSecondary,
+      color: isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.5)',
       lineHeight: 14,
     } as TextStyle,
     comparison: {
@@ -150,7 +151,7 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     } as ViewStyle,
     comparisonText: {
       fontSize: fontSize.xs,
-      fontWeight: '600',
+      fontWeight: '700',
       lineHeight: 14,
     } as TextStyle,
   });
@@ -165,32 +166,31 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
 
         <View style={styles.metricsGrid}>
           {metrics.map((metric, index) => (
-            <View
-              key={index}
-              style={[styles.metricRow, index === metrics.length - 1 && styles.metricRowLast]}
-            >
-              <View style={styles.metricLeft}>
-                <Text style={styles.metricLabel}>{metric.label}</Text>
-                <View style={styles.metricValues}>
-                  <Text style={[styles.metricValue, { color: getStatusColor(metric.status) }]}>
-                    {metric.value}
-                  </Text>
-                  {metric.unit && <Text style={styles.metricUnit}>{metric.unit}</Text>}
+            <View key={index} style={styles.metricCard}>
+              <View style={styles.metricContent}>
+                <View style={styles.metricLeft}>
+                  <Text style={styles.metricLabel}>{metric.label}</Text>
+                  <View style={styles.metricValues}>
+                    <Text style={[styles.metricValue, { color: getStatusColor(metric.status) }]}>
+                      {metric.value}
+                    </Text>
+                    {metric.unit && <Text style={styles.metricUnit}>{metric.unit}</Text>}
+                  </View>
                 </View>
-              </View>
 
-              <View style={styles.metricRight}>
-                <Text style={styles.target}>Meta: {metric.target}</Text>
-                <View style={styles.comparison}>
-                  {getTrendIcon(metric.comparison)}
-                  <Text
-                    style={[
-                      styles.comparisonText,
-                      { color: metric.comparison >= 0 ? themeColors.newtechGreen : '#EF4444' },
-                    ]}
-                  >
-                    {metric.comparison >= 0 ? '+' : ''}{metric.comparison}%
-                  </Text>
+                <View style={styles.metricRight}>
+                  <Text style={styles.target}>Meta: {metric.target}</Text>
+                  <View style={styles.comparison}>
+                    {getTrendIcon(metric.comparison)}
+                    <Text
+                      style={[
+                        styles.comparisonText,
+                        { color: metric.comparison >= 0 ? themeColors.newtechGreen : '#EF4444' },
+                      ]}
+                    >
+                      {metric.comparison >= 0 ? '+' : ''}{metric.comparison}%
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
