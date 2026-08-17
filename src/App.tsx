@@ -15,6 +15,7 @@ import {
   ExecutiveDashboardScreen,
   QADashboard,
   AnalyticsPage,
+  HomeScreen,
 } from './screens';
 import { useAppContext } from './context/AppContext';
 import { usePlatform } from './hooks/usePlatform';
@@ -22,11 +23,11 @@ import { useTheme } from './context/ThemeContext';
 import { colors, spacing } from './design';
 import { mockContacts } from './data/mockContacts';
 
-type Screen = 'kpi' | 'dashboards' | 'campaign' | 'contact' | 'settings' | 'analytics';
+type Screen = 'home' | 'kpi' | 'dashboards' | 'campaign' | 'contact' | 'settings' | 'analytics';
 
 const AppContent: React.FC = () => {
   const { isLoggedIn } = useAuth();
-  const [currentScreen, setCurrentScreen] = useState<Screen>('kpi');
+  const [currentScreen, setCurrentScreen] = useState<Screen>('home');
   const { currentDashboard, setCurrentDashboard } = useAppContext();
   const { platform, isMobile } = usePlatform();
   const [selectedContactId, setSelectedContactId] = useState<string | null>(null);
@@ -53,7 +54,7 @@ const AppContent: React.FC = () => {
   });
 
   const navItems = [
-    { id: 'kpi', icon: <Home size={24} color={currentScreen === 'kpi' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
+    { id: 'home', icon: <Home size={24} color={currentScreen === 'home' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
     { id: 'dashboards', icon: <Briefcase size={24} color={currentScreen === 'dashboards' || currentScreen === 'campaign' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
     { id: 'analytics', icon: <TrendingUp size={24} color={currentScreen === 'analytics' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
     { id: 'settings', icon: <Settings size={24} color={currentScreen === 'settings' ? themeColors.newtechGreen : themeColors.steelSecondary} /> },
@@ -89,6 +90,8 @@ const AppContent: React.FC = () => {
 
   const renderScreen = () => {
     switch (currentScreen) {
+      case 'home':
+        return <HomeScreen />;
       case 'kpi':
         return <QADashboard />;
       case 'dashboards':
@@ -156,7 +159,7 @@ const AppContent: React.FC = () => {
             currentScreen={currentScreen}
             onSelectScreen={(screen) => handleNavigation(screen as Screen)}
             tabs={[
-              { id: 'kpi', label: 'Home', icon: '🏠' },
+              { id: 'home', label: 'Home', icon: '🏠' },
               { id: 'dashboards', label: 'Campaigns', icon: '💼' },
               { id: 'analytics', label: 'Analytics', icon: '📊' },
               { id: 'settings', label: 'Settings', icon: '⚙️' },
