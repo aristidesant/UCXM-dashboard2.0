@@ -87,6 +87,8 @@ export const FilterModal: React.FC<FilterModalProps> = ({
       flex: 1,
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
       justifyContent: 'flex-end',
+    } as ViewStyle,
+    modalContent: {
       paddingHorizontal: isMobile ? spacing.md : 0,
     } as ViewStyle,
     container: {
@@ -97,6 +99,7 @@ export const FilterModal: React.FC<FilterModalProps> = ({
       borderBottomRightRadius: isMobile ? borderRadius.lg : 0,
       maxHeight: isMobile ? screenHeight * 0.65 : screenHeight * 0.85,
       paddingTop: isMobile ? spacing.md : spacing.lg,
+      width: '100%',
     } as ViewStyle,
     header: {
       flexDirection: 'row',
@@ -213,7 +216,8 @@ export const FilterModal: React.FC<FilterModalProps> = ({
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <View style={styles.modal}>
-        <View style={styles.container}>
+        <View style={styles.modalContent}>
+          <View style={styles.container}>
           {/* Header */}
           <View style={styles.header}>
             <Text style={styles.title}>Filtros</Text>
@@ -358,6 +362,7 @@ export const FilterModal: React.FC<FilterModalProps> = ({
               style={{ flex: 1 }}
             />
           </View>
+        </View>
         </View>
       </View>
     </Modal>
