@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, ViewStyle } from 'react-native';
-import { colors, spacing, typography } from '../design';
+import { StyleSheet, TouchableOpacity, Text, ScrollView, ViewStyle, TextStyle } from 'react-native';
+import { colors, spacing, typography, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 
 interface OperationTabsProps {
@@ -25,40 +25,37 @@ export const OperationTabs: React.FC<OperationTabsProps> = ({
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
-      gap: 32,
+      gap: spacing.md,
       paddingHorizontal: spacing.lg,
-      paddingVertical: 4,
+      paddingVertical: spacing.xs,
       backgroundColor: themeColors.canvasFrost,
     } as ViewStyle,
     pill: {
-      flex: 1,
-      paddingVertical: 8,
+      paddingVertical: spacing.sm,
       paddingHorizontal: spacing.md,
-      borderRadius: 12,
+      borderRadius: borderRadius.lg,
       borderWidth: 1,
-      height: 40,
-      borderColor: isDark ? 'rgba(200, 204, 211, 0.2)' : 'rgba(99, 115, 129, 0.15)',
-      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(99, 115, 129, 0.06)',
+      borderColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
+      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
       justifyContent: 'center',
       alignItems: 'center',
     } as ViewStyle,
     activePill: {
       backgroundColor: isDark
-        ? 'rgba(27, 181, 74, 0.25)'
-        : 'rgba(27, 181, 74, 0.18)',
+        ? `rgba(27, 181, 74, 0.15)`
+        : `rgba(27, 181, 74, 0.1)`,
       borderColor: themeColors.newtechGreen,
       borderWidth: 1.5,
     } as ViewStyle,
     label: {
-      fontSize: 12,
+      fontSize: fontSize.sm,
       fontWeight: '500',
       color: themeColors.steelSecondary,
-      lineHeight: 16,
-    } as ViewStyle,
+    } as TextStyle,
     activeLabel: {
       color: themeColors.newtechGreen,
       fontWeight: '600',
-    } as ViewStyle,
+    } as TextStyle,
   });
 
   return (
