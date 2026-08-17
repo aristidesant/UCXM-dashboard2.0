@@ -17,28 +17,28 @@
   <body>
     <svg
       id="background-effects"
-      style="position: fixed; top: -50%; left: -50%; right: -50%; bottom: -50%; width: 200%; height: 200%; pointer-events: none; z-index: 0; overflow: visible;"
-      preserveAspectRatio="none"
-      viewBox="0 0 1 1"
+      style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0;"
+      viewBox="0 0 1440 2560"
+      preserveAspectRatio="xMidYMid slice"
     >
       <defs>
-        <radialGradient id="grad1" cx="95%" cy="5%" r="50%">
+        <radialGradient id="grad1" cx="95%" cy="5%">
           <stop offset="0%" style="stop-color:rgba(38, 211, 102, 0.4);stop-opacity:1" />
-          <stop offset="100%" style="stop-color:rgba(38, 211, 102, 0);stop-opacity:1" />
+          <stop offset="50%" style="stop-color:rgba(38, 211, 102, 0);stop-opacity:1" />
         </radialGradient>
-        <radialGradient id="grad2" cx="50%" cy="120%" r="60%" fx="50%" fy="50%">
+        <radialGradient id="grad2" cx="50%" cy="120%">
           <stop offset="0%" style="stop-color:rgba(38, 211, 102, 0.3);stop-opacity:1" />
-          <stop offset="100%" style="stop-color:rgba(38, 211, 102, 0);stop-opacity:1" />
+          <stop offset="50%" style="stop-color:rgba(38, 211, 102, 0);stop-opacity:1" />
         </radialGradient>
-        <radialGradient id="grad3" cx="-20%" cy="105%" r="65%" fx="-20%" fy="105%">
+        <radialGradient id="grad3" cx="-20%" cy="105%">
           <stop offset="0%" style="stop-color:rgba(38, 211, 102, 0.3);stop-opacity:1" />
-          <stop offset="100%" style="stop-color:rgba(38, 211, 102, 0);stop-opacity:1" />
+          <stop offset="50%" style="stop-color:rgba(38, 211, 102, 0);stop-opacity:1" />
         </radialGradient>
       </defs>
-      <rect width="100%" height="100%" fill="#0b0f14" />
-      <rect width="100%" height="100%" fill="url(#grad1)" />
-      <rect width="100%" height="100%" fill="url(#grad2)" />
-      <rect width="100%" height="100%" fill="url(#grad3)" />
+      <rect width="1440" height="2560" fill="#0b0f14" />
+      <circle cx="1368" cy="128" r="400" fill="url(#grad1)" />
+      <ellipse cx="720" cy="3072" rx="900" ry="700" fill="url(#grad2)" />
+      <ellipse cx="-288" cy="2688" rx="800" ry="900" fill="url(#grad3)" />
     </svg>
     <div id="root" style="position: relative; z-index: 1; width: 100%; height: 100%;"></div>
     <script type="module" src="/src/index.tsx"></script>
