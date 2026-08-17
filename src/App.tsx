@@ -40,7 +40,7 @@ const AppContent: React.FC = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: themeColors.canvasFrost,
+      backgroundColor: 'transparent',
       backgroundImage: isDark
         ? `radial-gradient(circle at 95% 5%, rgba(38, 211, 102, 0.15) 0%, rgba(11, 15, 20, 0) 25%),
            radial-gradient(ellipse 900px 700px at 50% 120%, rgba(38, 211, 102, 0.1) 0%, rgba(11, 15, 20, 0) 45%),
@@ -51,7 +51,7 @@ const AppContent: React.FC = () => {
     } as ViewStyle,
     safeArea: {
       flex: 1,
-      backgroundColor: themeColors.canvasFrost,
+      backgroundColor: 'transparent',
       backgroundImage: isDark
         ? `radial-gradient(circle at 95% 5%, rgba(38, 211, 102, 0.15) 0%, rgba(11, 15, 20, 0) 25%),
            radial-gradient(ellipse 900px 700px at 50% 120%, rgba(38, 211, 102, 0.1) 0%, rgba(11, 15, 20, 0) 45%),
