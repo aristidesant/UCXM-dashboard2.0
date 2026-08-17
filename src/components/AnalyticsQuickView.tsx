@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
+import { usePlatform } from '../hooks/usePlatform';
 import { Card } from './Card';
 
 interface QuickMetric {
@@ -22,6 +23,8 @@ export const AnalyticsQuickView: React.FC<AnalyticsQuickViewProps> = ({
   const { effectiveTheme } = useTheme();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
+  const { platform } = usePlatform();
+  const isDesktop = platform === 'desktop';
 
   const styles = StyleSheet.create({
     container: {
@@ -54,26 +57,26 @@ export const AnalyticsQuickView: React.FC<AnalyticsQuickViewProps> = ({
       justifyContent: 'center',
     } as ViewStyle,
     metricTitle: {
-      fontSize: fontSize.sm,
+      fontSize: isDesktop ? fontSize.sm : fontSize.xs,
       fontWeight: '600',
       color: themeColors.steelSecondary,
       marginBottom: spacing.sm,
       textTransform: 'uppercase',
       letterSpacing: 0.5,
-      lineHeight: 18,
+      lineHeight: isDesktop ? 18 : 16,
     } as TextStyle,
     metricValue: {
-      fontSize: 28,
+      fontSize: isDesktop ? 28 : fontSize.lg,
       fontWeight: '700',
       color: themeColors.inkPrimary,
       marginBottom: spacing.sm,
-      lineHeight: 36,
+      lineHeight: isDesktop ? 36 : 24,
     } as TextStyle,
     metricDescription: {
-      fontSize: fontSize.sm,
+      fontSize: isDesktop ? fontSize.sm : fontSize.xs,
       fontWeight: '400',
       color: themeColors.steelSecondary,
-      lineHeight: 18,
+      lineHeight: isDesktop ? 18 : 16,
     } as TextStyle,
   });
 
