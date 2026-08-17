@@ -4,7 +4,7 @@ import { Home, BarChart3, Briefcase, Settings, TrendingUp } from 'lucide-react';
 import { PlatformProvider } from './context/PlatformContext';
 import { AppProvider } from './context/AppContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import { PlatformToggle, TabBar, BottomNavBar, DeviceFrame, StatusBar } from './components';
+import { PlatformToggle, TabBar, BottomNavBar, DeviceFrame, StatusBar, SidebarNav } from './components';
 import {
   DashboardsScreen,
   CampaignDashboardScreen,
@@ -151,20 +151,14 @@ const AppContent: React.FC = () => {
   if (platform === 'desktop') {
     return (
       <SafeAreaView style={styles.safeArea}>
-        <View style={styles.container}>
+        <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row' }}>
           <StatusBar />
           <PlatformToggle />
-          <View style={styles.content}>{renderScreen()}</View>
-          <TabBar
-            currentScreen={currentScreen}
-            onSelectScreen={(screen) => handleNavigation(screen as Screen)}
-            tabs={[
-              { id: 'home', label: 'Home', icon: '🏠' },
-              { id: 'dashboards', label: 'Campaigns', icon: '💼' },
-              { id: 'analytics', label: 'Analytics', icon: '📊' },
-              { id: 'settings', label: 'Settings', icon: '⚙️' },
-            ]}
+          <SidebarNav
+            activeScreen={currentScreen as any}
+            onNavigate={(screen) => handleNavigation(screen as Screen)}
           />
+          <View style={styles.content}>{renderScreen()}</View>
         </View>
       </SafeAreaView>
     );

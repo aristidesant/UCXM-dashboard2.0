@@ -8,6 +8,7 @@ import {
   SentimentPair,
   WeeklyCallVolumeChart,
   AnalyticsQuickView,
+  ResponsiveContainer,
 } from '../components';
 import { aggregatedMetrics } from '../data/aggregatedMetrics';
 import {
@@ -91,33 +92,35 @@ export const HomeScreen: React.FC = () => {
   ];
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
-      {/* Welcome Card */}
-      <WelcomeCard userName="José Perdomo" />
+    <ResponsiveContainer>
+      <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+        {/* Welcome Card */}
+        <WelcomeCard userName="José Perdomo" />
 
-      {/* System Health - Full Width */}
-      <SystemHealthIndicator
-        metrics={healthMetrics}
-        overallStatus="success"
-      />
+        {/* System Health - Full Width */}
+        <SystemHealthIndicator
+          metrics={healthMetrics}
+          overallStatus="success"
+        />
 
-      {/* Sentiment Metrics */}
-      <SentimentPair
-        agentEmotion={aggregatedMetrics.emotion.agentPredominantEmotion}
-        agentConfidence={aggregatedMetrics.emotion.agentConfidenceScore}
-        clientEmotion={aggregatedMetrics.emotion.clientPredominantEmotion}
-        clientConfidence={aggregatedMetrics.emotion.clientConfidenceScore}
-      />
+        {/* Sentiment Metrics */}
+        <SentimentPair
+          agentEmotion={aggregatedMetrics.emotion.agentPredominantEmotion}
+          agentConfidence={aggregatedMetrics.emotion.agentConfidenceScore}
+          clientEmotion={aggregatedMetrics.emotion.clientPredominantEmotion}
+          clientConfidence={aggregatedMetrics.emotion.clientConfidenceScore}
+        />
 
-      {/* Weekly Call Volume Chart */}
-      <WeeklyCallVolumeChart data={weeklyData.data} labels={weeklyData.labels} />
+        {/* Weekly Call Volume Chart */}
+        <WeeklyCallVolumeChart data={weeklyData.data} labels={weeklyData.labels} />
 
-      {/* Analytics Quick View */}
-      <AnalyticsQuickView
-        compliance={complianceMetric}
-        emotion={emotionMetric}
-      />
-    </ScrollView>
+        {/* Analytics Quick View */}
+        <AnalyticsQuickView
+          compliance={complianceMetric}
+          emotion={emotionMetric}
+        />
+      </ScrollView>
+    </ResponsiveContainer>
   );
 };
 
