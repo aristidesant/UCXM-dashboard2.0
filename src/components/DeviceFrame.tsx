@@ -31,15 +31,15 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
       backgroundColor: 'transparent',
       borderWidth: 1,
       borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-      padding: bezelSize - 1, // Adjust for border width
-      overflow: 'visible',
+      padding: bezelSize - 1,
+      overflow: 'hidden',
       elevation: 20,
     } as ViewStyle,
     screenContent: {
       flex: 1,
       borderRadius: Math.max(0, dimensions.borderRadius - bezelSize),
       backgroundColor: 'transparent',
-      overflow: 'visible',
+      overflow: 'hidden',
       margin: 0,
     } as ViewStyle,
   });
