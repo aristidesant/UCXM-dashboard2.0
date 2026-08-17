@@ -8,12 +8,12 @@ import {
   ScrollView,
   ViewStyle,
   TextStyle,
-  Dimensions,
 } from 'react-native';
 import { X } from 'lucide-react';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { usePlatform } from '../hooks/usePlatform';
+import { usePlatformContext } from '../context/PlatformContext';
 import { Button } from './Button';
 
 interface FilterModalProps {
@@ -36,9 +36,10 @@ export const FilterModal: React.FC<FilterModalProps> = ({
 }) => {
   const { effectiveTheme } = useTheme();
   const { isMobile } = usePlatform();
+  const { dimensions } = usePlatformContext();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
-  const screenHeight = Dimensions.get('window').height;
+  const screenHeight = dimensions.height;
 
   const [filters, setFilters] = useState<FilterValues>({
     campaignType: [],
