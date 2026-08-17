@@ -47,8 +47,7 @@ export const DeviceFrame: React.FC<DeviceFrameProps> = ({ children }) => {
         backgroundColor: themeColors.bgSecondary,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 10,
-        paddingHorizontal: 10,
+        padding: 5,
       }}
     >
       <View style={styles.deviceBezel}>
