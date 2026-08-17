@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { Card } from './Card';
-import { getSentimentLevel, getSentimentColor, getSentimentTrend } from '../utils/homeScreenMetrics';
+import { getSentimentLevel, getSentimentColor } from '../utils/homeScreenMetrics';
 
 interface SentimentPairProps {
   agentEmotion: string;
@@ -11,6 +11,21 @@ interface SentimentPairProps {
   clientEmotion: string;
   clientConfidence: number;
 }
+
+const getSentimentIcon = (level: string): string => {
+  const iconMap: Record<string, string> = {
+    'Very Negative': '😢',
+    'Negative': '😐',
+    'Neutral': '😑',
+    'Positive': '🙂',
+    'Very Positive': '😊',
+    'Professional': '💼',
+    'Empathetic': '❤️',
+    'Polite': '👋',
+    'Casual': '💬',
+  };
+  return iconMap[level] || '😐';
+};
 
 export const SentimentPair: React.FC<SentimentPairProps> = ({
   agentEmotion,
@@ -51,26 +66,32 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
       fontSize: fontSize.sm,
       fontWeight: '600',
       color: themeColors.steelSecondary,
-      marginBottom: spacing.sm,
+      marginBottom: spacing.md,
       lineHeight: 18,
     } as TextStyle,
-    sentiment: {
-      fontSize: fontSize.lg,
+    sentimentTag: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.md,
+      marginBottom: spacing.md,
+      alignSelf: 'flex-start',
+    } as ViewStyle,
+    sentimentIcon: {
+      fontSize: 18,
+    } as TextStyle,
+    sentimentText: {
+      fontSize: fontSize.sm,
       fontWeight: '700',
-      marginBottom: spacing.sm,
-      lineHeight: 24,
+      lineHeight: 18,
     } as TextStyle,
     percentage: {
       fontSize: fontSize.sm,
       fontWeight: '600',
       color: themeColors.steelSecondary,
-      marginTop: spacing.xs,
       lineHeight: 18,
-    } as TextStyle,
-    trend: {
-      fontSize: 16,
-      fontWeight: '700',
-      marginRight: spacing.xs,
     } as TextStyle,
   });
 
@@ -78,8 +99,8 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
   const clientLevel = getSentimentLevel(clientEmotion);
   const agentColor = getSentimentColor(agentEmotion);
   const clientColor = getSentimentColor(clientEmotion);
-  const agentTrend = getSentimentTrend(agentConfidence);
-  const clientTrend = getSentimentTrend(clientConfidence);
+  const agentIcon = getSentimentIcon(agentLevel);
+  const clientIcon = getSentimentIcon(clientLevel);
 
   return (
     <View style={styles.container}>
@@ -87,17 +108,41 @@ export const SentimentPair: React.FC<SentimentPairProps> = ({
       <View style={styles.grid}>
         <Card style={styles.card}>
           <Text style={styles.label}>Agent Sentiment</Text>
-          <Text style={[styles.sentiment, { color: agentColor }]}>
-            {agentTrend} {agentLevel}
-          </Text>
+          <View
+            style={[
+              styles.sentimentTag,
+              {
+                backgroundColor: `${agentColor}20`,
+                borderWidth: 1,
+                borderColor: agentColor,
+              },
+            ]}
+          >
+            <Text style={styles.sentimentIcon}>{agentIcon}</Text>
+            <Text style={[styles.sentimentText, { color: agentColor }]}>
+              {agentLevel}
+            </Text>
+          </View>
           <Text style={styles.percentage}>{agentConfidence}% confidence</Text>
         </Card>
 
         <Card style={styles.card}>
           <Text style={styles.label}>Client Sentiment</Text>
-          <Text style={[styles.sentiment, { color: clientColor }]}>
-            {clientTrend} {clientLevel}
-          </Text>
+          <View
+            style={[
+              styles.sentimentTag,
+              {
+                backgroundColor: `${clientColor}20`,
+                borderWidth: 1,
+                borderColor: clientColor,
+              },
+            ]}
+          >
+            <Text style={styles.sentimentIcon}>{clientIcon}</Text>
+            <Text style={[styles.sentimentText, { color: clientColor }]}>
+              {clientLevel}
+            </Text>
+          </View>
           <Text style={styles.percentage}>{clientConfidence}% confidence</Text>
         </Card>
       </View>
