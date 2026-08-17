@@ -177,13 +177,13 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
       marginTop: spacing.xs,
     } as ViewStyle,
     statusActive: {
-      backgroundColor: isDark ? `rgba(27, 181, 74, 0.15)` : `rgba(27, 181, 74, 0.1)`,
+      backgroundColor: isDark ? 'rgba(27, 181, 74, 0.15)' : 'rgba(27, 181, 74, 0.1)',
     } as ViewStyle,
     statusInactive: {
-      backgroundColor: isDark ? `rgba(156, 163, 175, 0.15)` : `rgba(156, 163, 175, 0.1)`,
+      backgroundColor: isDark ? 'rgba(156, 163, 175, 0.15)' : 'rgba(156, 163, 175, 0.1)',
     } as ViewStyle,
     statusPaused: {
-      backgroundColor: isDark ? `rgba(251, 146, 60, 0.15)` : `rgba(251, 146, 60, 0.1)`,
+      backgroundColor: isDark ? 'rgba(251, 146, 60, 0.15)' : 'rgba(251, 146, 60, 0.1)',
     } as ViewStyle,
     statusText: {
       fontSize: 12,
