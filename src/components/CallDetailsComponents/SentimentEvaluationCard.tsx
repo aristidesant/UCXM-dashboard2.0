@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { colors, spacing, borderRadius, fontSize } from '../../design';
 import { useTheme } from '../../context/ThemeContext';
-import { getEmotionLabel, getToneLabel } from '../../utils/homeScreenMetrics';
+import { getEmotionLabel, getToneLabel, getSentimentLevel, getSentimentColor } from '../../utils/homeScreenMetrics';
 
 interface SentimentEvaluationCardProps {
   agentSentiment?: string;
@@ -39,36 +39,52 @@ export const SentimentEvaluationCard: React.FC<SentimentEvaluationCardProps> = (
     } as ViewStyle,
     section: {
       marginBottom: spacing.md,
+      paddingBottom: spacing.md,
+      borderBottomWidth: 1,
+      borderBottomColor: themeColors.whisperBorder,
     } as ViewStyle,
     lastSection: {
       marginBottom: 0,
+      paddingBottom: 0,
+      borderBottomWidth: 0,
     } as ViewStyle,
     sectionTitle: {
-      fontSize: fontSize.sm,
+      fontSize: fontSize.xs,
       fontWeight: '600',
       color: themeColors.steelSecondary,
       marginBottom: spacing.sm,
       textTransform: 'uppercase',
+      letterSpacing: 0.5,
     } as TextStyle,
     row: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      paddingVertical: spacing.xs,
+      marginBottom: spacing.sm,
     } as ViewStyle,
     label: {
       fontSize: fontSize.xs,
       color: themeColors.steelSecondary,
       fontWeight: '500',
     } as TextStyle,
-    value: {
-      fontSize: fontSize.sm,
-      fontWeight: '700',
-      color: themeColors.inkPrimary,
+    badge: {
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+      borderRadius: borderRadius.sm,
+      backgroundColor: '#CCCCCC',
+    } as ViewStyle,
+    badgeText: {
+      fontSize: fontSize.xs,
+      fontWeight: '600',
+      color: '#FFFFFF',
     } as TextStyle,
-    toneDistribution: {
+    toneSection: {
+      marginTop: spacing.sm,
+    } as ViewStyle,
+    toneRow: {
       flexDirection: 'row',
       gap: spacing.xs,
+      flexWrap: 'wrap',
       marginTop: spacing.sm,
     } as ViewStyle,
     tonePill: {
@@ -76,6 +92,7 @@ export const SentimentEvaluationCard: React.FC<SentimentEvaluationCardProps> = (
       paddingVertical: spacing.xs,
       borderRadius: borderRadius.sm,
       backgroundColor: isDark ? themeColors.canvasDark : colors.light.sunkenBase,
+      marginBottom: spacing.xs,
     } as ViewStyle,
     tonePillText: {
       fontSize: fontSize.xs,
@@ -83,6 +100,10 @@ export const SentimentEvaluationCard: React.FC<SentimentEvaluationCardProps> = (
       color: themeColors.inkPrimary,
     } as TextStyle,
   });
+
+  const getSentimentBadgeColor = (sentiment: string): string => {
+    return getSentimentColor(sentiment) || '#CCCCCC';
+  };
 
   const getPrimaryTone = () => {
     if (!agentTone) return 'professional';
@@ -97,11 +118,15 @@ export const SentimentEvaluationCard: React.FC<SentimentEvaluationCardProps> = (
         <Text style={styles.sectionTitle}>Sentimiento del Agente</Text>
         <View style={styles.row}>
           <Text style={styles.label}>Sentimiento:</Text>
-          <Text style={styles.value}>{getEmotionLabel(agentSentiment)}</Text>
+          <View style={[styles.badge, { backgroundColor: getSentimentBadgeColor(agentSentiment) }]}>
+            <Text style={styles.badgeText}>{getSentimentLevel(agentSentiment)}</Text>
+          </View>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Emoción:</Text>
-          <Text style={styles.value}>{getEmotionLabel(agentEmotion)}</Text>
+          <View style={[styles.badge, { backgroundColor: getSentimentBadgeColor(agentEmotion) }]}>
+            <Text style={styles.badgeText}>{getEmotionLabel(agentEmotion)}</Text>
+          </View>
         </View>
       </View>
 
@@ -110,11 +135,15 @@ export const SentimentEvaluationCard: React.FC<SentimentEvaluationCardProps> = (
         <Text style={styles.sectionTitle}>Sentimiento del Cliente</Text>
         <View style={styles.row}>
           <Text style={styles.label}>Sentimiento:</Text>
-          <Text style={styles.value}>{getEmotionLabel(clientSentiment)}</Text>
+          <View style={[styles.badge, { backgroundColor: getSentimentBadgeColor(clientSentiment) }]}>
+            <Text style={styles.badgeText}>{getSentimentLevel(clientSentiment)}</Text>
+          </View>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Emoción:</Text>
-          <Text style={styles.value}>{getEmotionLabel(clientEmotion)}</Text>
+          <View style={[styles.badge, { backgroundColor: getSentimentBadgeColor(clientEmotion) }]}>
+            <Text style={styles.badgeText}>{getEmotionLabel(clientEmotion)}</Text>
+          </View>
         </View>
       </View>
 
@@ -123,19 +152,24 @@ export const SentimentEvaluationCard: React.FC<SentimentEvaluationCardProps> = (
         <Text style={styles.sectionTitle}>Tono del Agente</Text>
         <View style={styles.row}>
           <Text style={styles.label}>Predominante:</Text>
-          <Text style={styles.value}>{getToneLabel(getPrimaryTone())}</Text>
+          <View style={[styles.badge, { backgroundColor: colors.light.newtechGreen }]}>
+            <Text style={styles.badgeText}>{getToneLabel(getPrimaryTone())}</Text>
+          </View>
         </View>
-        <View style={styles.toneDistribution}>
-          {agentTone &&
-            Object.entries(agentTone)
-              .sort(([, a], [, b]) => b - a)
-              .map(([tone, percentage]) => (
-                <View key={tone} style={styles.tonePill}>
-                  <Text style={styles.tonePillText}>
-                    {getToneLabel(tone)}: {percentage}%
-                  </Text>
-                </View>
-              ))}
+        <View style={styles.toneSection}>
+          <Text style={styles.label}>Distribución:</Text>
+          <View style={styles.toneRow}>
+            {agentTone &&
+              Object.entries(agentTone)
+                .sort(([, a], [, b]) => b - a)
+                .map(([tone, percentage]) => (
+                  <View key={tone} style={styles.tonePill}>
+                    <Text style={styles.tonePillText}>
+                      {getToneLabel(tone)}: {percentage}%
+                    </Text>
+                  </View>
+                ))}
+          </View>
         </View>
       </View>
     </View>
