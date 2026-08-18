@@ -151,6 +151,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       color: themeColors.inkPrimary,
     },
     tableContainer: {
+      flex: 1,
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
       borderRadius: 8,
@@ -276,7 +277,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       </View>
 
       {!isMobile && (
-        <>
+        <View style={{ flex: 1, flexDirection: 'column' }}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={styles.filterBar}>
               <TouchableOpacity
@@ -461,7 +462,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
               </TouchableOpacity>
             </View>
           </View>
-        </>
+        </View>
       )}
 
       {isMobile && (
