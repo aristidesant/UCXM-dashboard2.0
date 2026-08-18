@@ -80,7 +80,7 @@ const AppContent: React.FC = () => {
 
   const handleBack = () => {
     if (currentScreen === 'callDetails') {
-      setCurrentScreen('contact');
+      setCurrentScreen('campaign');
       setSelectedCall(null);
     } else if (currentScreen === 'contact') {
       setCurrentScreen('campaign');
