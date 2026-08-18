@@ -4,7 +4,7 @@ import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { Card, MetricCard } from './index';
 import type { EmotionMetrics } from '../data/mockMetrics';
-import { getSentimentLevel, getEmotionLabel } from '../utils/homeScreenMetrics';
+import { getSentimentLevel, getEmotionLabel, getToneLabel } from '../utils/homeScreenMetrics';
 
 interface EmotionMetricsPanelProps {
   metrics: EmotionMetrics;
@@ -188,8 +188,8 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
                   marginBottom: spacing.xs,
                 }}
               >
-                <Text style={[styles.distributionLabel, { textTransform: 'capitalize' }]}>
-                  {emotion}
+                <Text style={styles.distributionLabel}>
+                  {getEmotionLabel(emotion)}
                 </Text>
                 <Text style={styles.distributionPercentage}>{percentage}%</Text>
               </View>
@@ -223,7 +223,7 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
                 },
               ]}
             >
-              <Text style={[styles.toneName, { textTransform: 'capitalize' }]}>{tone}</Text>
+              <Text style={styles.toneName}>{getToneLabel(tone)}</Text>
               <Text style={styles.tonePercentage}>{percentage}%</Text>
             </View>
           ))}

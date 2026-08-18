@@ -5,17 +5,15 @@ export const getEmotionLabel = (emotion: string): string => {
     // Existing emotions
     joy: 'Alegría',
     satisfaction: 'Satisfacción',
-    professional: 'Profesionalismo',
-    satisfied: 'Satisfecho',
-    positive: 'Positivo',
     neutral: 'Neutral',
+    frustration: 'Frustración',
+    anger: 'Ira',
+    sadness: 'Tristeza',
+    positive: 'Positivo',
     negative: 'Negativo',
     frustrated: 'Frustrado',
     angry: 'Enojado',
-    sadness: 'Tristeza',
-    empathetic: 'Empatía',
-    polite: 'Amable',
-    casual: 'Casual',
+    satisfied: 'Satisfecho',
     // New emotions (12 total)
     elation: 'Euforia',
     gratitude: 'Gratitud',
@@ -26,6 +24,16 @@ export const getEmotionLabel = (emotion: string): string => {
     rage: 'Furia',
   };
   return emotionLabels[emotion] || emotion;
+};
+
+export const getToneLabel = (tone: string): string => {
+  const toneLabels: Record<string, string> = {
+    professional: 'Profesional',
+    empathetic: 'Empático',
+    polite: 'Educado',
+    casual: 'Informal',
+  };
+  return toneLabels[tone] || tone;
 };
 
 export const getSentimentLevel = (emotion: string): string => {
