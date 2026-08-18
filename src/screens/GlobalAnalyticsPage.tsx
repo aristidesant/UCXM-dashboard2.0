@@ -44,12 +44,15 @@ export const GlobalAnalyticsPage: React.FC = () => {
       flexDirection: 'column',
     } as ViewStyle,
     contentWrapper: {
-      flex: 1,
+      paddingHorizontal: responsivePadding,
+      paddingVertical: spacing.md,
+    } as ViewStyle,
+    headerWrapper: {
       paddingHorizontal: responsivePadding,
       paddingVertical: spacing.md,
     } as ViewStyle,
     header: {
-      marginBottom: spacing.md,
+      marginBottom: 0,
     } as ViewStyle,
     headerTitle: {
       fontSize: 32,
@@ -120,7 +123,7 @@ export const GlobalAnalyticsPage: React.FC = () => {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <View style={styles.contentWrapper}>
+      <View style={styles.headerWrapper}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Análisis General</Text>
           <Text style={styles.headerSubtitle}>Métricas agregadas de todas las campañas</Text>
@@ -147,7 +150,7 @@ export const GlobalAnalyticsPage: React.FC = () => {
       <AnalysisTabSelector activeTab={selectedAnalysis} onSelectTab={setSelectedAnalysis} />
 
       {/* Content */}
-      <ScrollView style={[styles.contentWrapper, styles.contentContainer]} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: responsivePadding, paddingVertical: spacing.md }}>
         {renderContent()}
       </ScrollView>
     </View>
