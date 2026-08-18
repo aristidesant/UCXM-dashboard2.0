@@ -29,10 +29,10 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
   const { isMobile } = usePlatform();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
-  const [evaluationType, setEvaluationType] = useState<EvaluationType>('operational');
+  const [selectedEvaluationType, setSelectedEvaluationType] = useState<EvaluationType>('operational');
 
   const getEvaluationContent = () => {
-    switch (evaluationType) {
+    switch (selectedEvaluationType) {
       case 'operational':
         return {
           title: 'Análisis Operacional',
@@ -169,7 +169,9 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       </View>
 
       {/* Evaluation Type Selector */}
-      <EvaluationTypeSelector activeType={evaluationType} onSelectType={setEvaluationType} />
+      <View style={{ paddingHorizontal: spacing.md, paddingVertical: spacing.md }}>
+        <EvaluationTypeSelector selectedType={selectedEvaluationType} onSelectType={setSelectedEvaluationType} />
+      </View>
 
       {/* Scrollable Content */}
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
