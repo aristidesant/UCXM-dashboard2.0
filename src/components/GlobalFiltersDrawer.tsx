@@ -7,8 +7,9 @@ import {
   ViewStyle,
   TextStyle,
   ScrollView,
+  TextInput,
 } from 'react-native';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Calendar } from 'lucide-react';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { useUpdateFilters, useGlobalAnalytics } from '../hooks/useGlobalAnalytics';
@@ -78,11 +79,12 @@ export const GlobalFiltersDrawer: React.FC<GlobalFiltersDrawerProps> = ({
       justifyContent: 'flex-end',
     } as ViewStyle,
     container: {
-      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
-      borderTopLeftRadius: borderRadius.xl,
-      borderTopRightRadius: borderRadius.xl,
+      backgroundColor: isDark ? '#1A1F27' : '#F5F6F8',
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
       maxHeight: '70%',
       paddingBottom: spacing.lg,
+      overflow: 'hidden',
     } as ViewStyle,
     header: {
       flexDirection: 'row',
@@ -181,6 +183,28 @@ export const GlobalFiltersDrawer: React.FC<GlobalFiltersDrawerProps> = ({
     clearButtonText: {
       color: themeColors.steelSecondary,
     } as TextStyle,
+    dateRangeContainer: {
+      gap: spacing.md,
+    } as ViewStyle,
+    dateInputWrapper: {
+      flexDirection: 'row',
+      gap: spacing.sm,
+      alignItems: 'center',
+    } as ViewStyle,
+    dateInput: {
+      flex: 1,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      backgroundColor: isDark ? themeColors.canvasDark : colors.light.canvasLight,
+      borderRadius: borderRadius.md,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+      color: themeColors.inkPrimary,
+      fontSize: fontSize.sm,
+    } as ViewStyle,
+    dateIcon: {
+      padding: spacing.sm,
+    } as ViewStyle,
   });
 
   if (!visible) {
@@ -205,6 +229,33 @@ export const GlobalFiltersDrawer: React.FC<GlobalFiltersDrawerProps> = ({
 
         {/* Filters */}
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+          {/* Date Range */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Rango de Fechas</Text>
+            <View style={styles.dateRangeContainer}>
+              <View style={styles.dateInputWrapper}>
+                <Calendar size={18} color={themeColors.steelSecondary} strokeWidth={2} />
+                <TextInput
+                  style={styles.dateInput}
+                  placeholder="Desde"
+                  placeholderTextColor={themeColors.steelSecondary}
+                  value={localDateFrom}
+                  onChangeText={setLocalDateFrom}
+                />
+              </View>
+              <View style={styles.dateInputWrapper}>
+                <Calendar size={18} color={themeColors.steelSecondary} strokeWidth={2} />
+                <TextInput
+                  style={styles.dateInput}
+                  placeholder="Hasta"
+                  placeholderTextColor={themeColors.steelSecondary}
+                  value={localDateTo}
+                  onChangeText={setLocalDateTo}
+                />
+              </View>
+            </View>
+          </View>
+
           {/* Campaign Type */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Tipo de Campaña</Text>
