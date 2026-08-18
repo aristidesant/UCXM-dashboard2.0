@@ -66,7 +66,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
   const [mainTab, setMainTab] = useState<'indicadores' | 'detalles'>('indicadores');
   const [showCallsList, setShowCallsList] = useState(false);
   const [selectedCall, setSelectedCall] = useState<Call | null>(null);
-  const [showAnalysisSelector, setShowAnalysisSelector] = useState(true);
+  const [showAnalysisSelector, setShowAnalysisSelector] = useState(false);
   const [evaluationType, setEvaluationType] = useState<EvaluationType>('operational');
 
   // Map evaluation type to infoType
@@ -526,10 +526,11 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
           </View>
         </View>
 
-        <View style={{ flex: 1 }}>
-          <AnalysisTypeSelector
-            onSelectAnalysis={(analysisType) => {
-              setInfoType(analysisType);
+        <View style={{ flex: 1, paddingHorizontal: spacing.lg, paddingVertical: spacing.lg, justifyContent: 'center', alignItems: 'center' }}>
+          <EvaluationTypeSelector
+            selectedType={evaluationType}
+            onSelectType={(evalType) => {
+              setEvaluationType(evalType);
               setShowAnalysisSelector(false);
             }}
           />
@@ -554,7 +555,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
           <View style={styles.headerLeft}>
             <TouchableOpacity
               style={styles.backButton}
-              onPress={() => setShowAnalysisSelector(true)}
+              onPress={onBack}
               activeOpacity={0.7}
             >
               <ChevronLeft size={24} color={themeColors.newtechGreen} />
