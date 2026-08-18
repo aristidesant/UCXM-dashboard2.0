@@ -34,6 +34,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
   const [selectedLineOfBusiness, setSelectedLineOfBusiness] = React.useState<string>('');
   const [dateRange, setDateRange] = React.useState<{ from: string; to: string }>({ from: '', to: '' });
   const [currentPage, setCurrentPage] = React.useState(1);
+  const [openFilter, setOpenFilter] = React.useState<string | null>(null);
   const itemsPerPage = 20;
 
   const uniqueStatuses = Array.from(new Set(mockDashboards.map(d => d.status))).sort();
@@ -290,6 +291,8 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
                   setCurrentPage(1);
                 }}
                 minWidth={140}
+                isOpen={openFilter === 'status'}
+                onOpenChange={(isOpen) => setOpenFilter(isOpen ? 'status' : null)}
               />
 
               <Dropdown
@@ -301,6 +304,8 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
                   setCurrentPage(1);
                 }}
                 minWidth={160}
+                isOpen={openFilter === 'campaign'}
+                onOpenChange={(isOpen) => setOpenFilter(isOpen ? 'campaign' : null)}
               />
 
               <Dropdown
@@ -312,6 +317,8 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
                   setCurrentPage(1);
                 }}
                 minWidth={160}
+                isOpen={openFilter === 'lob'}
+                onOpenChange={(isOpen) => setOpenFilter(isOpen ? 'lob' : null)}
               />
 
               <DatePicker
@@ -322,6 +329,8 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
                   setCurrentPage(1);
                 }}
                 minWidth={140}
+                isOpen={openFilter === 'from'}
+                onOpenChange={(isOpen) => setOpenFilter(isOpen ? 'from' : null)}
               />
 
               <DatePicker
@@ -332,6 +341,8 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
                   setCurrentPage(1);
                 }}
                 minWidth={140}
+                isOpen={openFilter === 'to'}
+                onOpenChange={(isOpen) => setOpenFilter(isOpen ? 'to' : null)}
               />
           </View>
 

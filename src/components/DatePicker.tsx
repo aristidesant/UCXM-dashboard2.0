@@ -16,6 +16,8 @@ interface DatePickerProps {
   value: string;
   onChange: (date: string) => void;
   minWidth?: number;
+  isOpen?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({
@@ -23,8 +25,17 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   value,
   onChange,
   minWidth = 140,
+  isOpen: externalIsOpen,
+  onOpenChange,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+  const setIsOpen = (val: boolean) => {
+    if (externalIsOpen === undefined) {
+      setInternalIsOpen(val);
+    }
+    onOpenChange?.(val);
+  };
   const { effectiveTheme } = useTheme();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;

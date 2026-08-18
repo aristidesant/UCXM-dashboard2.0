@@ -22,6 +22,8 @@ interface DropdownProps {
   options: DropdownOption[];
   onChange: (value: string) => void;
   minWidth?: number;
+  isOpen?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
 export const Dropdown: React.FC<DropdownProps> = ({
@@ -30,8 +32,17 @@ export const Dropdown: React.FC<DropdownProps> = ({
   options,
   onChange,
   minWidth = 150,
+  isOpen: externalIsOpen,
+  onOpenChange,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+  const setIsOpen = (val: boolean) => {
+    if (externalIsOpen === undefined) {
+      setInternalIsOpen(val);
+    }
+    onOpenChange?.(val);
+  };
   const { effectiveTheme } = useTheme();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
