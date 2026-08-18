@@ -76,19 +76,7 @@ const QAScore: React.FC<QAScoreProps> = ({
       color: themeColors.steelSecondary,
       fontWeight: '400',
     } as TextStyle,
-    bar: {
-      height: 8,
-      backgroundColor: isDark ? themeColors.canvasDark : colors.light.sunkenBase,
-      borderRadius: borderRadius.sm,
-      overflow: 'hidden',
-    } as ViewStyle,
-    barFill: {
-      height: '100%',
-      backgroundColor: getStatusColor(),
-    } as ViewStyle,
   });
-
-  const percentage = Math.min((value / threshold) * 100, 100);
 
   return (
     <View style={styles.card}>
@@ -96,9 +84,6 @@ const QAScore: React.FC<QAScoreProps> = ({
       <View style={styles.scoreContainer}>
         <Text style={styles.value}>{value}</Text>
         <Text style={styles.threshold}>Umbral: {threshold}</Text>
-      </View>
-      <View style={styles.bar}>
-        <View style={[styles.barFill, { width: `${percentage}%` }]} />
       </View>
     </View>
   );
