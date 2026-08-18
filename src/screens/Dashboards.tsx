@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   StyleSheet,
   View,
@@ -29,10 +29,49 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
   const [search, setSearch] = React.useState('');
+  const [selectedStatus, setSelectedStatus] = React.useState<string>('');
+  const [selectedCampaignType, setSelectedCampaignType] = React.useState<string>('');
+  const [selectedLineOfBusiness, setSelectedLineOfBusiness] = React.useState<string>('');
+  const [dateRange, setDateRange] = React.useState<{ from: string; to: string }>({ from: '', to: '' });
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [expandedFilter, setExpandedFilter] = React.useState<string | null>(null);
+  const itemsPerPage = 20;
 
-  const filteredDashboards = mockDashboards.filter((d) =>
-    d.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const uniqueStatuses = Array.from(new Set(mockDashboards.map(d => d.status))).sort();
+  const uniqueCampaignTypes = Array.from(new Set(mockDashboards.map(d => d.campaignType))).sort();
+  const uniqueLineOfBusiness = Array.from(new Set(mockDashboards.map(d => d.lineOfBusiness))).sort();
+
+  const filteredDashboards = useMemo(() => {
+    return mockDashboards.filter((d) => {
+      const matchesSearch = d.name.toLowerCase().includes(search.toLowerCase());
+      const matchesStatus = !selectedStatus || d.status === selectedStatus;
+      const matchesCampaignType = !selectedCampaignType || d.campaignType === selectedCampaignType;
+      const matchesLineOfBusiness = !selectedLineOfBusiness || d.lineOfBusiness === selectedLineOfBusiness;
+
+      let matchesDate = true;
+      if (dateRange.from || dateRange.to) {
+        const dashboardDate = new Date(d.lastUpdated);
+        if (dateRange.from) {
+          const fromDate = new Date(dateRange.from);
+          matchesDate = matchesDate && dashboardDate >= fromDate;
+        }
+        if (dateRange.to) {
+          const toDate = new Date(dateRange.to);
+          toDate.setHours(23, 59, 59, 999);
+          matchesDate = matchesDate && dashboardDate <= toDate;
+        }
+      }
+
+      return matchesSearch && matchesStatus && matchesCampaignType && matchesLineOfBusiness && matchesDate;
+    });
+  }, [search, selectedStatus, selectedCampaignType, selectedLineOfBusiness, dateRange]);
+
+  const paginatedDashboards = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredDashboards.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredDashboards, currentPage]);
+
+  const totalPages = Math.ceil(filteredDashboards.length / itemsPerPage);
 
   const styles = StyleSheet.create({
     container: {
@@ -93,6 +132,99 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       justifyContent: 'space-between',
       alignItems: 'center',
     },
+    filterBar: {
+      flexDirection: 'row',
+      gap: spacing.md,
+      marginBottom: spacing.lg,
+      flexWrap: 'wrap',
+    } as ViewStyle,
+    filterSelect: {
+      flex: 1,
+      minWidth: 150,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+      borderRadius: 8,
+      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.md,
+      fontSize: 14,
+      fontWeight: '400',
+      color: themeColors.inkPrimary,
+    },
+    tableContainer: {
+      flex: 1,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+      borderRadius: 8,
+      overflow: 'hidden',
+      marginBottom: spacing.lg,
+    } as ViewStyle,
+    tableHeader: {
+      flexDirection: 'row',
+      backgroundColor: themeColors.sunkenBase,
+      borderBottomWidth: 1,
+      borderBottomColor: themeColors.whisperBorder,
+    } as ViewStyle,
+    tableHeaderCell: {
+      flex: 1,
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.md,
+    } as ViewStyle,
+    tableHeaderText: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: themeColors.inkPrimary,
+    },
+    tableRow: {
+      flexDirection: 'row',
+      borderBottomWidth: 1,
+      borderBottomColor: themeColors.whisperBorder,
+    } as ViewStyle,
+    tableCell: {
+      flex: 1,
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.md,
+    } as ViewStyle,
+    tableStatusCell: {
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.md,
+    } as ViewStyle,
+    tableCellText: {
+      fontSize: 14,
+      fontWeight: '400',
+      color: themeColors.inkPrimary,
+    },
+    tableRowTouchable: {
+      flexDirection: 'row',
+      borderBottomWidth: 1,
+      borderBottomColor: themeColors.whisperBorder,
+    } as ViewStyle,
+    paginationContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingTop: spacing.md,
+    } as ViewStyle,
+    paginationText: {
+      fontSize: 14,
+      fontWeight: '400',
+      color: themeColors.mutedSlate,
+    },
+    paginationButton: {
+      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.md,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+      borderRadius: 6,
+      backgroundColor: themeColors.sunkenBase,
+    } as ViewStyle,
+    paginationButtonText: {
+      fontSize: 14,
+      fontWeight: '500',
+      color: themeColors.inkPrimary,
+    },
+    paginationButtonDisabled: {
+      opacity: 0.5,
+    } as ViewStyle,
   });
 
   const renderDashboard = ({ item }: { item: typeof mockDashboards[0] }) => (
@@ -115,6 +247,22 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
     </TouchableOpacity>
   );
 
+  const renderTableRow = (item: typeof mockDashboards[0]) => (
+    <TouchableOpacity
+      key={item.id}
+      onPress={() => onSelectDashboard(item.id)}
+      activeOpacity={0.7}
+      style={styles.tableRowTouchable}
+    >
+      <View style={[styles.tableCell, { flex: 2 }]}>
+        <Text style={styles.tableCellText}>{item.name}</Text>
+      </View>
+      <View style={styles.tableStatusCell}>
+        <Badge status={item.status} />
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Dashboards</Text>
@@ -127,16 +275,205 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
           onChangeText={setSearch}
         />
       </View>
-      <FlatList
-        key={isMobile ? 'mobile' : 'web'}
-        data={filteredDashboards}
-        renderItem={renderDashboard}
-        keyExtractor={(item) => item.id}
-        scrollEnabled={false}
-        contentContainerStyle={styles.gridContainer}
-        numColumns={isMobile ? 1 : 2}
-        columnWrapperStyle={!isMobile ? { gap: spacing.md } : undefined}
-      />
+
+      {!isMobile && (
+        <>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: spacing.lg }}>
+            <View style={styles.filterBar}>
+              <TouchableOpacity
+                style={[styles.filterSelect, { minWidth: 140 }]}
+                onPress={() => setExpandedFilter(expandedFilter === 'status' ? null : 'status')}
+              >
+                <Text style={styles.tableCellText}>
+                  {selectedStatus ? `Status: ${selectedStatus}` : 'Status: All'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.filterSelect, { minWidth: 160 }]}
+                onPress={() => setExpandedFilter(expandedFilter === 'campaign' ? null : 'campaign')}
+              >
+                <Text style={styles.tableCellText}>
+                  {selectedCampaignType ? `Campaign: ${selectedCampaignType}` : 'Campaign: All'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.filterSelect, { minWidth: 160 }]}
+                onPress={() => setExpandedFilter(expandedFilter === 'lob' ? null : 'lob')}
+              >
+                <Text style={styles.tableCellText}>
+                  {selectedLineOfBusiness ? `LOB: ${selectedLineOfBusiness}` : 'LOB: All'}
+                </Text>
+              </TouchableOpacity>
+
+              <TextInput
+                style={[styles.filterSelect, { minWidth: 140 }]}
+                placeholder="From: YYYY-MM-DD"
+                placeholderTextColor={themeColors.mediumGray}
+                value={dateRange.from}
+                onChangeText={(text) => {
+                  setDateRange({ ...dateRange, from: text });
+                  setCurrentPage(1);
+                }}
+              />
+
+              <TextInput
+                style={[styles.filterSelect, { minWidth: 140 }]}
+                placeholder="To: YYYY-MM-DD"
+                placeholderTextColor={themeColors.mediumGray}
+                value={dateRange.to}
+                onChangeText={(text) => {
+                  setDateRange({ ...dateRange, to: text });
+                  setCurrentPage(1);
+                }}
+              />
+            </View>
+          </ScrollView>
+
+          {expandedFilter === 'status' && (
+            <View style={[styles.tableContainer, { marginBottom: spacing.md }]}>
+              <TouchableOpacity
+                style={styles.tableRow}
+                onPress={() => {
+                  setSelectedStatus('');
+                  setExpandedFilter(null);
+                  setCurrentPage(1);
+                }}
+              >
+                <Text style={styles.tableCellText}>All</Text>
+              </TouchableOpacity>
+              {uniqueStatuses.map((status) => (
+                <TouchableOpacity
+                  key={status}
+                  style={styles.tableRow}
+                  onPress={() => {
+                    setSelectedStatus(status);
+                    setExpandedFilter(null);
+                    setCurrentPage(1);
+                  }}
+                >
+                  <Text style={[styles.tableCellText, selectedStatus === status && { fontWeight: '600' }]}>
+                    {status}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+
+          {expandedFilter === 'campaign' && (
+            <View style={[styles.tableContainer, { marginBottom: spacing.md }]}>
+              <TouchableOpacity
+                style={styles.tableRow}
+                onPress={() => {
+                  setSelectedCampaignType('');
+                  setExpandedFilter(null);
+                  setCurrentPage(1);
+                }}
+              >
+                <Text style={styles.tableCellText}>All</Text>
+              </TouchableOpacity>
+              {uniqueCampaignTypes.map((type) => (
+                <TouchableOpacity
+                  key={type}
+                  style={styles.tableRow}
+                  onPress={() => {
+                    setSelectedCampaignType(type);
+                    setExpandedFilter(null);
+                    setCurrentPage(1);
+                  }}
+                >
+                  <Text style={[styles.tableCellText, selectedCampaignType === type && { fontWeight: '600' }]}>
+                    {type}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+
+          {expandedFilter === 'lob' && (
+            <View style={[styles.tableContainer, { marginBottom: spacing.md }]}>
+              <TouchableOpacity
+                style={styles.tableRow}
+                onPress={() => {
+                  setSelectedLineOfBusiness('');
+                  setExpandedFilter(null);
+                  setCurrentPage(1);
+                }}
+              >
+                <Text style={styles.tableCellText}>All</Text>
+              </TouchableOpacity>
+              {uniqueLineOfBusiness.map((lob) => (
+                <TouchableOpacity
+                  key={lob}
+                  style={styles.tableRow}
+                  onPress={() => {
+                    setSelectedLineOfBusiness(lob);
+                    setExpandedFilter(null);
+                    setCurrentPage(1);
+                  }}
+                >
+                  <Text style={[styles.tableCellText, selectedLineOfBusiness === lob && { fontWeight: '600' }]}>
+                    {lob}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+
+
+          <View style={styles.tableContainer}>
+            <View style={styles.tableHeader}>
+              <View style={[styles.tableHeaderCell, { flex: 2 }]}>
+                <Text style={styles.tableHeaderText}>Dashboard Name</Text>
+              </View>
+              <View style={styles.tableStatusCell}>
+                <Text style={styles.tableHeaderText}>Status</Text>
+              </View>
+            </View>
+
+            {paginatedDashboards.map(renderTableRow)}
+
+            {paginatedDashboards.length === 0 && (
+              <View style={{ padding: spacing.lg, alignItems: 'center' }}>
+                <Text style={styles.paginationText}>No dashboards found</Text>
+              </View>
+            )}
+          </View>
+
+          <View style={styles.paginationContainer}>
+            <Text style={styles.paginationText}>
+              {filteredDashboards.length === 0 ? '0' : `${(currentPage - 1) * itemsPerPage + 1}-${Math.min(currentPage * itemsPerPage, filteredDashboards.length)}`} of {filteredDashboards.length}
+            </Text>
+            <View style={{ flexDirection: 'row', gap: spacing.sm }}>
+              <TouchableOpacity
+                style={[styles.paginationButton, currentPage === 1 && styles.paginationButtonDisabled]}
+                onPress={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                disabled={currentPage === 1}
+              >
+                <Text style={styles.paginationButtonText}>Previous</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.paginationButton, currentPage === totalPages && styles.paginationButtonDisabled]}
+                onPress={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                disabled={currentPage === totalPages}
+              >
+                <Text style={styles.paginationButtonText}>Next</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </>
+      )}
+
+      {isMobile && (
+        <FlatList
+          data={filteredDashboards}
+          renderItem={renderDashboard}
+          keyExtractor={(item) => item.id}
+          scrollEnabled={false}
+          contentContainerStyle={styles.gridContainer}
+        />
+      )}
     </View>
   );
 };
