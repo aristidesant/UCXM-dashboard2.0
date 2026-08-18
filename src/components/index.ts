@@ -42,6 +42,7 @@ export { Dropdown } from './Dropdown';
 export { DatePicker } from './DatePicker';
 export { EmotionAnalyticsFilters } from './EmotionAnalyticsFilters';
 export { EmotionAnalyticsFilterModal } from './EmotionAnalyticsFilterModal';
+export { EmotionAnalyticsTabFilters } from './EmotionAnalyticsTabFilters';
 export { NegativeSentimentCampaignTable } from './NegativeSentimentCampaignTable';
 export { NegativeSentimentCampaignCard } from './NegativeSentimentCampaignCard';
 export { SentimentCallCountCards } from './SentimentCallCountCards';

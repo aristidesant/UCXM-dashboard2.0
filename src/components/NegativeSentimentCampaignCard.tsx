@@ -26,13 +26,11 @@ interface CampaignData {
 interface NegativeSentimentCampaignCardProps {
   campaigns: CampaignData[];
   filters: EmotionAnalyticsFilters;
-  onOpenFilter: () => void;
 }
 
 export const NegativeSentimentCampaignCard: React.FC<NegativeSentimentCampaignCardProps> = ({
   campaigns,
   filters,
-  onOpenFilter,
 }) => {
   const { effectiveTheme } = useTheme();
   const isDark = effectiveTheme === 'dark';
@@ -142,20 +140,6 @@ export const NegativeSentimentCampaignCard: React.FC<NegativeSentimentCampaignCa
       color: themeColors.steelSecondary,
       textAlign: 'center',
     } as TextStyle,
-    filterButton: {
-      paddingVertical: spacing.sm,
-      paddingHorizontal: spacing.md,
-      borderWidth: 1,
-      borderColor: themeColors.whisperBorder,
-      borderRadius: borderRadius.md,
-      alignItems: 'center',
-      marginBottom: spacing.md,
-    } as ViewStyle,
-    filterButtonText: {
-      fontSize: fontSize.sm,
-      fontWeight: '500',
-      color: themeColors.steelSecondary,
-    } as TextStyle,
   });
 
   const renderCard = ({ item }: { item: CampaignData }) => (
@@ -221,9 +205,6 @@ export const NegativeSentimentCampaignCard: React.FC<NegativeSentimentCampaignCa
   if (campaigns.length === 0) {
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.filterButton} onPress={onOpenFilter} activeOpacity={0.7}>
-          <Text style={styles.filterButtonText}>Abrir Filtros</Text>
-        </TouchableOpacity>
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>No hay campañas con sentimiento negativo</Text>
         </View>
@@ -233,9 +214,6 @@ export const NegativeSentimentCampaignCard: React.FC<NegativeSentimentCampaignCa
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.filterButton} onPress={onOpenFilter} activeOpacity={0.7}>
-        <Text style={styles.filterButtonText}>Filtros</Text>
-      </TouchableOpacity>
       <FlatList
         data={campaigns}
         renderItem={renderCard}

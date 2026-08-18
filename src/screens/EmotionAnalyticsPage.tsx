@@ -5,8 +5,7 @@ import { usePlatform } from '../hooks/usePlatform';
 import { spacing, colors } from '../design';
 import { useEmotionAnalytics } from '../hooks/useEmotionAnalytics';
 import { aggregatedMetrics } from '../data/aggregatedMetrics';
-import { EmotionAnalyticsFilters } from '../components/EmotionAnalyticsFilters';
-import { EmotionAnalyticsFilterModal } from '../components/EmotionAnalyticsFilterModal';
+import { EmotionAnalyticsTabFilters } from '../components/EmotionAnalyticsTabFilters';
 import { NegativeSentimentCampaignTable } from '../components/NegativeSentimentCampaignTable';
 import { NegativeSentimentCampaignCard } from '../components/NegativeSentimentCampaignCard';
 import { SentimentCallCountCards } from '../components/SentimentCallCountCards';
@@ -25,7 +24,6 @@ export const EmotionAnalyticsPage: React.FC = () => {
 
   const { filters, resetFilters, hasActiveFilters, ...filterHandlers } = useEmotionAnalytics();
   const [currentView, setCurrentView] = useState<AnalyticsView>('campaigns');
-  const [showFilterModal, setShowFilterModal] = useState(false);
 
   const styles = StyleSheet.create({
     container: {
@@ -40,25 +38,15 @@ export const EmotionAnalyticsPage: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* Desktop Filter Bar or Mobile Filter Button */}
-      {!isMobile ? (
-        <EmotionAnalyticsFilters
-          filters={filters}
-          onFilterChange={filterHandlers.updateFilter}
-          onToggleAgent={filterHandlers.toggleAgentFilter}
-          onToggleClient={filterHandlers.toggleClientFilter}
-          onToggleCallType={filterHandlers.toggleCallTypeFilter}
-          onToggleChannel={filterHandlers.toggleChannelFilter}
-          onToggleCampaignType={filterHandlers.toggleCampaignTypeFilter}
-          onToggleCampaignStatus={filterHandlers.toggleCampaignStatusFilter}
-          onSetDateRange={filterHandlers.setDateRange}
-          onReset={resetFilters}
-        />
-      ) : (
-        <View style={{ paddingHorizontal: spacing.md, paddingVertical: spacing.sm }}>
-          {/* Mobile filter button would go here */}
-        </View>
-      )}
+      {/* Tab Filters - Works on All Platforms */}
+      <EmotionAnalyticsTabFilters
+        filters={filters}
+        onToggleAgent={filterHandlers.toggleAgentFilter}
+        onToggleClient={filterHandlers.toggleClientFilter}
+        onToggleCallType={filterHandlers.toggleCallTypeFilter}
+        onToggleChannel={filterHandlers.toggleChannelFilter}
+        onReset={resetFilters}
+      />
 
       {/* Content Area */}
       <View style={styles.contentContainer}>
@@ -72,7 +60,6 @@ export const EmotionAnalyticsPage: React.FC = () => {
             <NegativeSentimentCampaignCard
               campaigns={aggregatedMetrics.negativeSentimentCampaigns}
               filters={filters}
-              onOpenFilter={() => setShowFilterModal(true)}
             />
           )
         )}
@@ -104,22 +91,6 @@ export const EmotionAnalyticsPage: React.FC = () => {
         )}
       </View>
 
-      {/* Mobile Filter Modal */}
-      {isMobile && showFilterModal && (
-        <EmotionAnalyticsFilterModal
-          filters={filters}
-          onFilterChange={filterHandlers.updateFilter}
-          onToggleAgent={filterHandlers.toggleAgentFilter}
-          onToggleClient={filterHandlers.toggleClientFilter}
-          onToggleCallType={filterHandlers.toggleCallTypeFilter}
-          onToggleChannel={filterHandlers.toggleChannelFilter}
-          onToggleCampaignType={filterHandlers.toggleCampaignTypeFilter}
-          onToggleCampaignStatus={filterHandlers.toggleCampaignStatusFilter}
-          onSetDateRange={filterHandlers.setDateRange}
-          onReset={resetFilters}
-          onClose={() => setShowFilterModal(false)}
-        />
-      )}
     </View>
   );
 };
