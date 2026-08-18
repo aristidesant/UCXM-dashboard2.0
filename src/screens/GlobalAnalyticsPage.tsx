@@ -49,7 +49,7 @@ export const GlobalAnalyticsPage: React.FC = () => {
       paddingVertical: spacing.md,
     } as ViewStyle,
     header: {
-      marginBottom: spacing.lg,
+      marginBottom: spacing.md,
     } as ViewStyle,
     headerTitle: {
       fontSize: 32,

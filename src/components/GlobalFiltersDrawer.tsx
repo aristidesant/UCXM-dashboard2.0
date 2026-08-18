@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ViewStyle,
   TextStyle,
-  Modal,
   ScrollView,
 } from 'react-native';
 import { ChevronLeft } from 'lucide-react';
@@ -67,17 +66,26 @@ export const GlobalFiltersDrawer: React.FC<GlobalFiltersDrawerProps> = ({
   };
 
   const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'flex-end',
+    overlay: {
+      position: 'absolute' as any,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      zIndex: 999,
     } as ViewStyle,
-    drawer: {
+    container: {
+      position: 'absolute' as any,
+      bottom: 0,
+      left: 0,
+      right: 0,
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderTopLeftRadius: borderRadius.xl,
       borderTopRightRadius: borderRadius.xl,
       maxHeight: '70%',
       paddingBottom: spacing.lg,
+      zIndex: 1000,
     } as ViewStyle,
     header: {
       flexDirection: 'row',
@@ -183,114 +191,117 @@ export const GlobalFiltersDrawer: React.FC<GlobalFiltersDrawerProps> = ({
   }
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+    <>
+      <TouchableOpacity
+        style={styles.overlay}
+        activeOpacity={1}
+        onPress={onClose}
+      />
       <View style={styles.container}>
-        <View style={styles.drawer}>
-          {/* Header */}
-          <View style={styles.header}>
-            <Text style={styles.headerTitle}>Filtros Globales</Text>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose} activeOpacity={0.7}>
-              <ChevronLeft size={24} color={themeColors.steelSecondary} strokeWidth={2} />
-            </TouchableOpacity>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Filtros Globales</Text>
+          <TouchableOpacity style={styles.closeButton} onPress={onClose} activeOpacity={0.7}>
+            <ChevronLeft size={24} color={themeColors.steelSecondary} strokeWidth={2} />
+          </TouchableOpacity>
+        </View>
+
+        {/* Filters */}
+        <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+          {/* Campaign Type */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Tipo de Campaña</Text>
+            {CAMPAIGN_OPTIONS.map((option) => (
+              <TouchableOpacity
+                key={option.value}
+                style={styles.optionRow}
+                onPress={() => updateCampaignType(filters.campaignType === option.value ? null : option.value)}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.optionText}>{option.label}</Text>
+                <View
+                  style={[
+                    styles.checkbox,
+                    filters.campaignType === option.value && styles.checkboxChecked,
+                  ]}
+                >
+                  {filters.campaignType === option.value && (
+                    <Text style={styles.checkmark}>✓</Text>
+                  )}
+                </View>
+              </TouchableOpacity>
+            ))}
           </View>
 
-          {/* Filters */}
-          <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-            {/* Campaign Type */}
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Tipo de Campaña</Text>
-              {CAMPAIGN_OPTIONS.map((option) => (
-                <TouchableOpacity
-                  key={option.value}
-                  style={styles.optionRow}
-                  onPress={() => updateCampaignType(filters.campaignType === option.value ? null : option.value)}
-                  activeOpacity={0.7}
+          {/* LOB */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Línea de Negocio</Text>
+            {LOB_OPTIONS.map((option) => (
+              <TouchableOpacity
+                key={option.value}
+                style={styles.optionRow}
+                onPress={() => updateLOB(filters.lob === option.value ? null : option.value)}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.optionText}>{option.label}</Text>
+                <View
+                  style={[
+                    styles.checkbox,
+                    filters.lob === option.value && styles.checkboxChecked,
+                  ]}
                 >
-                  <Text style={styles.optionText}>{option.label}</Text>
-                  <View
-                    style={[
-                      styles.checkbox,
-                      filters.campaignType === option.value && styles.checkboxChecked,
-                    ]}
-                  >
-                    {filters.campaignType === option.value && (
-                      <Text style={styles.checkmark}>✓</Text>
-                    )}
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            {/* LOB */}
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Línea de Negocio</Text>
-              {LOB_OPTIONS.map((option) => (
-                <TouchableOpacity
-                  key={option.value}
-                  style={styles.optionRow}
-                  onPress={() => updateLOB(filters.lob === option.value ? null : option.value)}
-                  activeOpacity={0.7}
-                >
-                  <Text style={styles.optionText}>{option.label}</Text>
-                  <View
-                    style={[
-                      styles.checkbox,
-                      filters.lob === option.value && styles.checkboxChecked,
-                    ]}
-                  >
-                    {filters.lob === option.value && (
-                      <Text style={styles.checkmark}>✓</Text>
-                    )}
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            {/* Status */}
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Estatus</Text>
-              {STATUS_OPTIONS.map((option) => (
-                <TouchableOpacity
-                  key={option.value}
-                  style={styles.optionRow}
-                  onPress={() => updateStatus(filters.status === option.value ? null : option.value)}
-                  activeOpacity={0.7}
-                >
-                  <Text style={styles.optionText}>{option.label}</Text>
-                  <View
-                    style={[
-                      styles.checkbox,
-                      filters.status === option.value && styles.checkboxChecked,
-                    ]}
-                  >
-                    {filters.status === option.value && (
-                      <Text style={styles.checkmark}>✓</Text>
-                    )}
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
-
-          {/* Footer Buttons */}
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[styles.button, styles.clearButton]}
-              onPress={handleClear}
-              activeOpacity={0.7}
-            >
-              <Text style={[styles.buttonText, styles.clearButtonText]}>Limpiar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.applyButton]}
-              onPress={handleApply}
-              activeOpacity={0.7}
-            >
-              <Text style={[styles.buttonText, styles.applyButtonText]}>Aplicar</Text>
-            </TouchableOpacity>
+                  {filters.lob === option.value && (
+                    <Text style={styles.checkmark}>✓</Text>
+                  )}
+                </View>
+              </TouchableOpacity>
+            ))}
           </View>
+
+          {/* Status */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Estatus</Text>
+            {STATUS_OPTIONS.map((option) => (
+              <TouchableOpacity
+                key={option.value}
+                style={styles.optionRow}
+                onPress={() => updateStatus(filters.status === option.value ? null : option.value)}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.optionText}>{option.label}</Text>
+                <View
+                  style={[
+                    styles.checkbox,
+                    filters.status === option.value && styles.checkboxChecked,
+                  ]}
+                >
+                  {filters.status === option.value && (
+                    <Text style={styles.checkmark}>✓</Text>
+                  )}
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+
+        {/* Footer Buttons */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={[styles.button, styles.clearButton]}
+            onPress={handleClear}
+            activeOpacity={0.7}
+          >
+            <Text style={[styles.buttonText, styles.clearButtonText]}>Limpiar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, styles.applyButton]}
+            onPress={handleApply}
+            activeOpacity={0.7}
+          >
+            <Text style={[styles.buttonText, styles.applyButtonText]}>Aplicar</Text>
+          </TouchableOpacity>
         </View>
       </View>
-    </Modal>
+    </>
   );
 };
