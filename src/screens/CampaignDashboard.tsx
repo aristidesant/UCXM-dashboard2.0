@@ -283,6 +283,13 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
     fullWidth: {
       width: '100%',
     } as ViewStyle,
+    evaluationSelectorContainer: {
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderTopWidth: 1,
+      borderTopColor: themeColors.whisperBorder,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.md,
+    } as ViewStyle,
   });
 
   const renderOperationContent = () => {
@@ -578,11 +585,6 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
           </View>
         </View>
 
-        {/* Evaluation Type Selector */}
-        <View style={{ paddingHorizontal: spacing.md, paddingVertical: spacing.lg, borderBottomWidth: 1, borderBottomColor: themeColors.whisperBorder }}>
-          <EvaluationTypeSelector selectedType={evaluationType} onSelectType={setEvaluationType} />
-        </View>
-
         {/* Tab Navigation */}
         <View style={styles.tabsContainer}>
           <TouchableOpacity
@@ -618,6 +620,11 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
         )}
         </View>
       </ResponsiveContainer>
+
+      {/* Fixed Evaluation Type Selector at Bottom */}
+      <View style={styles.evaluationSelectorContainer}>
+        <EvaluationTypeSelector selectedType={evaluationType} onSelectType={setEvaluationType} />
+      </View>
     </View>
   );
 };
