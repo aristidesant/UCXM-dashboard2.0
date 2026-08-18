@@ -22,13 +22,13 @@ export const CallMetadataCard: React.FC<CallMetadataCardProps> = ({ call }) => {
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
-      gap: spacing.md,
+      gap: spacing.sm,
     } as ViewStyle,
     card: {
       flex: 1,
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
-      borderRadius: borderRadius.lg,
-      padding: spacing.md,
+      borderRadius: borderRadius.md,
+      padding: spacing.sm,
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
     } as ViewStyle,
@@ -36,11 +36,11 @@ export const CallMetadataCard: React.FC<CallMetadataCardProps> = ({ call }) => {
       fontSize: fontSize.xs,
       color: themeColors.steelSecondary,
       fontWeight: '600',
-      marginBottom: spacing.sm,
+      marginBottom: 2,
       textTransform: 'uppercase',
     } as TextStyle,
     value: {
-      fontSize: fontSize.lg,
+      fontSize: fontSize.sm,
       fontWeight: '700',
       color: themeColors.inkPrimary,
     } as TextStyle,

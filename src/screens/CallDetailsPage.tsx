@@ -100,10 +100,10 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
     } as TextStyle,
     content: {
       paddingHorizontal: isMobile ? spacing.md : spacing.lg,
-      paddingVertical: spacing.lg,
+      paddingVertical: spacing.md,
     } as ViewStyle,
     section: {
-      marginBottom: spacing.lg,
+      marginBottom: spacing.md,
     } as ViewStyle,
     evaluationCard: {
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
@@ -111,7 +111,7 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       padding: spacing.md,
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
-      marginBottom: spacing.lg,
+      marginBottom: spacing.md,
     } as ViewStyle,
     evaluationTitle: {
       fontSize: fontSize.sm,
