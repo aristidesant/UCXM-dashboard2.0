@@ -13,10 +13,17 @@ import { colors, spacing, typography, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { usePlatform } from '../hooks/usePlatform';
 import type { Call } from '../data/mockCalls';
-import { CallInfoCard } from '../components/CallDetailsComponents/CallInfoCard';
-import { CallMetadataCard } from '../components/CallDetailsComponents/CallMetadataCard';
-import { AISummaryCard } from '../components/CallDetailsComponents/AISummaryCard';
-import { AudioPlayer } from '../components/CallDetailsComponents/AudioPlayer';
+import {
+  CallInfoCard,
+  CallMetadataCard,
+  AISummaryCard,
+  AudioPlayer,
+  SentimentEvaluationCard,
+  OperationalEvaluationCard,
+  QAEvaluationCard,
+  ComplianceEvaluationCard,
+  BusinessEvaluationCard,
+} from '../components/CallDetailsComponents';
 import { EvaluationTypeSelector, EvaluationType } from '../components/EvaluationTypeSelector';
 
 interface CallDetailsPageProps {
@@ -31,58 +38,44 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
   const themeColors = isDark ? colors.dark : colors.light;
   const [selectedEvaluationType, setSelectedEvaluationType] = useState<EvaluationType>('operational');
 
-  const getEvaluationContent = () => {
+  const renderEvaluationContent = () => {
     switch (selectedEvaluationType) {
       case 'operational':
-        return {
-          title: 'Análisis Operacional',
-          content: `Duración: ${call.duration}
-AHT Objetivo: 5m 00s
-Escalaciones: 0
-Resultado: Exitoso`,
-        };
+        return (
+          <OperationalEvaluationCard
+            duration={call.duration}
+            ahtTarget="5m 00s"
+            escalations={0}
+            result="Exitoso"
+          />
+        );
       case 'qa':
-        return {
-          title: 'Evaluación QA',
-          content: `Score QA: 95/100
-Puntualidad: Excelente
-Tono: Profesional
-Cumplimiento: 100%`,
-        };
+        return <QAEvaluationCard score={95} punctuality="Excelente" tone="Profesional" compliance={100} />;
       case 'sentiment':
-        return {
-          title: 'Análisis de Sentimiento',
-          content: `Sentimiento Agente: Muy Positivo
-Emoción: Empatía
-Sentimiento Cliente: Positivo
-Emoción: Satisfacción
-Tono: Profesional`,
-        };
+        return (
+          <SentimentEvaluationCard
+            agentSentiment="professional"
+            agentEmotion="joy"
+            clientSentiment="satisfaction"
+            clientEmotion="satisfaction"
+            agentTone={{ professional: 45, empathetic: 30, polite: 20, casual: 5 }}
+          />
+        );
       case 'compliance':
-        return {
-          title: 'Cumplimiento Regulatorio',
-          content: `Protección de Datos: ✓ Cumple
-Grabación: ✓ Consentimiento
-Divulgación: ✓ Cumple
-Nivel de Riesgo: Bajo`,
-        };
+        return <ComplianceEvaluationCard riskLevel="Bajo" />;
       case 'business':
-        return {
-          title: 'Insights de Negocio',
-          content: `Oportunidad de Venta: -
-Retención: Alta
-Riesgo de Churn: Bajo
-Potencial Upsell: Futuro`,
-        };
+        return (
+          <BusinessEvaluationCard
+            salesOpportunity="No identificada"
+            retention="Alta"
+            churnRisk="Bajo"
+            upsellPotential="Futuro"
+          />
+        );
       default:
-        return {
-          title: 'Análisis',
-          content: 'Selecciona un tipo de evaluación',
-        };
+        return <OperationalEvaluationCard />;
     }
   };
-
-  const evaluation = getEvaluationContent();
 
   const styles = StyleSheet.create({
     container: {
@@ -203,12 +196,7 @@ Potencial Upsell: Futuro`,
           </View>
 
           {/* Evaluation Content */}
-          <View style={styles.section}>
-            <View style={styles.evaluationCard}>
-              <Text style={styles.evaluationTitle}>{evaluation.title}</Text>
-              <Text style={styles.evaluationContent}>{evaluation.content}</Text>
-            </View>
-          </View>
+          <View style={styles.section}>{renderEvaluationContent()}</View>
 
           {/* AI Summary */}
           <View style={styles.section}>
