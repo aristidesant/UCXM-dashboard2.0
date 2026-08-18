@@ -19,7 +19,7 @@ export const mockDashboards: Dashboard[] = [
     type: 'Localizacion',
     lastUpdated: '2026-08-13T12:11:00Z',
     createdAt: '2026-01-15T10:00:00Z',
-    campaignType: 'Email',
+    campaignType: 'Outbound',
     lineOfBusiness: 'Sales',
   },
   {
@@ -29,7 +29,7 @@ export const mockDashboards: Dashboard[] = [
     type: 'Localizacion',
     lastUpdated: '2026-08-13T12:11:00Z',
     createdAt: '2026-05-01T09:00:00Z',
-    campaignType: 'SMS',
+    campaignType: 'Inbound',
     lineOfBusiness: 'Marketing',
   },
   {
@@ -39,7 +39,7 @@ export const mockDashboards: Dashboard[] = [
     type: 'Localizacion',
     lastUpdated: '2026-08-10T15:30:00Z',
     createdAt: '2026-06-15T08:00:00Z',
-    campaignType: 'Push',
+    campaignType: 'Mixta',
     lineOfBusiness: 'Customer Support',
   },
   {
@@ -49,7 +49,7 @@ export const mockDashboards: Dashboard[] = [
     type: 'Localizacion',
     lastUpdated: '2026-07-28T11:00:00Z',
     createdAt: '2026-07-01T10:00:00Z',
-    campaignType: 'Email',
+    campaignType: 'Outbound',
     lineOfBusiness: 'Sales',
   },
   {
@@ -59,7 +59,7 @@ export const mockDashboards: Dashboard[] = [
     type: 'Localizacion',
     lastUpdated: '2026-08-15T09:45:00Z',
     createdAt: '2026-08-01T14:00:00Z',
-    campaignType: 'SMS',
+    campaignType: 'Inbound',
     lineOfBusiness: 'Marketing',
   },
 ];

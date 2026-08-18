@@ -291,7 +291,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
               />
 
               <Dropdown
-                label="Campaign"
+                label="Tipo de Campaña"
                 value={selectedCampaignType}
                 options={uniqueCampaignTypes.map((c) => ({ label: c, value: c }))}
                 onChange={(value) => {
@@ -313,7 +313,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
               />
 
               <DatePicker
-                label="From"
+                label="Desde"
                 value={dateRange.from}
                 onChange={(date) => {
                   setDateRange({ ...dateRange, from: date });
@@ -323,7 +323,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
               />
 
               <DatePicker
-                label="To"
+                label="Hasta"
                 value={dateRange.to}
                 onChange={(date) => {
                   setDateRange({ ...dateRange, to: date });
