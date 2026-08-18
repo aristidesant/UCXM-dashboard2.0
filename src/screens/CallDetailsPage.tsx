@@ -14,8 +14,7 @@ import { useTheme } from '../context/ThemeContext';
 import { usePlatform } from '../hooks/usePlatform';
 import type { Call } from '../data/mockCalls';
 import {
-  CallInfoCard,
-  CallMetadataCard,
+  CompactCallInfoCard,
   AISummaryCard,
   AudioPlayer,
   SentimentEvaluationCard,
@@ -185,14 +184,9 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       {/* Scrollable Content */}
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
-          {/* Contact Info */}
+          {/* Compact Call Info - combines contact info, date, duration, OLA */}
           <View style={styles.section}>
-            <CallInfoCard call={call} />
-          </View>
-
-          {/* Metadata */}
-          <View style={styles.section}>
-            <CallMetadataCard call={call} />
+            <CompactCallInfoCard call={call} />
           </View>
 
           {/* Evaluation Content */}

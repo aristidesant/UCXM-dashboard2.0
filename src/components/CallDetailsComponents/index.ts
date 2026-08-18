@@ -1,5 +1,6 @@
 export { CallInfoCard } from './CallInfoCard';
 export { CallMetadataCard } from './CallMetadataCard';
+export { CompactCallInfoCard } from './CompactCallInfoCard';
 export { AISummaryCard } from './AISummaryCard';
 export { AudioPlayer } from './AudioPlayer';
 export { SentimentEvaluationCard } from './SentimentEvaluationCard';
