@@ -14,7 +14,7 @@ import { useTheme } from '../context/ThemeContext';
 import { usePlatform } from '../hooks/usePlatform';
 import { useGlobalAnalytics } from '../hooks/useGlobalAnalytics';
 import { GlobalFiltersDrawer } from '../components/GlobalFiltersDrawer';
-import { AnalysisTabSelector } from '../components/AnalysisTabSelector';
+import { SegmentedControl } from '../components/SegmentedControl';
 import {
   OperationalMetricsView,
   QAMetricsView,
@@ -146,8 +146,8 @@ export const GlobalAnalyticsPage: React.FC = () => {
         onClose={() => setShowFilterDrawer(false)}
       />
 
-      {/* Analysis Tab Selector */}
-      <AnalysisTabSelector activeTab={selectedAnalysis} onSelectTab={setSelectedAnalysis} />
+      {/* Analysis Type Selector */}
+      <SegmentedControl activeAnalysis={selectedAnalysis} onSelectAnalysis={setSelectedAnalysis} />
 
       {/* Content */}
       <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: responsivePadding, paddingVertical: spacing.md }}>
