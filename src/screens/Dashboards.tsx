@@ -88,9 +88,15 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       marginBottom: spacing.lg,
       letterSpacing: -0.02,
     },
-    searchContainer: {
+    searchAndFiltersContainer: {
       flexDirection: 'row',
-      marginBottom: spacing.lg,
+      marginBottom: spacing.md,
+      alignItems: 'center',
+      gap: spacing.md,
+    },
+    searchContainer: {
+      flex: 1,
+      flexDirection: 'row',
       alignItems: 'center',
     },
     searchInput: {
@@ -136,10 +142,46 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       flexDirection: 'row',
       gap: spacing.md,
       flexWrap: 'wrap',
-      marginBottom: spacing.lg,
       position: 'relative',
       zIndex: 100,
     } as ViewStyle,
+    activeFiltersContainer: {
+      flexDirection: 'row',
+      gap: spacing.md,
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      marginBottom: spacing.lg,
+      minHeight: spacing.lg,
+    } as ViewStyle,
+    filterPill: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.xs,
+      backgroundColor: themeColors.newtechGreen,
+      borderRadius: borderRadius.md,
+      paddingVertical: spacing.xs,
+      paddingHorizontal: spacing.md,
+    } as ViewStyle,
+    filterPillText: {
+      fontSize: 13,
+      fontWeight: '500',
+      color: themeColors.canvasFrost,
+    } as TextStyle,
+    filterPillClose: {
+      paddingLeft: spacing.xs,
+      marginLeft: spacing.xs,
+    } as ViewStyle,
+    clearFiltersButton: {
+      paddingVertical: spacing.xs,
+      paddingHorizontal: spacing.md,
+      borderRadius: borderRadius.md,
+      backgroundColor: themeColors.whisperBorder,
+    } as ViewStyle,
+    clearFiltersText: {
+      fontSize: 13,
+      fontWeight: '500',
+      color: themeColors.steelSecondary,
+    } as TextStyle,
     filterSelect: {
       flex: 1,
       minWidth: 150,
@@ -266,22 +308,34 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
     </TouchableOpacity>
   );
 
+  const hasActiveFilters = selectedStatus || selectedCampaignType || selectedLineOfBusiness || dateRange.from || dateRange.to;
+
+  const clearAllFilters = () => {
+    setSelectedStatus('');
+    setSelectedCampaignType('');
+    setSelectedLineOfBusiness('');
+    setDateRange({ from: '', to: '' });
+    setCurrentPage(1);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Dashboards</Text>
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Buscar dashboards..."
-          placeholderTextColor={themeColors.mediumGray}
-          value={search}
-          onChangeText={setSearch}
-        />
-      </View>
 
       {!isMobile && (
         <View style={{ flex: 1, flexDirection: 'column' }}>
-          <View style={styles.filterBar}>
+          <View style={styles.searchAndFiltersContainer}>
+            <View style={styles.searchContainer}>
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Buscar dashboards..."
+                placeholderTextColor={themeColors.mediumGray}
+                value={search}
+                onChangeText={setSearch}
+              />
+            </View>
+
+            <View style={styles.filterBar}>
               <Dropdown
                 label="Status"
                 value={selectedStatus}
@@ -344,12 +398,100 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
                 isOpen={openFilter === 'to'}
                 onOpenChange={(isOpen) => setOpenFilter(isOpen ? 'to' : null)}
               />
+            </View>
+          </View>
+
+          <View style={styles.activeFiltersContainer}>
+            {selectedStatus && (
+              <View style={styles.filterPill}>
+                <Text style={styles.filterPillText}>Status: {selectedStatus}</Text>
+                <TouchableOpacity
+                  style={styles.filterPillClose}
+                  onPress={() => {
+                    setSelectedStatus('');
+                    setCurrentPage(1);
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.filterPillText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {selectedCampaignType && (
+              <View style={styles.filterPill}>
+                <Text style={styles.filterPillText}>Tipo: {selectedCampaignType}</Text>
+                <TouchableOpacity
+                  style={styles.filterPillClose}
+                  onPress={() => {
+                    setSelectedCampaignType('');
+                    setCurrentPage(1);
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.filterPillText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {selectedLineOfBusiness && (
+              <View style={styles.filterPill}>
+                <Text style={styles.filterPillText}>LOB: {selectedLineOfBusiness}</Text>
+                <TouchableOpacity
+                  style={styles.filterPillClose}
+                  onPress={() => {
+                    setSelectedLineOfBusiness('');
+                    setCurrentPage(1);
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.filterPillText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {dateRange.from && (
+              <View style={styles.filterPill}>
+                <Text style={styles.filterPillText}>Desde: {dateRange.from}</Text>
+                <TouchableOpacity
+                  style={styles.filterPillClose}
+                  onPress={() => {
+                    setDateRange({ ...dateRange, from: '' });
+                    setCurrentPage(1);
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.filterPillText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {dateRange.to && (
+              <View style={styles.filterPill}>
+                <Text style={styles.filterPillText}>Hasta: {dateRange.to}</Text>
+                <TouchableOpacity
+                  style={styles.filterPillClose}
+                  onPress={() => {
+                    setDateRange({ ...dateRange, to: '' });
+                    setCurrentPage(1);
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.filterPillText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {hasActiveFilters && (
+              <TouchableOpacity
+                style={styles.clearFiltersButton}
+                onPress={clearAllFilters}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.clearFiltersText}>Limpiar filtros</Text>
+              </TouchableOpacity>
+            )}
           </View>
 
           <View style={styles.tableContainer}>
             <View style={styles.tableHeader}>
               <View style={[styles.tableHeaderCell, { flex: 2 }]}>
-                <Text style={styles.tableHeaderText}>Dashboard Name</Text>
+                <Text style={styles.tableHeaderText}>Dashboard</Text>
               </View>
               <View style={styles.tableStatusCell}>
                 <Text style={styles.tableHeaderText}>Status</Text>
