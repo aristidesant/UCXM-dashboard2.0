@@ -47,6 +47,8 @@ export { EmotionAgentsView } from './EmotionAgentsView';
 export { EmotionClientsView } from './EmotionClientsView';
 export { EmotionCallsView } from './EmotionCallsView';
 export { EmotionCampaignsView } from './EmotionCampaignsView';
+export { GlobalFiltersDrawer } from './GlobalFiltersDrawer';
+export { AnalysisTabSelector } from './AnalysisTabSelector';
 export { NegativeSentimentCampaignTable } from './NegativeSentimentCampaignTable';
 export { NegativeSentimentCampaignCard } from './NegativeSentimentCampaignCard';
 export { SentimentCallCountCards } from './SentimentCallCountCards';

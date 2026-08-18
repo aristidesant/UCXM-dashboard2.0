@@ -1,57 +1,14 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Text,
-  ViewStyle,
-  TextStyle,
-  TouchableOpacity,
-} from 'react-native';
-import { Sliders } from 'lucide-react';
-import { colors, spacing, typography, borderRadius, fontSize } from '../design';
-import { useTheme } from '../context/ThemeContext';
-import { usePlatform } from '../hooks/usePlatform';
-import {
-  SegmentedControl,
-  QAMetricsPanel,
-  EmotionMetricsPanel,
-  ComplianceMetricsPanel,
-  BusinessInsightsPanel,
-  FilterModal,
-} from '../components';
-import { EmotionAnalyticsPage } from './EmotionAnalyticsPage';
-import { OperationTabs } from '../components';
-import { aggregatedMetrics } from '../data/aggregatedMetrics';
-import type { InfoType } from '../context/AppContext';
-import type { FilterValues } from '../components/FilterModal';
-
-interface FilterState extends FilterValues {
-  dateRange: 'today' | '7days' | '30days' | 'custom';
-  selectedCampaigns: string[];
-}
+import React from 'react';
+import { GlobalAnalyticsProvider } from '../contexts/GlobalAnalyticsContext';
+import { GlobalAnalyticsPage } from './GlobalAnalyticsPage';
 
 export const AnalyticsPage: React.FC = () => {
-  const { effectiveTheme } = useTheme();
-  const { isMobile } = usePlatform();
-  const isDark = effectiveTheme === 'dark';
-  const themeColors = isDark ? colors.dark : colors.light;
-  const [infoType, setInfoType] = useState<InfoType>('operation');
-  const [operationSubTab, setOperationSubTab] = useState<'llamadas' | 'gestion' | 'calidad'>(
-    'llamadas'
+  return (
+    <GlobalAnalyticsProvider>
+      <GlobalAnalyticsPage />
+    </GlobalAnalyticsProvider>
   );
-  const [filters, setFilters] = useState<FilterState>({
-    dateRange: '7days',
-    selectedCampaigns: ['localización', 'evaluación-cliente', 'retención'],
-    campaignType: [],
-    campaignStatus: [],
-    startDate: '',
-    endDate: '',
-  });
-  const [showFilterModal, setShowFilterModal] = useState(false);
-
-  const responsivePadding = isMobile ? spacing.md : spacing.lg;
-  const responsiveGap = isMobile ? spacing.sm : spacing.md;
+};
 
   const styles = StyleSheet.create({
     container: {
