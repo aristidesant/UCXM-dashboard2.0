@@ -64,3 +64,4 @@ export { CallInfoCard, CallMetadataCard, AISummaryCard, AudioPlayer } from './Ca
 export { CallsList } from './CallsList';
 export { EvaluationTypeSelector } from './EvaluationTypeSelector';
 export type { EvaluationType } from './EvaluationTypeSelector';
+export { GlobalEmotionAnalyticsView } from './GlobalEmotionAnalyticsView';

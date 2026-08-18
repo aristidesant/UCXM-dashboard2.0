@@ -20,8 +20,8 @@ import {
   QAMetricsView,
   ComplianceMetricsView,
   InsightsMetricsView,
+  GlobalEmotionAnalyticsView,
 } from '../components';
-import { EmotionAnalyticsPage } from './EmotionAnalyticsPage';
 
 export const GlobalAnalyticsPage: React.FC = () => {
   const { effectiveTheme } = useTheme();
@@ -110,7 +110,7 @@ export const GlobalAnalyticsPage: React.FC = () => {
       case 'qa':
         return <QAMetricsView />;
       case 'emotion':
-        return <EmotionAnalyticsPage />;
+        return <GlobalEmotionAnalyticsView />;
       case 'compliance':
         return <ComplianceMetricsView />;
       case 'insights':
