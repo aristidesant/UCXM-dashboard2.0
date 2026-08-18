@@ -8,13 +8,12 @@ import {
   TextStyle,
   TouchableOpacity,
 } from 'react-native';
-import { ChevronLeft, FileText, Share2 } from 'lucide-react';
+import { ChevronLeft, FileText, Share2, Calendar, Clock, Layers } from 'lucide-react';
 import { colors, spacing, typography, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { usePlatform } from '../hooks/usePlatform';
 import type { Call } from '../data/mockCalls';
 import {
-  CompactCallInfoCard,
   AISummaryCard,
   AudioPlayer,
   SentimentEvaluationCard,
@@ -82,20 +81,47 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       backgroundColor: themeColors.canvasFrost,
     } as ViewStyle,
     header: {
-      flexDirection: 'row',
-      alignItems: 'center',
       paddingHorizontal: spacing.md,
       paddingVertical: spacing.md,
       borderBottomWidth: 1,
       borderBottomColor: themeColors.whisperBorder,
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
     } as ViewStyle,
-    headerLeft: {
+    headerTop: {
       flexDirection: 'row',
       alignItems: 'center',
-      flex: 1,
-      gap: spacing.sm,
+      gap: spacing.md,
+      marginBottom: spacing.sm,
     } as ViewStyle,
+    backButton: {
+      padding: spacing.sm,
+      marginLeft: -spacing.sm,
+    } as ViewStyle,
+    headerContent: {
+      flex: 1,
+      gap: spacing.xs,
+    } as ViewStyle,
+    headerName: {
+      fontSize: fontSize.sm,
+      fontWeight: '700',
+      color: themeColors.inkPrimary,
+    } as TextStyle,
+    headerPhone: {
+      fontSize: fontSize.xs,
+      color: themeColors.steelSecondary,
+      fontWeight: '400',
+    } as TextStyle,
+    statusBadge: {
+      paddingHorizontal: spacing.xs,
+      paddingVertical: 2,
+      borderRadius: borderRadius.sm,
+      backgroundColor: colors.light.newtechGreen,
+    } as ViewStyle,
+    statusText: {
+      fontSize: fontSize.xs,
+      fontWeight: '600',
+      color: '#FFFFFF',
+    } as TextStyle,
     headerActions: {
       flexDirection: 'row',
       gap: spacing.sm,
@@ -105,15 +131,27 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       padding: spacing.sm,
       marginRight: -spacing.sm,
     } as ViewStyle,
-    headerTitle: {
-      fontSize: fontSize.lg,
-      fontWeight: '600',
-      color: themeColors.inkPrimary,
-    } as TextStyle,
-    headerSubtitle: {
+    headerMeta: {
+      flexDirection: 'row',
+      gap: spacing.md,
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      marginTop: spacing.sm,
+    } as ViewStyle,
+    metaItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.xs,
+    } as ViewStyle,
+    metaLabel: {
       fontSize: fontSize.xs,
       color: themeColors.steelSecondary,
-      marginTop: spacing.xs,
+      fontWeight: '500',
+    } as TextStyle,
+    metaValue: {
+      fontSize: fontSize.xs,
+      color: themeColors.inkPrimary,
+      fontWeight: '600',
     } as TextStyle,
     content: {
       paddingHorizontal: isMobile ? spacing.md : spacing.lg,
@@ -175,28 +213,54 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
 
   return (
     <View style={styles.container}>
-      {/* Header */}
+      {/* Header with Call Details */}
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={onBack}
-          style={{ padding: spacing.sm, marginLeft: -spacing.sm }}
-          activeOpacity={0.7}
-        >
-          <ChevronLeft size={24} color={themeColors.steelSecondary} strokeWidth={2} />
-        </TouchableOpacity>
-        <View style={styles.headerLeft}>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.headerTitle}>Detalles de la llamada</Text>
-            <Text style={styles.headerSubtitle}>{call.contactList}</Text>
+        {/* Top Row - Back, Contact Info, Actions */}
+        <View style={styles.headerTop}>
+          <TouchableOpacity style={styles.backButton} onPress={onBack} activeOpacity={0.7}>
+            <ChevronLeft size={24} color={themeColors.steelSecondary} strokeWidth={2} />
+          </TouchableOpacity>
+          <View style={styles.headerContent}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.sm }}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.headerName}>{call.contactName}</Text>
+                <Text style={styles.headerPhone}>{call.phoneNumber}</Text>
+              </View>
+              <View style={styles.statusBadge}>
+                <Text style={styles.statusText}>{call.statusLabel}</Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.headerActions}>
+            <TouchableOpacity style={styles.iconButton} activeOpacity={0.7}>
+              <FileText size={22} color={themeColors.steelSecondary} strokeWidth={2} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconButton} activeOpacity={0.7}>
+              <Share2 size={22} color={themeColors.steelSecondary} strokeWidth={2} />
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.headerActions}>
-          <TouchableOpacity style={styles.iconButton} activeOpacity={0.7}>
-            <FileText size={22} color={themeColors.steelSecondary} strokeWidth={2} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton} activeOpacity={0.7}>
-            <Share2 size={22} color={themeColors.steelSecondary} strokeWidth={2} />
-          </TouchableOpacity>
+
+        {/* Bottom Row - Metadata */}
+        <View style={styles.headerMeta}>
+          <View style={styles.metaItem}>
+            <Calendar size={14} color={themeColors.steelSecondary} strokeWidth={2} />
+            <Text style={styles.metaValue}>{call.dateTime}</Text>
+          </View>
+          <View style={styles.metaItem}>
+            <Clock size={14} color={themeColors.steelSecondary} strokeWidth={2} />
+            <Text style={styles.metaValue}>{call.duration}</Text>
+          </View>
+          <View style={styles.metaItem}>
+            <Layers size={14} color={themeColors.steelSecondary} strokeWidth={2} />
+            <Text style={styles.metaValue}>{call.ola}</Text>
+          </View>
+          {call.disposition && (
+            <View style={styles.metaItem}>
+              <Text style={styles.metaLabel}>Resultado:</Text>
+              <Text style={[styles.metaValue, { color: colors.light.newtechGreen }]}>{call.disposition}</Text>
+            </View>
+          )}
         </View>
       </View>
 
@@ -208,11 +272,6 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       {/* Scrollable Content */}
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
-          {/* Compact Call Info - combines contact info, date, duration, OLA */}
-          <View style={styles.section}>
-            <CompactCallInfoCard call={call} />
-          </View>
-
           {/* Evaluation Content */}
           <View style={styles.section}>{renderEvaluationContent()}</View>
 
