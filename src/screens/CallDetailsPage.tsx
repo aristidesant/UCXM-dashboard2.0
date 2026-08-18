@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -17,6 +17,7 @@ import { CallInfoCard } from '../components/CallDetailsComponents/CallInfoCard';
 import { CallMetadataCard } from '../components/CallDetailsComponents/CallMetadataCard';
 import { AISummaryCard } from '../components/CallDetailsComponents/AISummaryCard';
 import { AudioPlayer } from '../components/CallDetailsComponents/AudioPlayer';
+import { EvaluationTypeSelector, EvaluationType } from '../components/EvaluationTypeSelector';
 
 interface CallDetailsPageProps {
   call: Call;
@@ -28,6 +29,44 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
   const { isMobile } = usePlatform();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
+  const [evaluationType, setEvaluationType] = useState<EvaluationType>('operational');
+
+  const getEvaluationContent = () => {
+    switch (evaluationType) {
+      case 'operational':
+        return {
+          title: 'Análisis Operacional',
+          content: `Duración: ${call.duration}\nAHT: 3m 56s\nEscalaciones: 0\nContacto completado exitosamente.`,
+        };
+      case 'qa':
+        return {
+          title: 'Evaluación QA',
+          content: `Score: 95/100\nPuntualidad: Excelente\nTono: Profesional\nCumplimiento: 100%\nConformidad: Sí`,
+        };
+      case 'sentiment':
+        return {
+          title: 'Análisis de Sentimiento',
+          content: `Sentimiento Cliente: Muy Positivo\nSentimiento Agente: Profesional\nTono General: Positivo\nConfianza: Alta\nSatisfacción: Muy Satisfecho`,
+        };
+      case 'compliance':
+        return {
+          title: 'Cumplimiento Regulatorio',
+          content: `Protección de Datos: Cumple\nGrabación: Consentimiento Presente\nDivulgación: Cumple\nRequisitos: Todos Cumplidos\nRiesgo: Bajo`,
+        };
+      case 'business':
+        return {
+          title: 'Insights de Negocio',
+          content: `Oportunidad de Venta: No Identificada\nRetención: Seguro\nChurn Risk: Bajo\nUpsell: Potencial Futuro\nValor Lifetime: Alto`,
+        };
+      default:
+        return {
+          title: 'Análisis',
+          content: 'Selecciona un tipo de evaluación',
+        };
+    }
+  };
+
+  const evaluation = getEvaluationContent();
 
   const styles = StyleSheet.create({
     container: {
@@ -66,6 +105,26 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
     section: {
       marginBottom: spacing.lg,
     } as ViewStyle,
+    evaluationCard: {
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+      marginBottom: spacing.lg,
+    } as ViewStyle,
+    evaluationTitle: {
+      fontSize: fontSize.sm,
+      fontWeight: '700',
+      color: colors.light.newtechGreen,
+      marginBottom: spacing.md,
+    } as TextStyle,
+    evaluationContent: {
+      fontSize: fontSize.sm,
+      color: themeColors.inkPrimary,
+      lineHeight: 22,
+      fontWeight: '400',
+    } as TextStyle,
     actionsContainer: {
       flexDirection: 'row',
       gap: spacing.md,
@@ -109,6 +168,9 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
         </View>
       </View>
 
+      {/* Evaluation Type Selector */}
+      <EvaluationTypeSelector activeType={evaluationType} onSelectType={setEvaluationType} />
+
       {/* Scrollable Content */}
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
@@ -120,6 +182,14 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
           {/* Metadata */}
           <View style={styles.section}>
             <CallMetadataCard call={call} />
+          </View>
+
+          {/* Evaluation Content */}
+          <View style={styles.section}>
+            <View style={styles.evaluationCard}>
+              <Text style={styles.evaluationTitle}>{evaluation.title}</Text>
+              <Text style={styles.evaluationContent}>{evaluation.content}</Text>
+            </View>
           </View>
 
           {/* AI Summary */}

@@ -62,3 +62,5 @@ export { SentimentDistributionClients } from './SentimentDistributionClients';
 export { NegativeEmotionWordPool } from './NegativeEmotionWordPool';
 export { CallInfoCard, CallMetadataCard, AISummaryCard, AudioPlayer } from './CallDetailsComponents';
 export { CallsList } from './CallsList';
+export { EvaluationTypeSelector } from './EvaluationTypeSelector';
+export type { EvaluationType } from './EvaluationTypeSelector';

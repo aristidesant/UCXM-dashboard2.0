@@ -189,7 +189,7 @@ const AppContent: React.FC = () => {
         <View style={styles.container}>
           <StatusBar />
           <View style={styles.content}>{renderScreen()}</View>
-          {currentScreen !== 'campaign' && currentScreen !== 'contact' && (
+          {currentScreen !== 'campaign' && currentScreen !== 'contact' && currentScreen !== 'callDetails' && (
             <BottomNavBar
               items={navItems}
               activeItemId={currentScreen}
