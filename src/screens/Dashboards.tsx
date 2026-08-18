@@ -12,7 +12,7 @@ import {
 import { colors, typography, spacing, borderRadius } from '../design';
 import { usePlatform } from '../hooks/usePlatform';
 import { useAppContext } from '../context/AppContext';
-import { Card, Badge, Dropdown } from '../components';
+import { Card, Badge, Dropdown, DatePicker } from '../components';
 import { mockDashboards } from '../data/mockDashboards';
 import { useTheme } from '../context/ThemeContext';
 
@@ -312,26 +312,24 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
                 minWidth={160}
               />
 
-              <TextInput
-                style={[styles.filterSelect, { minWidth: 140 }]}
-                placeholder="From: YYYY-MM-DD"
-                placeholderTextColor={themeColors.mediumGray}
+              <DatePicker
+                label="From"
                 value={dateRange.from}
-                onChangeText={(text) => {
-                  setDateRange({ ...dateRange, from: text });
+                onChange={(date) => {
+                  setDateRange({ ...dateRange, from: date });
                   setCurrentPage(1);
                 }}
+                minWidth={140}
               />
 
-              <TextInput
-                style={[styles.filterSelect, { minWidth: 140 }]}
-                placeholder="To: YYYY-MM-DD"
-                placeholderTextColor={themeColors.mediumGray}
+              <DatePicker
+                label="To"
                 value={dateRange.to}
-                onChangeText={(text) => {
-                  setDateRange({ ...dateRange, to: text });
+                onChange={(date) => {
+                  setDateRange({ ...dateRange, to: date });
                   setCurrentPage(1);
                 }}
+                minWidth={140}
               />
           </View>
 
