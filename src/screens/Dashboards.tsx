@@ -300,8 +300,14 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       <View style={[styles.tableCell, { flex: 2 }]}>
         <Text style={styles.tableCellText}>{item.name}</Text>
       </View>
-      <View style={styles.tableStatusCell}>
-        <Badge status={item.status} />
+      <View style={styles.tableCell}>
+        <Text style={styles.tableCellText}>{item.campaignType}</Text>
+      </View>
+      <View style={styles.tableCell}>
+        <Text style={styles.tableCellText}>{item.lineOfBusiness}</Text>
+      </View>
+      <View style={styles.tableCell}>
+        <Text style={styles.tableCellText}>{new Date(item.createdAt).toLocaleDateString()}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -492,8 +498,14 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
               <View style={[styles.tableHeaderCell, { flex: 2 }]}>
                 <Text style={styles.tableHeaderText}>Dashboard</Text>
               </View>
-              <View style={styles.tableStatusCell}>
-                <Text style={styles.tableHeaderText}>Status</Text>
+              <View style={styles.tableHeaderCell}>
+                <Text style={styles.tableHeaderText}>Tipo de Campaña</Text>
+              </View>
+              <View style={styles.tableHeaderCell}>
+                <Text style={styles.tableHeaderText}>LOB</Text>
+              </View>
+              <View style={styles.tableHeaderCell}>
+                <Text style={styles.tableHeaderText}>Iniciada</Text>
               </View>
             </View>
 
