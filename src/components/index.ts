@@ -60,3 +60,4 @@ export { EmotionDistributionChart } from './EmotionDistributionChart';
 export { SentimentDistributionAgents } from './SentimentDistributionAgents';
 export { SentimentDistributionClients } from './SentimentDistributionClients';
 export { NegativeEmotionWordPool } from './NegativeEmotionWordPool';
+export { CallInfoCard, CallMetadataCard, AISummaryCard, AudioPlayer } from './CallDetailsComponents';

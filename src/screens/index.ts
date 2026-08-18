@@ -12,3 +12,4 @@ export { DataVisualizationDashboard } from './DataVisualizationDashboard';
 export { QADashboard } from './QADashboard';
 export { AnalyticsPage } from './AnalyticsPage';
 export { HomeScreen } from './HomeScreen';
+export { CallDetailsPage } from './CallDetailsPage';
