@@ -16,15 +16,12 @@ import { useGlobalAnalytics } from '../hooks/useGlobalAnalytics';
 import { GlobalFiltersDrawer } from '../components/GlobalFiltersDrawer';
 import { AnalysisTabSelector } from '../components/AnalysisTabSelector';
 import {
-  QAMetricsPanel,
-  ComplianceMetricsPanel,
-  BusinessInsightsPanel,
+  OperationalMetricsView,
+  QAMetricsView,
+  ComplianceMetricsView,
+  InsightsMetricsView,
 } from '../components';
 import { EmotionAnalyticsPage } from './EmotionAnalyticsPage';
-import { aggregatedMetrics } from '../data/aggregatedMetrics';
-
-// Import OperationalMetricsView (será refactorizado en próximas fases)
-// Por ahora usaremos placeholder
 
 export const GlobalAnalyticsPage: React.FC = () => {
   const { effectiveTheme } = useTheme();
@@ -106,19 +103,15 @@ export const GlobalAnalyticsPage: React.FC = () => {
   const renderContent = () => {
     switch (selectedAnalysis) {
       case 'operation':
-        return (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>Operacional - Próximamente refactorizado</Text>
-          </View>
-        );
+        return <OperationalMetricsView />;
       case 'qa':
-        return <QAMetricsPanel metrics={aggregatedMetrics.qa} />;
+        return <QAMetricsView />;
       case 'emotion':
         return <EmotionAnalyticsPage />;
       case 'compliance':
-        return <ComplianceMetricsPanel metrics={aggregatedMetrics.compliance} />;
+        return <ComplianceMetricsView />;
       case 'insights':
-        return <BusinessInsightsPanel metrics={aggregatedMetrics.insights} />;
+        return <InsightsMetricsView />;
       default:
         return null;
     }
