@@ -150,20 +150,23 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
       marginRight: spacing.md,
     } as ViewStyle,
     title: {
-      fontSize: 32,
+      fontSize: 20,
       fontWeight: '700',
       color: themeColors.inkPrimary,
-      lineHeight: 40,
+      lineHeight: 28,
       letterSpacing: -0.02,
-      flexWrap: 'wrap',
-    },
+    } as TextStyle,
     titleLarge: {
-      fontSize: 28,
-      lineHeight: 36,
+      fontSize: 20,
+      lineHeight: 28,
     } as TextStyle,
     titleMedium: {
-      fontSize: 24,
-      lineHeight: 32,
+      fontSize: 18,
+      lineHeight: 26,
+    } as TextStyle,
+    titleSmall: {
+      fontSize: 16,
+      lineHeight: 24,
     } as TextStyle,
     analysisTypeSubtitle: {
       fontSize: 14,
@@ -571,10 +574,10 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
               <Text
                 style={[
                   styles.title,
-                  dashboard.name.length > 20 && styles.titleMedium,
-                  dashboard.name.length > 30 && { fontSize: 20, lineHeight: 28 },
+                  dashboard.name.length > 25 && styles.titleMedium,
+                  dashboard.name.length > 40 && styles.titleSmall,
                 ]}
-                numberOfLines={2}
+                numberOfLines={3}
               >
                 {dashboard.name}
               </Text>
