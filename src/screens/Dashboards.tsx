@@ -279,7 +279,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
 
       {!isMobile && (
         <>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: spacing.lg }}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={styles.filterBar}>
               <TouchableOpacity
                 style={[styles.filterSelect, { minWidth: 140 }]}
