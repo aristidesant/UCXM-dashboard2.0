@@ -141,6 +141,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
     filterSelect: {
       flex: 1,
       minWidth: 150,
+      height: 40,
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
       borderRadius: 8,
