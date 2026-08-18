@@ -91,7 +91,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.25,
       shadowRadius: 3,
-      elevation: 5,
+      elevation: 9999,
       padding: spacing.md,
       minWidth: 280,
     } as ViewStyle,
