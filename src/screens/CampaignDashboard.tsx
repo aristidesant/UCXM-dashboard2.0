@@ -579,7 +579,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
         </View>
 
         {/* Evaluation Type Selector */}
-        <View style={{ paddingHorizontal: spacing.md, paddingVertical: spacing.lg, backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface, borderBottomWidth: 1, borderBottomColor: themeColors.whisperBorder }}>
+        <View style={{ paddingHorizontal: spacing.md, paddingVertical: spacing.lg, borderBottomWidth: 1, borderBottomColor: themeColors.whisperBorder }}>
           <EvaluationTypeSelector selectedType={evaluationType} onSelectType={setEvaluationType} />
         </View>
 
