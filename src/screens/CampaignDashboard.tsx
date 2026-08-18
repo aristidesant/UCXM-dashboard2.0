@@ -20,6 +20,7 @@ import {
   MetricCard,
   Chart,
   ContactList,
+  CallsList,
   FilterButton,
   OperationTabs,
   ContactCardHeader,
@@ -40,11 +41,13 @@ import { mockCalls } from '../data/mockCalls';
 
 interface CampaignDashboardScreenProps {
   onSelectContact: (contactId: string) => void;
+  onSelectCall?: (call: Call) => void;
   onBack: () => void;
 }
 
 export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = ({
   onSelectContact,
+  onSelectCall,
   onBack,
 }) => {
   const { platform } = usePlatform();
@@ -574,10 +577,10 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
         {mainTab === 'indicadores' ? (
           renderIndicadores()
         ) : (
-          <View style={{ flex: 1, paddingHorizontal: spacing.lg }}>
-            <ContactList
-              contacts={mockContacts}
-              onSelectContact={(contact) => handleSelectContact(contact.id)}
+          <View style={{ flex: 1 }}>
+            <CallsList
+              calls={campaignCalls}
+              onSelectCall={(call) => onSelectCall?.(call)}
             />
           </View>
         )}

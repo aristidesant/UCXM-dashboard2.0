@@ -16,14 +16,16 @@ import {
   QADashboard,
   AnalyticsPage,
   HomeScreen,
+  CallDetailsPage,
 } from './screens';
 import { useAppContext } from './context/AppContext';
 import { usePlatform } from './hooks/usePlatform';
 import { useTheme } from './context/ThemeContext';
 import { colors, spacing } from './design';
 import { mockContacts } from './data/mockContacts';
+import { mockCalls, Call } from './data/mockCalls';
 
-type Screen = 'home' | 'kpi' | 'dashboards' | 'campaign' | 'contact' | 'settings' | 'analytics';
+type Screen = 'home' | 'kpi' | 'dashboards' | 'campaign' | 'contact' | 'callDetails' | 'settings' | 'analytics';
 
 const AppContent: React.FC = () => {
   const { isLoggedIn } = useAuth();
@@ -31,6 +33,7 @@ const AppContent: React.FC = () => {
   const { currentDashboard, setCurrentDashboard } = useAppContext();
   const { platform, isMobile } = usePlatform();
   const [selectedContactId, setSelectedContactId] = useState<string | null>(null);
+  const [selectedCall, setSelectedCall] = useState<Call | null>(null);
   const { effectiveTheme } = useTheme();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
@@ -70,8 +73,16 @@ const AppContent: React.FC = () => {
     setCurrentScreen('contact');
   };
 
+  const handleSelectCall = (call: Call) => {
+    setSelectedCall(call);
+    setCurrentScreen('callDetails');
+  };
+
   const handleBack = () => {
-    if (currentScreen === 'contact') {
+    if (currentScreen === 'callDetails') {
+      setCurrentScreen('contact');
+      setSelectedCall(null);
+    } else if (currentScreen === 'contact') {
       setCurrentScreen('campaign');
       setSelectedContactId(null);
     } else if (currentScreen === 'campaign') {
@@ -98,6 +109,7 @@ const AppContent: React.FC = () => {
         return currentDashboard ? (
           <CampaignDashboardScreen
             onSelectContact={handleSelectContact}
+            onSelectCall={handleSelectCall}
             onBack={handleBack}
           />
         ) : isMobile ? (
@@ -111,6 +123,7 @@ const AppContent: React.FC = () => {
         return currentDashboard ? (
           <CampaignDashboardScreen
             onSelectContact={handleSelectContact}
+            onSelectCall={handleSelectCall}
             onBack={handleBack}
           />
         ) : isMobile ? (
@@ -120,6 +133,12 @@ const AppContent: React.FC = () => {
         );
       case 'contact':
         return (
+          <ContactDetailsScreen contact={selectedContact || null} onBack={handleBack} />
+        );
+      case 'callDetails':
+        return selectedCall ? (
+          <CallDetailsPage call={selectedCall} onBack={handleBack} />
+        ) : (
           <ContactDetailsScreen contact={selectedContact || null} onBack={handleBack} />
         );
       case 'settings':
