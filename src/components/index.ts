@@ -38,3 +38,4 @@ export type { FilterValues } from './FilterModal';
 export { OperationalIndicator } from './OperationalIndicator';
 export { SidebarNav, type ScreenType } from './SidebarNav';
 export { ResponsiveContainer } from './ResponsiveContainer';
+export { Dropdown } from './Dropdown';

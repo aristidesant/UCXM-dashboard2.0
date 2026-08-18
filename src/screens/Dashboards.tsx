@@ -12,7 +12,7 @@ import {
 import { colors, typography, spacing, borderRadius } from '../design';
 import { usePlatform } from '../hooks/usePlatform';
 import { useAppContext } from '../context/AppContext';
-import { Card, Badge } from '../components';
+import { Card, Badge, Dropdown } from '../components';
 import { mockDashboards } from '../data/mockDashboards';
 import { useTheme } from '../context/ThemeContext';
 
@@ -34,7 +34,6 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
   const [selectedLineOfBusiness, setSelectedLineOfBusiness] = React.useState<string>('');
   const [dateRange, setDateRange] = React.useState<{ from: string; to: string }>({ from: '', to: '' });
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [expandedFilter, setExpandedFilter] = React.useState<string | null>(null);
   const itemsPerPage = 20;
 
   const uniqueStatuses = Array.from(new Set(mockDashboards.map(d => d.status))).sort();
@@ -278,34 +277,39 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
 
       {!isMobile && (
         <View style={{ flex: 1, flexDirection: 'column' }}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={styles.filterBar}>
-              <TouchableOpacity
-                style={[styles.filterSelect, { minWidth: 140 }]}
-                onPress={() => setExpandedFilter(expandedFilter === 'status' ? null : 'status')}
-              >
-                <Text style={styles.tableCellText}>
-                  {selectedStatus ? `Status: ${selectedStatus}` : 'Status: All'}
-                </Text>
-              </TouchableOpacity>
+          <View style={styles.filterBar}>
+              <Dropdown
+                label="Status"
+                value={selectedStatus}
+                options={uniqueStatuses.map((s) => ({ label: s, value: s }))}
+                onChange={(value) => {
+                  setSelectedStatus(value);
+                  setCurrentPage(1);
+                }}
+                minWidth={140}
+              />
 
-              <TouchableOpacity
-                style={[styles.filterSelect, { minWidth: 160 }]}
-                onPress={() => setExpandedFilter(expandedFilter === 'campaign' ? null : 'campaign')}
-              >
-                <Text style={styles.tableCellText}>
-                  {selectedCampaignType ? `Campaign: ${selectedCampaignType}` : 'Campaign: All'}
-                </Text>
-              </TouchableOpacity>
+              <Dropdown
+                label="Campaign"
+                value={selectedCampaignType}
+                options={uniqueCampaignTypes.map((c) => ({ label: c, value: c }))}
+                onChange={(value) => {
+                  setSelectedCampaignType(value);
+                  setCurrentPage(1);
+                }}
+                minWidth={160}
+              />
 
-              <TouchableOpacity
-                style={[styles.filterSelect, { minWidth: 160 }]}
-                onPress={() => setExpandedFilter(expandedFilter === 'lob' ? null : 'lob')}
-              >
-                <Text style={styles.tableCellText}>
-                  {selectedLineOfBusiness ? `LOB: ${selectedLineOfBusiness}` : 'LOB: All'}
-                </Text>
-              </TouchableOpacity>
+              <Dropdown
+                label="LOB"
+                value={selectedLineOfBusiness}
+                options={uniqueLineOfBusiness.map((l) => ({ label: l, value: l }))}
+                onChange={(value) => {
+                  setSelectedLineOfBusiness(value);
+                  setCurrentPage(1);
+                }}
+                minWidth={160}
+              />
 
               <TextInput
                 style={[styles.filterSelect, { minWidth: 140 }]}
@@ -328,99 +332,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
                   setCurrentPage(1);
                 }}
               />
-            </View>
-          </ScrollView>
-
-          {expandedFilter === 'status' && (
-            <View style={[styles.tableContainer, { marginBottom: spacing.md, position: 'absolute', top: 150, zIndex: 10 }]}>
-              <TouchableOpacity
-                style={styles.tableRow}
-                onPress={() => {
-                  setSelectedStatus('');
-                  setExpandedFilter(null);
-                  setCurrentPage(1);
-                }}
-              >
-                <Text style={styles.tableCellText}>All</Text>
-              </TouchableOpacity>
-              {uniqueStatuses.map((status) => (
-                <TouchableOpacity
-                  key={status}
-                  style={styles.tableRow}
-                  onPress={() => {
-                    setSelectedStatus(status);
-                    setExpandedFilter(null);
-                    setCurrentPage(1);
-                  }}
-                >
-                  <Text style={[styles.tableCellText, selectedStatus === status && { fontWeight: '600' }]}>
-                    {status}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
-
-          {expandedFilter === 'campaign' && (
-            <View style={[styles.tableContainer, { marginBottom: spacing.md, position: 'absolute', top: 150, zIndex: 10 }]}>
-              <TouchableOpacity
-                style={styles.tableRow}
-                onPress={() => {
-                  setSelectedCampaignType('');
-                  setExpandedFilter(null);
-                  setCurrentPage(1);
-                }}
-              >
-                <Text style={styles.tableCellText}>All</Text>
-              </TouchableOpacity>
-              {uniqueCampaignTypes.map((type) => (
-                <TouchableOpacity
-                  key={type}
-                  style={styles.tableRow}
-                  onPress={() => {
-                    setSelectedCampaignType(type);
-                    setExpandedFilter(null);
-                    setCurrentPage(1);
-                  }}
-                >
-                  <Text style={[styles.tableCellText, selectedCampaignType === type && { fontWeight: '600' }]}>
-                    {type}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
-
-          {expandedFilter === 'lob' && (
-            <View style={[styles.tableContainer, { marginBottom: spacing.md, position: 'absolute', top: 150, zIndex: 10 }]}>
-              <TouchableOpacity
-                style={styles.tableRow}
-                onPress={() => {
-                  setSelectedLineOfBusiness('');
-                  setExpandedFilter(null);
-                  setCurrentPage(1);
-                }}
-              >
-                <Text style={styles.tableCellText}>All</Text>
-              </TouchableOpacity>
-              {uniqueLineOfBusiness.map((lob) => (
-                <TouchableOpacity
-                  key={lob}
-                  style={styles.tableRow}
-                  onPress={() => {
-                    setSelectedLineOfBusiness(lob);
-                    setExpandedFilter(null);
-                    setCurrentPage(1);
-                  }}
-                >
-                  <Text style={[styles.tableCellText, selectedLineOfBusiness === lob && { fontWeight: '600' }]}>
-                    {lob}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
-
+          </View>
 
           <View style={styles.tableContainer}>
             <View style={styles.tableHeader}>
