@@ -36,27 +36,43 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       case 'operational':
         return {
           title: 'Análisis Operacional',
-          content: `Duración: ${call.duration}\nAHT: 3m 56s\nEscalaciones: 0\nContacto completado exitosamente.`,
+          content: `Duración: ${call.duration}
+AHT Objetivo: 5m 00s
+Escalaciones: 0
+Resultado: Exitoso`,
         };
       case 'qa':
         return {
           title: 'Evaluación QA',
-          content: `Score: 95/100\nPuntualidad: Excelente\nTono: Profesional\nCumplimiento: 100%\nConformidad: Sí`,
+          content: `Score QA: 95/100
+Puntualidad: Excelente
+Tono: Profesional
+Cumplimiento: 100%`,
         };
       case 'sentiment':
         return {
           title: 'Análisis de Sentimiento',
-          content: `Sentimiento Cliente: Muy Positivo\nSentimiento Agente: Profesional\nTono General: Positivo\nConfianza: Alta\nSatisfacción: Muy Satisfecho`,
+          content: `Sentimiento Agente: Muy Positivo
+Emoción: Empatía
+Sentimiento Cliente: Positivo
+Emoción: Satisfacción
+Tono: Profesional`,
         };
       case 'compliance':
         return {
           title: 'Cumplimiento Regulatorio',
-          content: `Protección de Datos: Cumple\nGrabación: Consentimiento Presente\nDivulgación: Cumple\nRequisitos: Todos Cumplidos\nRiesgo: Bajo`,
+          content: `Protección de Datos: ✓ Cumple
+Grabación: ✓ Consentimiento
+Divulgación: ✓ Cumple
+Nivel de Riesgo: Bajo`,
         };
       case 'business':
         return {
           title: 'Insights de Negocio',
-          content: `Oportunidad de Venta: No Identificada\nRetención: Seguro\nChurn Risk: Bajo\nUpsell: Potencial Futuro\nValor Lifetime: Alto`,
+          content: `Oportunidad de Venta: -
+Retención: Alta
+Riesgo de Churn: Bajo
+Potencial Upsell: Futuro`,
         };
       default:
         return {
