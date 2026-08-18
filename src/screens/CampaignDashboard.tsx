@@ -31,8 +31,7 @@ import {
   ComplianceMetricsPanel,
   BusinessInsightsPanel,
   ResponsiveContainer,
-  EvaluationTypeSelector,
-  type EvaluationType,
+  SegmentedControl,
 } from '../components';
 import { CallsListScreen } from './CallsListScreen';
 import { mockDashboards } from '../data/mockDashboards';
@@ -67,30 +66,6 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
   const [showCallsList, setShowCallsList] = useState(false);
   const [selectedCall, setSelectedCall] = useState<Call | null>(null);
   const [showAnalysisSelector, setShowAnalysisSelector] = useState(false);
-  const [evaluationType, setEvaluationType] = useState<EvaluationType>('operational');
-
-  // Map evaluation type to infoType
-  const evaluationTypeToInfoType = (evalType: EvaluationType): InfoType => {
-    switch (evalType) {
-      case 'operational':
-        return 'operation';
-      case 'qa':
-        return 'qa';
-      case 'sentiment':
-        return 'emotion';
-      case 'compliance':
-        return 'compliance';
-      case 'business':
-        return 'insights';
-      default:
-        return 'operation';
-    }
-  };
-
-  // Update infoType when evaluationType changes
-  React.useEffect(() => {
-    setInfoType(evaluationTypeToInfoType(evaluationType));
-  }, [evaluationType, setInfoType]);
 
   const metrics = useMockData(currentDashboard || '', infoType);
   const dashboard = mockDashboards.find((d) => d.id === currentDashboard);
@@ -537,10 +512,10 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
         </View>
 
         <View style={{ flex: 1, paddingHorizontal: spacing.lg, paddingVertical: spacing.lg, justifyContent: 'center', alignItems: 'center' }}>
-          <EvaluationTypeSelector
-            selectedType={evaluationType}
-            onSelectType={(evalType) => {
-              setEvaluationType(evalType);
+          <SegmentedControl
+            activeAnalysis={infoType}
+            onSelectAnalysis={(analysisType) => {
+              setInfoType(analysisType);
               setShowAnalysisSelector(false);
             }}
           />
@@ -626,7 +601,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
 
       {/* Fixed Evaluation Type Selector at Bottom */}
       <View style={styles.evaluationSelectorContainer}>
-        <EvaluationTypeSelector selectedType={evaluationType} onSelectType={setEvaluationType} />
+        <SegmentedControl activeAnalysis={infoType} onSelectAnalysis={setInfoType} />
       </View>
     </View>
   );
