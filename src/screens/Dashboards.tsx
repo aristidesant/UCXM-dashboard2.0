@@ -332,7 +332,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
           </ScrollView>
 
           {expandedFilter === 'status' && (
-            <View style={[styles.tableContainer, { marginBottom: spacing.md }]}>
+            <View style={[styles.tableContainer, { marginBottom: spacing.md, position: 'absolute', top: 150, zIndex: 10 }]}>
               <TouchableOpacity
                 style={styles.tableRow}
                 onPress={() => {
@@ -362,7 +362,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
           )}
 
           {expandedFilter === 'campaign' && (
-            <View style={[styles.tableContainer, { marginBottom: spacing.md }]}>
+            <View style={[styles.tableContainer, { marginBottom: spacing.md, position: 'absolute', top: 150, zIndex: 10 }]}>
               <TouchableOpacity
                 style={styles.tableRow}
                 onPress={() => {
@@ -392,7 +392,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
           )}
 
           {expandedFilter === 'lob' && (
-            <View style={[styles.tableContainer, { marginBottom: spacing.md }]}>
+            <View style={[styles.tableContainer, { marginBottom: spacing.md, position: 'absolute', top: 150, zIndex: 10 }]}>
               <TouchableOpacity
                 style={styles.tableRow}
                 onPress={() => {
