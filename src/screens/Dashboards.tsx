@@ -12,7 +12,7 @@ import {
 import { colors, typography, spacing, borderRadius } from '../design';
 import { usePlatform } from '../hooks/usePlatform';
 import { useAppContext } from '../context/AppContext';
-import { Card, Badge, Dropdown, DatePicker } from '../components';
+import { Card, Badge, Dropdown, DatePicker, ResponsiveContainer } from '../components';
 import { mockDashboards } from '../data/mockDashboards';
 import { useTheme } from '../context/ThemeContext';
 
@@ -77,7 +77,6 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
     container: {
       flex: 1,
       backgroundColor: themeColors.canvasFrost,
-      paddingHorizontal: isMobile ? spacing.md : spacing.lg,
       paddingTop: spacing.lg,
     } as ViewStyle,
     header: {
@@ -318,8 +317,9 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Dashboards</Text>
+    <ResponsiveContainer>
+      <View style={styles.container}>
+        <Text style={styles.header}>Dashboards</Text>
 
       {!isMobile && (
         <View style={{ flex: 1, flexDirection: 'column', position: 'relative', zIndex: 0 }}>
@@ -530,15 +530,16 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
         </View>
       )}
 
-      {isMobile && (
-        <FlatList
-          data={filteredDashboards}
-          renderItem={renderDashboard}
-          keyExtractor={(item) => item.id}
-          scrollEnabled={false}
-          contentContainerStyle={styles.gridContainer}
-        />
-      )}
-    </View>
+        {isMobile && (
+          <FlatList
+            data={filteredDashboards}
+            renderItem={renderDashboard}
+            keyExtractor={(item) => item.id}
+            scrollEnabled={false}
+            contentContainerStyle={styles.gridContainer}
+          />
+        )}
+      </View>
+    </ResponsiveContainer>
   );
 };
