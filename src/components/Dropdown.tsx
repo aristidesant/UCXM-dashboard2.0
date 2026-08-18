@@ -75,7 +75,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
       borderColor: themeColors.whisperBorder,
       borderRadius: 8,
       overflow: 'hidden',
-      zIndex: 1000,
+      zIndex: 9999,
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.25,
