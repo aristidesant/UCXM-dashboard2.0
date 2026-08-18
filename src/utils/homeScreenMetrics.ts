@@ -2,6 +2,7 @@ import type { EmotionMetrics, OperationMetrics, ComplianceMetrics } from '../dat
 
 export const getEmotionLabel = (emotion: string): string => {
   const emotionLabels: Record<string, string> = {
+    // Existing emotions
     joy: 'Alegría',
     satisfaction: 'Satisfacción',
     professional: 'Profesionalismo',
@@ -11,45 +12,86 @@ export const getEmotionLabel = (emotion: string): string => {
     negative: 'Negativo',
     frustrated: 'Frustrado',
     angry: 'Enojado',
+    sadness: 'Tristeza',
     empathetic: 'Empatía',
     polite: 'Amable',
     casual: 'Casual',
+    // New emotions (12 total)
+    elation: 'Euforia',
+    gratitude: 'Gratitud',
+    relief: 'Alivio',
+    surprise: 'Sorpresa',
+    fear: 'Miedo',
+    disappointment: 'Decepción',
+    rage: 'Furia',
   };
   return emotionLabels[emotion] || emotion;
 };
 
 export const getSentimentLevel = (emotion: string): string => {
   const emotionMap: Record<string, string> = {
+    // Muy Positivo
     professional: 'Muy Positivo',
     satisfied: 'Muy Positivo',
     'muy positivo': 'Muy Positivo',
+    joy: 'Muy Positivo',
+    elation: 'Muy Positivo',
+    gratitude: 'Muy Positivo',
+    empathetic: 'Muy Positivo',
+    // Positivo
     positivo: 'Positivo',
     positive: 'Positivo',
-    joy: 'Muy Positivo',
     satisfaction: 'Positivo',
-    neutral: 'Neutral',
-    negative: 'Negativo',
-    frustrated: 'Muy Negativo',
-    angry: 'Muy Negativo',
-    empathetic: 'Muy Positivo',
+    relief: 'Positivo',
     polite: 'Positivo',
     casual: 'Positivo',
+    // Neutral
+    neutral: 'Neutral',
+    surprise: 'Neutral',
+    // Negativo
+    negative: 'Negativo',
+    frustration: 'Negativo',
+    frustrated: 'Negativo',
+    fear: 'Negativo',
+    disappointment: 'Negativo',
+    // Muy Negativo
+    angry: 'Muy Negativo',
+    anger: 'Muy Negativo',
+    sadness: 'Muy Negativo',
+    rage: 'Muy Negativo',
   };
   return emotionMap[emotion] || emotion;
 };
 
 export const getSentimentColor = (emotion: string): string => {
   const colors: Record<string, string> = {
+    // Muy Positivo (Dark Green)
     professional: '#1BB54A',
     satisfied: '#1BB54A',
-    positive: '#52C41A',
-    neutral: '#8C8C8C',
-    negative: '#FFC53D',
-    frustrated: '#FF7A45',
-    angry: '#FF4D4F',
+    joy: '#1BB54A',
+    elation: '#1BB54A',
+    gratitude: '#1BB54A',
     empathetic: '#1BB54A',
+    // Positivo (Light Green)
+    positive: '#52C41A',
+    satisfaction: '#52C41A',
+    relief: '#52C41A',
     polite: '#52C41A',
     casual: '#52C41A',
+    // Neutral (Gray)
+    neutral: '#8C8C8C',
+    surprise: '#8C8C8C',
+    // Negativo (Orange)
+    negative: '#FFC53D',
+    frustration: '#FFC53D',
+    frustrated: '#FFC53D',
+    fear: '#FFC53D',
+    disappointment: '#FFC53D',
+    // Muy Negativo (Red)
+    angry: '#FF4D4F',
+    anger: '#FF4D4F',
+    sadness: '#FF4D4F',
+    rage: '#FF4D4F',
   };
   return colors[emotion] || '#1BB54A';
 };

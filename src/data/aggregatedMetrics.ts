@@ -90,4 +90,191 @@ export const aggregatedMetrics = {
       satisfaction: { rating: 4.5, maxRating: 5, trend: 2.1 },
     },
   } as OperationMetrics,
+
+  // Emotion Analytics - Macro View Data
+
+  // Iteration 1: Campaigns with Negative Sentiment
+  negativeSentimentCampaigns: [
+    {
+      id: 'loc-1',
+      name: 'Localización',
+      emotion: 'frustration',
+      emotionLabel: 'Frustración',
+      confidence: 0.72,
+      negativeCallCount: 45,
+      trend7Day: 5,
+    },
+    {
+      id: 'loc-mayo',
+      name: 'Localización Mayo',
+      emotion: 'disappointment',
+      emotionLabel: 'Decepción',
+      confidence: 0.68,
+      negativeCallCount: 32,
+      trend7Day: -2,
+    },
+    {
+      id: 'loc-june',
+      name: 'Localización Junio',
+      emotion: 'fear',
+      emotionLabel: 'Miedo',
+      confidence: 0.55,
+      negativeCallCount: 18,
+      trend7Day: 1,
+    },
+  ],
+
+  // Iteration 2: Sentiment Call Counts
+  sentimentCallCounts: {
+    veryNegative: 125,
+    negative: 287,
+    neutral: 456,
+    positive: 678,
+    veryPositive: 345,
+    trend: {
+      veryNegative: 3,
+      negative: -2,
+      neutral: 0,
+      positive: 5,
+      veryPositive: 8,
+    },
+  },
+
+  // Iteration 3: Distribution by Sentiment Level
+
+  // Agent Sentiment Distribution
+  agentSentimentDistribution: [
+    {
+      agentId: 'agent-1',
+      agentName: 'Carlos Mendez',
+      sentiments: { veryPositive: 35, positive: 45, neutral: 15, negative: 4, veryNegative: 1 },
+      trend7Day: { veryPositive: 2, positive: 1, neutral: -1, negative: -1, veryNegative: -1 },
+    },
+    {
+      agentId: 'agent-2',
+      agentName: 'María García',
+      sentiments: { veryPositive: 42, positive: 38, neutral: 12, negative: 6, veryNegative: 2 },
+      trend7Day: { veryPositive: 3, positive: -2, neutral: 0, negative: 1, veryNegative: -2 },
+    },
+    {
+      agentId: 'agent-3',
+      agentName: 'Juan López',
+      sentiments: { veryPositive: 28, positive: 42, neutral: 18, negative: 8, veryNegative: 4 },
+      trend7Day: { veryPositive: 1, positive: 2, neutral: 1, negative: -1, veryNegative: -3 },
+    },
+    {
+      agentId: 'agent-4',
+      agentName: 'Sofia Ruiz',
+      sentiments: { veryPositive: 38, positive: 40, neutral: 14, negative: 5, veryNegative: 3 },
+      trend7Day: { veryPositive: 2, positive: 0, neutral: -1, negative: 0, veryNegative: -1 },
+    },
+  ],
+
+  // Client Sentiment Distribution
+  clientSentimentDistribution: [
+    {
+      clientSegment: 'Retail',
+      sentiments: { veryPositive: 28, positive: 42, neutral: 20, negative: 8, veryNegative: 2 },
+      trend7Day: { veryPositive: -1, positive: 0, neutral: 1, negative: 0, veryNegative: 0 },
+    },
+    {
+      clientSegment: 'Finance',
+      sentiments: { veryPositive: 35, positive: 38, neutral: 16, negative: 7, veryNegative: 4 },
+      trend7Day: { veryPositive: 2, positive: -1, neutral: -1, negative: 1, veryNegative: -1 },
+    },
+    {
+      clientSegment: 'Healthcare',
+      sentiments: { veryPositive: 42, positive: 35, neutral: 12, negative: 8, veryNegative: 3 },
+      trend7Day: { veryPositive: 3, positive: -2, neutral: -1, negative: 0, veryNegative: 0 },
+    },
+    {
+      clientSegment: 'Tech',
+      sentiments: { veryPositive: 38, positive: 40, neutral: 14, negative: 6, veryNegative: 2 },
+      trend7Day: { veryPositive: 1, positive: 1, neutral: 0, negative: -1, veryNegative: -1 },
+    },
+  ],
+
+  // Iteration 4: Negative Emotion Word Pool
+  negativeEmotionWords: [
+    {
+      id: 'w1',
+      word: 'Espera más',
+      emotion: 'frustration',
+      emotionLabel: 'Frustración',
+      frequency: 128,
+      context: 'Cliente espera demasiado tiempo en línea',
+      lastDetected: '2026-08-18',
+      trend7Day: 12,
+    },
+    {
+      id: 'w2',
+      word: 'No puedo ayudar',
+      emotion: 'disappointment',
+      emotionLabel: 'Decepción',
+      frequency: 87,
+      context: 'Agente no puede resolver el problema',
+      lastDetected: '2026-08-18',
+      trend7Day: 5,
+    },
+    {
+      id: 'w3',
+      word: 'Eso no es posible',
+      emotion: 'fear',
+      emotionLabel: 'Miedo',
+      frequency: 64,
+      context: 'Cliente teme que no se pueda completar la solicitud',
+      lastDetected: '2026-08-17',
+      trend7Day: 3,
+    },
+    {
+      id: 'w4',
+      word: 'Está complicado',
+      emotion: 'frustration',
+      emotionLabel: 'Frustración',
+      frequency: 112,
+      context: 'Cliente frustra con la complejidad del proceso',
+      lastDetected: '2026-08-18',
+      trend7Day: 8,
+    },
+    {
+      id: 'w5',
+      word: 'Perdí tiempo',
+      emotion: 'disappointment',
+      emotionLabel: 'Decepción',
+      frequency: 76,
+      context: 'Cliente se siente decepcionado por tiempo gastado',
+      lastDetected: '2026-08-17',
+      trend7Day: -2,
+    },
+    {
+      id: 'w6',
+      word: 'Tengo miedo de',
+      emotion: 'fear',
+      emotionLabel: 'Miedo',
+      frequency: 45,
+      context: 'Cliente expresa preocupación o miedo',
+      lastDetected: '2026-08-16',
+      trend7Day: 1,
+    },
+    {
+      id: 'w7',
+      word: 'No funciona',
+      emotion: 'frustration',
+      emotionLabel: 'Frustración',
+      frequency: 156,
+      context: 'Cliente frustrado porque sistema no funciona',
+      lastDetected: '2026-08-18',
+      trend7Day: 15,
+    },
+    {
+      id: 'w8',
+      word: 'Me siento solo',
+      emotion: 'sadness',
+      emotionLabel: 'Tristeza',
+      frequency: 34,
+      context: 'Cliente expresa sentimiento de soledad o abandono',
+      lastDetected: '2026-08-15',
+      trend7Day: -1,
+    },
+  ],
 };

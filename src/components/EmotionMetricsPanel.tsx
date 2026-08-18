@@ -126,14 +126,23 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
     } as TextStyle,
   });
 
-  // Color palette for emotions
+  // Color palette for emotions (12 total)
   const emotionColors: Record<string, string> = {
+    // Existing
     joy: '#FFD93D',
     satisfaction: '#6BCB77',
     neutral: '#4D96FF',
     frustration: '#FF9500',
     anger: '#FF6B6B',
     sadness: '#7B68EE',
+    // New
+    elation: '#FFE066',
+    gratitude: '#51CF66',
+    relief: '#74C0FC',
+    surprise: '#90C3FF',
+    fear: '#FFA94D',
+    disappointment: '#FF8A80',
+    rage: '#FF5252',
   };
 
   const getEmotionColor = (emotion: string) => emotionColors[emotion.toLowerCase()] || themeColors.newtechGreen;
