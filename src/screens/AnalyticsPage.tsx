@@ -20,6 +20,7 @@ import {
   BusinessInsightsPanel,
   FilterModal,
 } from '../components';
+import { EmotionAnalyticsPage } from './EmotionAnalyticsPage';
 import { OperationTabs } from '../components';
 import { aggregatedMetrics } from '../data/aggregatedMetrics';
 import type { InfoType } from '../context/AppContext';
@@ -334,7 +335,7 @@ export const AnalyticsPage: React.FC = () => {
     }
 
     if (infoType === 'emotion') {
-      return <EmotionMetricsPanel metrics={aggregatedMetrics.emotion} />;
+      return <EmotionAnalyticsPage />;
     }
 
     if (infoType === 'compliance') {
