@@ -135,6 +135,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       flexDirection: 'row',
       gap: spacing.md,
       flexWrap: 'wrap',
+      marginBottom: spacing.lg,
     } as ViewStyle,
     filterSelect: {
       flex: 1,
