@@ -46,6 +46,9 @@ const QAScore: React.FC<QAScoreProps> = ({
       borderRadius: borderRadius.lg,
       padding: spacing.md,
       marginBottom: spacing.md,
+      marginRight: spacing.sm,
+      flex: 1,
+      minWidth: '45%',
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
       borderLeftWidth: 4,
@@ -111,6 +114,11 @@ export const QAMetricsView: React.FC = () => {
     container: {
       flex: 1,
     } as ViewStyle,
+    scoresContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginHorizontal: -spacing.sm / 2,
+    } as ViewStyle,
     summaryCard: {
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderRadius: borderRadius.lg,
@@ -148,42 +156,44 @@ export const QAMetricsView: React.FC = () => {
         </Text>
       </View>
 
-      {/* Quality Scores */}
-      <QAScore
-        label={metrics.ecn.name}
-        value={metrics.ecn.value}
-        threshold={metrics.ecn.threshold}
-        status={metrics.ecn.status}
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+      {/* Quality Scores - 2 Column Layout */}
+      <View style={styles.scoresContainer}>
+        <QAScore
+          label={metrics.ecn.name}
+          value={metrics.ecn.value}
+          threshold={metrics.ecn.threshold}
+          status={metrics.ecn.status}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
 
-      <QAScore
-        label={metrics.enc.name}
-        value={metrics.enc.value}
-        threshold={metrics.enc.threshold}
-        status={metrics.enc.status}
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+        <QAScore
+          label={metrics.enc.name}
+          value={metrics.enc.value}
+          threshold={metrics.enc.threshold}
+          status={metrics.enc.status}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
 
-      <QAScore
-        label={metrics.ecc.name}
-        value={metrics.ecc.value}
-        threshold={metrics.ecc.threshold}
-        status={metrics.ecc.status}
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+        <QAScore
+          label={metrics.ecc.name}
+          value={metrics.ecc.value}
+          threshold={metrics.ecc.threshold}
+          status={metrics.ecc.status}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
 
-      <QAScore
-        label={metrics.ecuf.name}
-        value={metrics.ecuf.value}
-        threshold={metrics.ecuf.threshold}
-        status={metrics.ecuf.status}
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+        <QAScore
+          label={metrics.ecuf.name}
+          value={metrics.ecuf.value}
+          threshold={metrics.ecuf.threshold}
+          status={metrics.ecuf.status}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
+      </View>
     </View>
   );
 };
