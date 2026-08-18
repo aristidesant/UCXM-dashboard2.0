@@ -74,7 +74,7 @@ export const EmotionAnalyticsFilters: React.FC<EmotionAnalyticsFiltersProps> = (
       gap: spacing.md,
       paddingHorizontal: spacing.lg,
       paddingVertical: spacing.md,
-      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderBottomWidth: 1,
       borderBottomColor: themeColors.whisperBorder,
       flexWrap: 'wrap',

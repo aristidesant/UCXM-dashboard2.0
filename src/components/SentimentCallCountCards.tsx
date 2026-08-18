@@ -35,7 +35,7 @@ export const SentimentCallCountCards: React.FC<SentimentCallCountCardsProps> = (
     } as ViewStyle,
     card: {
       flex: isMobile ? 1 : 0.48,
-      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderRadius: borderRadius.lg,
       padding: spacing.lg,
       borderWidth: 1,

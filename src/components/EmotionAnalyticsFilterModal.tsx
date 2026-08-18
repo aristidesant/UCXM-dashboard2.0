@@ -107,7 +107,7 @@ export const EmotionAnalyticsFilterModal: React.FC<EmotionAnalyticsFilterModalPr
       marginBottom: spacing.xs,
     } as ViewStyle,
     checkboxRowActive: {
-      backgroundColor: isDark ? themeColors.canvasDark : colors.light.canvasLight,
+      backgroundColor: isDark ? themeColors.sunkenBase : colors.light.pureSurface,
     } as ViewStyle,
     checkbox: {
       width: 20,

@@ -54,7 +54,7 @@ export const NegativeSentimentCampaignTable: React.FC<NegativeSentimentCampaignT
     } as ViewStyle,
     tableHeader: {
       flexDirection: 'row',
-      backgroundColor: isDark ? themeColors.canvasDark : colors.light.sunkenBase,
+      backgroundColor: isDark ? themeColors.sunkenBase : colors.light.sunkenBase,
       borderBottomWidth: 1,
       borderBottomColor: themeColors.whisperBorder,
     } as ViewStyle,
@@ -73,7 +73,7 @@ export const NegativeSentimentCampaignTable: React.FC<NegativeSentimentCampaignT
       flexDirection: 'row',
       borderBottomWidth: 1,
       borderBottomColor: themeColors.whisperBorder,
-      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasFrost,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.canvasFrost,
     } as ViewStyle,
     tableRowHover: {
       backgroundColor: isDark ? themeColors.whisperBorder : colors.light.sunkenBase,

@@ -46,7 +46,7 @@ export const NegativeSentimentCampaignCard: React.FC<NegativeSentimentCampaignCa
       paddingBottom: spacing.lg,
     } as ViewStyle,
     card: {
-      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderRadius: borderRadius.lg,
       padding: spacing.md,
       marginBottom: spacing.md,

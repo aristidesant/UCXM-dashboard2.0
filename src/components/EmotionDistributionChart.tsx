@@ -27,7 +27,7 @@ export const EmotionDistributionChart: React.FC<DistributionChartProps> = ({ tit
       marginBottom: spacing.md,
     } as TextStyle,
     chartContainer: {
-      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderRadius: borderRadius.lg,
       padding: spacing.lg,
       borderWidth: 1,

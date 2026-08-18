@@ -68,7 +68,7 @@ export const NegativeEmotionWordPool: React.FC<NegativeEmotionWordPoolProps> = (
       fontWeight: '600',
     } as TextStyle,
     wordCard: {
-      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderRadius: borderRadius.lg,
       padding: spacing.md,
       marginBottom: spacing.md,
