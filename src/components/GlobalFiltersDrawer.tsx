@@ -13,20 +13,20 @@ import { ChevronLeft, Calendar } from 'lucide-react';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { useUpdateFilters, useGlobalAnalytics } from '../hooks/useGlobalAnalytics';
-import { CampaignType, LOB, Status } from '../contexts/GlobalAnalyticsContext';
+import { CampaignTypeValue, LOBValue, StatusValue } from '../contexts/GlobalAnalyticsContext';
 
 interface GlobalFiltersDrawerProps {
   visible: boolean;
   onClose: () => void;
 }
 
-const CAMPAIGN_OPTIONS: { label: string; value: CampaignType }[] = [
+const CAMPAIGN_OPTIONS: { label: string; value: CampaignTypeValue }[] = [
   { label: 'Outbound', value: 'outbound' },
   { label: 'Inbound', value: 'inbound' },
   { label: 'Mixta', value: 'mixta' },
 ];
 
-const LOB_OPTIONS: { label: string; value: LOB }[] = [
+const LOB_OPTIONS: { label: string; value: LOBValue }[] = [
   { label: 'Ventas', value: 'Ventas' },
   { label: 'Cuentas por Cobrar', value: 'CxC' },
   { label: 'Retención', value: 'Retención' },
@@ -34,7 +34,7 @@ const LOB_OPTIONS: { label: string; value: LOB }[] = [
   { label: 'Activación', value: 'Activación' },
 ];
 
-const STATUS_OPTIONS: { label: string; value: Status }[] = [
+const STATUS_OPTIONS: { label: string; value: StatusValue }[] = [
   { label: 'Activa', value: 'activa' },
   { label: 'Inactiva', value: 'inactiva' },
 ];
@@ -263,17 +263,17 @@ export const GlobalFiltersDrawer: React.FC<GlobalFiltersDrawerProps> = ({
               <TouchableOpacity
                 key={option.value}
                 style={styles.optionRow}
-                onPress={() => updateCampaignType(filters.campaignType === option.value ? null : option.value)}
+                onPress={() => updateCampaignType(option.value)}
                 activeOpacity={0.7}
               >
                 <Text style={styles.optionText}>{option.label}</Text>
                 <View
                   style={[
                     styles.checkbox,
-                    filters.campaignType === option.value && styles.checkboxChecked,
+                    filters.campaignTypes.includes(option.value) && styles.checkboxChecked,
                   ]}
                 >
-                  {filters.campaignType === option.value && (
+                  {filters.campaignTypes.includes(option.value) && (
                     <Text style={styles.checkmark}>✓</Text>
                   )}
                 </View>
@@ -288,17 +288,17 @@ export const GlobalFiltersDrawer: React.FC<GlobalFiltersDrawerProps> = ({
               <TouchableOpacity
                 key={option.value}
                 style={styles.optionRow}
-                onPress={() => updateLOB(filters.lob === option.value ? null : option.value)}
+                onPress={() => updateLOB(option.value)}
                 activeOpacity={0.7}
               >
                 <Text style={styles.optionText}>{option.label}</Text>
                 <View
                   style={[
                     styles.checkbox,
-                    filters.lob === option.value && styles.checkboxChecked,
+                    filters.lobs.includes(option.value) && styles.checkboxChecked,
                   ]}
                 >
-                  {filters.lob === option.value && (
+                  {filters.lobs.includes(option.value) && (
                     <Text style={styles.checkmark}>✓</Text>
                   )}
                 </View>
@@ -313,17 +313,17 @@ export const GlobalFiltersDrawer: React.FC<GlobalFiltersDrawerProps> = ({
               <TouchableOpacity
                 key={option.value}
                 style={styles.optionRow}
-                onPress={() => updateStatus(filters.status === option.value ? null : option.value)}
+                onPress={() => updateStatus(option.value)}
                 activeOpacity={0.7}
               >
                 <Text style={styles.optionText}>{option.label}</Text>
                 <View
                   style={[
                     styles.checkbox,
-                    filters.status === option.value && styles.checkboxChecked,
+                    filters.statuses.includes(option.value) && styles.checkboxChecked,
                   ]}
                 >
-                  {filters.status === option.value && (
+                  {filters.statuses.includes(option.value) && (
                     <Text style={styles.checkmark}>✓</Text>
                   )}
                 </View>

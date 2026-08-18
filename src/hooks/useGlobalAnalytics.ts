@@ -3,9 +3,9 @@ import {
   GlobalAnalyticsContext,
   GlobalAnalyticsFilters,
   AnalysisType,
-  CampaignType,
-  LOB,
-  Status,
+  CampaignTypeValue,
+  LOBValue,
+  StatusValue,
 } from '../contexts/GlobalAnalyticsContext';
 
 export const useGlobalAnalytics = () => {
@@ -25,14 +25,23 @@ export const useUpdateFilters = () => {
     updateDateRange: (from: Date, to: Date) => {
       setFilters({ ...filters, dateRange: { from, to } });
     },
-    updateCampaignType: (campaignType: CampaignType) => {
-      setFilters({ ...filters, campaignType });
+    updateCampaignType: (campaignType: CampaignTypeValue) => {
+      const campaignTypes = filters.campaignTypes.includes(campaignType)
+        ? filters.campaignTypes.filter(ct => ct !== campaignType)
+        : [...filters.campaignTypes, campaignType];
+      setFilters({ ...filters, campaignTypes });
     },
-    updateLOB: (lob: LOB) => {
-      setFilters({ ...filters, lob });
+    updateLOB: (lob: LOBValue) => {
+      const lobs = filters.lobs.includes(lob)
+        ? filters.lobs.filter(l => l !== lob)
+        : [...filters.lobs, lob];
+      setFilters({ ...filters, lobs });
     },
-    updateStatus: (status: Status) => {
-      setFilters({ ...filters, status });
+    updateStatus: (status: StatusValue) => {
+      const statuses = filters.statuses.includes(status)
+        ? filters.statuses.filter(s => s !== status)
+        : [...filters.statuses, status];
+      setFilters({ ...filters, statuses });
     },
   };
 };

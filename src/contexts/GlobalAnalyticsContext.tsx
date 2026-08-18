@@ -1,18 +1,18 @@
 import React, { createContext, useState, useCallback } from 'react';
 
 export type AnalysisType = 'operation' | 'qa' | 'emotion' | 'compliance' | 'insights';
-export type CampaignType = 'outbound' | 'inbound' | 'mixta' | null;
-export type LOB = 'Ventas' | 'CxC' | 'Retención' | 'Localización' | 'Activación' | null;
-export type Status = 'activa' | 'inactiva' | null;
+export type CampaignTypeValue = 'outbound' | 'inbound' | 'mixta';
+export type LOBValue = 'Ventas' | 'CxC' | 'Retención' | 'Localización' | 'Activación';
+export type StatusValue = 'activa' | 'inactiva';
 
 export interface GlobalAnalyticsFilters {
   dateRange: {
     from: Date;
     to: Date;
   };
-  campaignType: CampaignType;
-  lob: LOB;
-  status: Status;
+  campaignTypes: CampaignTypeValue[];
+  lobs: LOBValue[];
+  statuses: StatusValue[];
 }
 
 interface GlobalAnalyticsContextType {
@@ -30,9 +30,9 @@ const defaultFilters: GlobalAnalyticsFilters = {
     from: new Date(new Date().setDate(new Date().getDate() - 7)),
     to: new Date(),
   },
-  campaignType: null,
-  lob: null,
-  status: null,
+  campaignTypes: [],
+  lobs: [],
+  statuses: [],
 };
 
 export const GlobalAnalyticsContext = createContext<GlobalAnalyticsContextType | undefined>(
@@ -50,20 +50,20 @@ export const GlobalAnalyticsProvider: React.FC<{ children: React.ReactNode }> = 
   }, []);
 
   const hasActiveFilters = Boolean(
-    filters.campaignType || filters.lob || filters.status
+    filters.campaignTypes.length > 0 || filters.lobs.length > 0 || filters.statuses.length > 0
   );
 
   const getFilterSummary = useCallback(() => {
     const parts: string[] = [];
 
-    if (filters.campaignType) {
-      parts.push(`Campaña: ${filters.campaignType}`);
+    if (filters.campaignTypes.length > 0) {
+      parts.push(`Campañas: ${filters.campaignTypes.join(', ')}`);
     }
-    if (filters.lob) {
-      parts.push(`LOB: ${filters.lob}`);
+    if (filters.lobs.length > 0) {
+      parts.push(`LOB: ${filters.lobs.join(', ')}`);
     }
-    if (filters.status) {
-      parts.push(`Estatus: ${filters.status}`);
+    if (filters.statuses.length > 0) {
+      parts.push(`Estatus: ${filters.statuses.join(', ')}`);
     }
 
     if (parts.length === 0) {
