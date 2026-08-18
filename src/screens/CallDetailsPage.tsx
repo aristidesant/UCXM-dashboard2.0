@@ -48,7 +48,7 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
           />
         );
       case 'qa':
-        return <QAEvaluationCard score={95} punctuality="Excelente" tone="Profesional" compliance={100} />;
+        return <QAEvaluationCard ecn={90} enc={85} ecc={100} ecuf={98} />;
       case 'sentiment':
         return (
           <SentimentEvaluationCard
