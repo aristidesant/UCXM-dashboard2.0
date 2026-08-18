@@ -10,7 +10,7 @@ import {
 import { colors, spacing, borderRadius } from '../design';
 import { useTheme } from '../context/ThemeContext';
 
-export type EvaluationType = 'operational' | 'qa' | 'sentiment' | 'compliance' | 'business';
+export type EvaluationType = 'operation' | 'qa' | 'emotion' | 'compliance' | 'insights';
 
 interface EvaluationTypeSelectorProps {
   selectedType: EvaluationType;
@@ -42,11 +42,11 @@ const getEvaluationColor = (type: EvaluationType): string => {
 };
 
 const EVALUATION_TYPES: EvaluationTypeConfig[] = [
-  { id: 'operational', icon: Zap, label: 'Operacional', color: '#26D366' },
+  { id: 'operation', icon: Zap, label: 'Operacional', color: '#26D366' },
   { id: 'qa', icon: CheckSquare, label: 'QA', color: '#4A9EFF' },
-  { id: 'sentiment', icon: Smile, label: 'Sentimiento', color: '#FFD700' },
+  { id: 'emotion', icon: Smile, label: 'Sentimiento', color: '#FFD700' },
   { id: 'compliance', icon: Shield, label: 'Cumplimiento', color: '#FF6B6B' },
-  { id: 'business', icon: TrendingUp, label: 'Business Insights', color: '#A86FD8' },
+  { id: 'insights', icon: TrendingUp, label: 'Business Insights', color: '#A86FD8' },
 ];
 
 export const EvaluationTypeSelector: React.FC<EvaluationTypeSelectorProps> = ({

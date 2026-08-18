@@ -22,7 +22,8 @@ import {
   ComplianceEvaluationCard,
   BusinessEvaluationCard,
 } from '../components/CallDetailsComponents';
-import { EvaluationTypeSelector, EvaluationType } from '../components/EvaluationTypeSelector';
+import { SegmentedControl } from '../components/SegmentedControl';
+import { InfoType } from '../context/AppContext';
 
 interface CallDetailsPageProps {
   call: Call;
@@ -34,11 +35,11 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
   const { isMobile } = usePlatform();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
-  const [selectedEvaluationType, setSelectedEvaluationType] = useState<EvaluationType>('operational');
+  const [selectedEvaluationType, setSelectedEvaluationType] = useState<InfoType>('operation');
 
   const renderEvaluationContent = () => {
     switch (selectedEvaluationType) {
-      case 'operational':
+      case 'operation':
         return (
           <OperationalEvaluationCard
             duration={call.duration}
@@ -49,7 +50,7 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
         );
       case 'qa':
         return <QAEvaluationCard ecn={90} enc={85} ecc={100} ecuf={98} />;
-      case 'sentiment':
+      case 'emotion':
         return (
           <SentimentEvaluationCard
             agentSentiment="professional"
@@ -61,7 +62,7 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
         );
       case 'compliance':
         return <ComplianceEvaluationCard riskLevel="Bajo" />;
-      case 'business':
+      case 'insights':
         return (
           <BusinessEvaluationCard
             salesOpportunity="No identificada"
@@ -265,9 +266,7 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       </View>
 
       {/* Evaluation Type Selector */}
-      <View style={{ paddingHorizontal: spacing.md, paddingVertical: spacing.md }}>
-        <EvaluationTypeSelector selectedType={selectedEvaluationType} onSelectType={setSelectedEvaluationType} />
-      </View>
+      <SegmentedControl activeAnalysis={selectedEvaluationType} onSelectAnalysis={setSelectedEvaluationType} />
 
       {/* Scrollable Content */}
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
