@@ -143,7 +143,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       gap: spacing.md,
       flexWrap: 'wrap',
       position: 'relative',
-      zIndex: 100,
+      zIndex: 1000,
     } as ViewStyle,
     activeFiltersContainer: {
       flexDirection: 'row',
@@ -200,7 +200,6 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
       borderRadius: 8,
-      overflow: 'hidden',
       marginBottom: spacing.lg,
     } as ViewStyle,
     tableHeader: {
@@ -323,7 +322,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       <Text style={styles.header}>Dashboards</Text>
 
       {!isMobile && (
-        <View style={{ flex: 1, flexDirection: 'column' }}>
+        <View style={{ flex: 1, flexDirection: 'column', position: 'relative', zIndex: 0 }}>
           <View style={styles.searchAndFiltersContainer}>
             <View style={styles.searchContainer}>
               <TextInput
