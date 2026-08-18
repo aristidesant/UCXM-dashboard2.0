@@ -51,12 +51,30 @@ export const GlobalFiltersDrawer: React.FC<GlobalFiltersDrawerProps> = ({
   const { updateCampaignType, updateLOB, updateStatus, updateDateRange } =
     useUpdateFilters();
 
-  const [localDateFrom, setLocalDateFrom] = useState(filters.dateRange.from);
-  const [localDateTo, setLocalDateTo] = useState(filters.dateRange.to);
+  const formatDateToString = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const parseDateString = (dateStr: string): Date | null => {
+    if (!dateStr) return null;
+    const [year, month, day] = dateStr.split('-');
+    if (!year || !month || !day) return null;
+    return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  };
+
+  const [localDateFrom, setLocalDateFrom] = useState(formatDateToString(filters.dateRange.from));
+  const [localDateTo, setLocalDateTo] = useState(formatDateToString(filters.dateRange.to));
 
   const handleApply = () => {
-    updateDateRange(localDateFrom, localDateTo);
-    onClose();
+    const dateFrom = parseDateString(localDateFrom);
+    const dateTo = parseDateString(localDateTo);
+    if (dateFrom && dateTo) {
+      updateDateRange(dateFrom, dateTo);
+      onClose();
+    }
   };
 
   const handleClear = () => {
@@ -237,20 +255,24 @@ export const GlobalFiltersDrawer: React.FC<GlobalFiltersDrawerProps> = ({
                 <Calendar size={18} color={themeColors.steelSecondary} strokeWidth={2} />
                 <TextInput
                   style={styles.dateInput}
-                  placeholder="Desde"
+                  placeholder="YYYY-MM-DD"
                   placeholderTextColor={themeColors.steelSecondary}
                   value={localDateFrom}
                   onChangeText={setLocalDateFrom}
+                  // @ts-ignore - Web input type support
+                  inputMode="numeric"
                 />
               </View>
               <View style={styles.dateInputWrapper}>
                 <Calendar size={18} color={themeColors.steelSecondary} strokeWidth={2} />
                 <TextInput
                   style={styles.dateInput}
-                  placeholder="Hasta"
+                  placeholder="YYYY-MM-DD"
                   placeholderTextColor={themeColors.steelSecondary}
                   value={localDateTo}
                   onChangeText={setLocalDateTo}
+                  // @ts-ignore - Web input type support
+                  inputMode="numeric"
                 />
               </View>
             </View>
