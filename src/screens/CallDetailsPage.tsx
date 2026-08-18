@@ -96,6 +96,15 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       flex: 1,
       gap: spacing.sm,
     } as ViewStyle,
+    headerActions: {
+      flexDirection: 'row',
+      gap: spacing.sm,
+      alignItems: 'center',
+    } as ViewStyle,
+    iconButton: {
+      padding: spacing.sm,
+      marginRight: -spacing.sm,
+    } as ViewStyle,
     headerTitle: {
       fontSize: fontSize.lg,
       fontWeight: '600',
@@ -155,6 +164,13 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       fontWeight: '600',
       color: themeColors.inkPrimary,
     } as TextStyle,
+    audioPlayerContainer: {
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderTopWidth: 1,
+      borderTopColor: themeColors.whisperBorder,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+    } as ViewStyle,
   });
 
   return (
@@ -173,6 +189,14 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
             <Text style={styles.headerTitle}>Detalles de la llamada</Text>
             <Text style={styles.headerSubtitle}>{call.contactList}</Text>
           </View>
+        </View>
+        <View style={styles.headerActions}>
+          <TouchableOpacity style={styles.iconButton} activeOpacity={0.7}>
+            <FileText size={22} color={themeColors.steelSecondary} strokeWidth={2} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconButton} activeOpacity={0.7}>
+            <Share2 size={22} color={themeColors.steelSecondary} strokeWidth={2} />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -196,24 +220,12 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
           <View style={styles.section}>
             <AISummaryCard summary={call.aiSummary} />
           </View>
-
-          {/* Audio Player */}
-          <View style={styles.section}>
-            <AudioPlayer recordingUrl={call.recordingUrl} duration={call.durationSeconds} />
-          </View>
         </View>
       </ScrollView>
 
-      {/* Action Buttons */}
-      <View style={styles.actionsContainer}>
-        <TouchableOpacity style={styles.actionButton} activeOpacity={0.7}>
-          <FileText size={20} color={themeColors.inkPrimary} strokeWidth={2} />
-          <Text style={styles.actionButtonText}>Compartir PDF</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton} activeOpacity={0.7}>
-          <Share2 size={20} color={themeColors.inkPrimary} strokeWidth={2} />
-          <Text style={styles.actionButtonText}>Share link</Text>
-        </TouchableOpacity>
+      {/* Sticky Audio Player Footer */}
+      <View style={styles.audioPlayerContainer}>
+        <AudioPlayer recordingUrl={call.recordingUrl} duration={call.durationSeconds} />
       </View>
     </View>
   );
