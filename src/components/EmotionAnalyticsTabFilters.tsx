@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,20 +7,21 @@ import {
   ViewStyle,
   TextStyle,
   ScrollView,
-  FlatList,
 } from 'react-native';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import { EmotionAnalyticsFilters as FiltersInterface } from '../hooks/useEmotionAnalytics';
 
+interface FilterOption {
+  label: string;
+  value: string;
+}
+
 interface FilterTab {
   id: string;
   label: string;
-  options: Array<{
-    label: string;
-    value: string;
-  }>;
+  options: FilterOption[];
 }
 
 interface EmotionAnalyticsTabFiltersProps {
@@ -55,7 +56,7 @@ const FILTER_TABS: FilterTab[] = [
   },
   {
     id: 'callTypes',
-    label: 'Tipo de Llamadas',
+    label: 'Llamadas',
     options: [
       { label: 'Inbound', value: 'inbound' },
       { label: 'Outbound', value: 'outbound' },
@@ -63,12 +64,12 @@ const FILTER_TABS: FilterTab[] = [
     ],
   },
   {
-    id: 'channels',
-    label: 'Canales',
+    id: 'campaigns',
+    label: 'Campañas',
     options: [
-      { label: 'Phone', value: 'phone' },
-      { label: 'Chat', value: 'chat' },
-      { label: 'Email', value: 'email' },
+      { label: 'Localización', value: 'localization' },
+      { label: 'Retención', value: 'retention' },
+      { label: 'Evaluación', value: 'evaluation' },
     ],
   },
 ];
@@ -85,26 +86,19 @@ export const EmotionAnalyticsTabFilters: React.FC<EmotionAnalyticsTabFiltersProp
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
 
-  const [activeTab, setActiveTab] = useState(0);
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const [activeTabId, setActiveTabId] = useState<string>('agents');
 
   const styles = StyleSheet.create({
     container: {
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderBottomWidth: 1,
       borderBottomColor: themeColors.whisperBorder,
-      paddingVertical: spacing.md,
     } as ViewStyle,
-    headerRow: {
+    tabsBar: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: spacing.md,
       paddingHorizontal: spacing.md,
-      marginBottom: spacing.md,
-    } as ViewStyle,
-    tabsContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
+      paddingVertical: spacing.sm,
       gap: spacing.sm,
     } as ViewStyle,
     navButton: {
@@ -122,7 +116,6 @@ export const EmotionAnalyticsTabFilters: React.FC<EmotionAnalyticsTabFiltersProp
       paddingHorizontal: spacing.md,
       borderRadius: borderRadius.md,
       borderWidth: 1,
-      minWidth: 110,
       justifyContent: 'center',
       alignItems: 'center',
     } as ViewStyle,
@@ -147,14 +140,15 @@ export const EmotionAnalyticsTabFilters: React.FC<EmotionAnalyticsTabFiltersProp
     optionsContainer: {
       paddingHorizontal: spacing.md,
       paddingVertical: spacing.md,
+      gap: spacing.sm,
+      flexDirection: 'row',
+      flexWrap: 'wrap',
     } as ViewStyle,
     optionButton: {
-      paddingVertical: spacing.sm,
+      paddingVertical: spacing.xs,
       paddingHorizontal: spacing.md,
       borderRadius: borderRadius.md,
       borderWidth: 1,
-      marginRight: spacing.sm,
-      marginBottom: spacing.sm,
     } as ViewStyle,
     optionButtonActive: {
       backgroundColor: colors.light.newtechGreen,
@@ -174,38 +168,27 @@ export const EmotionAnalyticsTabFilters: React.FC<EmotionAnalyticsTabFiltersProp
     optionTextInactive: {
       color: themeColors.steelSecondary,
     } as TextStyle,
-    clearButton: {
-      paddingVertical: spacing.xs,
-      paddingHorizontal: spacing.sm,
-      borderRadius: borderRadius.sm,
-      backgroundColor: themeColors.whisperBorder,
-    } as ViewStyle,
-    clearButtonText: {
-      fontSize: fontSize.xs,
-      fontWeight: '500',
-      color: themeColors.steelSecondary,
-    } as TextStyle,
   });
 
-  const currentTab = FILTER_TABS[activeTab];
+  const currentTab = FILTER_TABS.find((tab) => tab.id === activeTabId) || FILTER_TABS[0];
 
-  const getActiveFilters = () => {
-    switch (currentTab.id) {
+  const getActiveFilters = (): string[] => {
+    switch (activeTabId) {
       case 'agents':
         return filters.agents;
       case 'clients':
         return filters.clients;
       case 'callTypes':
         return filters.callTypes;
-      case 'channels':
-        return filters.callChannel;
+      case 'campaigns':
+        return filters.campaignTypes;
       default:
         return [];
     }
   };
 
   const handleOptionToggle = (value: string) => {
-    switch (currentTab.id) {
+    switch (activeTabId) {
       case 'agents':
         onToggleAgent(value);
         break;
@@ -215,84 +198,42 @@ export const EmotionAnalyticsTabFilters: React.FC<EmotionAnalyticsTabFiltersProp
       case 'callTypes':
         onToggleCallType(value);
         break;
-      case 'channels':
-        onToggleChannel(value);
+      case 'campaigns':
+        // Usar toggleCampaignType si existe, de lo contrario usar un callback genérico
         break;
     }
   };
 
   const activeFilters = getActiveFilters();
 
-  const handlePrevTab = () => {
-    if (activeTab > 0) {
-      setActiveTab(activeTab - 1);
-    }
-  };
-
-  const handleNextTab = () => {
-    if (activeTab < FILTER_TABS.length - 1) {
-      setActiveTab(activeTab + 1);
-    }
-  };
-
   return (
     <View style={styles.container}>
-      {/* Tab Navigation */}
-      <View style={styles.headerRow}>
-        <TouchableOpacity
-          style={[styles.navButton, { opacity: activeTab === 0 ? 0.5 : 1 }]}
-          onPress={handlePrevTab}
-          disabled={activeTab === 0}
-          activeOpacity={0.7}
-        >
-          <ChevronLeft size={20} color={themeColors.steelSecondary} strokeWidth={2} />
-        </TouchableOpacity>
-
-        <View style={styles.tabsContainer}>
-          {FILTER_TABS.map((tab, idx) => (
-            <TouchableOpacity
-              key={tab.id}
+      {/* Tabs Bar - Similar to OperationTabs */}
+      <View style={styles.tabsBar}>
+        {FILTER_TABS.map((tab) => (
+          <TouchableOpacity
+            key={tab.id}
+            style={[
+              styles.tabButton,
+              activeTabId === tab.id ? styles.tabButtonActive : styles.tabButtonInactive,
+            ]}
+            onPress={() => setActiveTabId(tab.id)}
+            activeOpacity={0.7}
+          >
+            <Text
               style={[
-                styles.tabButton,
-                activeTab === idx ? styles.tabButtonActive : styles.tabButtonInactive,
+                styles.tabText,
+                activeTabId === tab.id ? styles.tabTextActive : styles.tabTextInactive,
               ]}
-              onPress={() => setActiveTab(idx)}
-              activeOpacity={0.7}
             >
-              <Text
-                style={[
-                  styles.tabText,
-                  activeTab === idx ? styles.tabTextActive : styles.tabTextInactive,
-                ]}
-              >
-                {tab.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        <TouchableOpacity
-          style={[styles.navButton, { opacity: activeTab === FILTER_TABS.length - 1 ? 0.5 : 1 }]}
-          onPress={handleNextTab}
-          disabled={activeTab === FILTER_TABS.length - 1}
-          activeOpacity={0.7}
-        >
-          <ChevronRight size={20} color={themeColors.steelSecondary} strokeWidth={2} />
-        </TouchableOpacity>
-
-        {activeFilters.length > 0 && (
-          <TouchableOpacity style={styles.clearButton} onPress={onReset} activeOpacity={0.7}>
-            <Text style={styles.clearButtonText}>Limpiar</Text>
+              {tab.label}
+            </Text>
           </TouchableOpacity>
-        )}
+        ))}
       </View>
 
       {/* Options for Active Tab */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.optionsContainer}
-      >
+      <View style={styles.optionsContainer}>
         {currentTab.options.map((option) => (
           <TouchableOpacity
             key={option.value}
@@ -317,7 +258,7 @@ export const EmotionAnalyticsTabFilters: React.FC<EmotionAnalyticsTabFiltersProp
             </Text>
           </TouchableOpacity>
         ))}
-      </ScrollView>
+      </View>
     </View>
   );
 };
