@@ -33,6 +33,9 @@ const MetricCard: React.FC<MetricCardProps> = ({
       borderRadius: borderRadius.lg,
       padding: spacing.md,
       marginBottom: spacing.md,
+      marginRight: spacing.sm,
+      flex: 1,
+      minWidth: '45%',
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
     } as ViewStyle,
@@ -101,6 +104,11 @@ export const OperationalMetricsView: React.FC = () => {
     container: {
       flex: 1,
     } as ViewStyle,
+    metricsContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginHorizontal: -spacing.sm / 2,
+    } as ViewStyle,
   });
 
   const totalAnsweredPercentage = Math.round(
@@ -109,65 +117,67 @@ export const OperationalMetricsView: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* Key Metrics */}
-      <MetricCard
-        label="Total de Llamadas Salientes"
-        value={(metrics.calls.totalOutgoing / 1000).toFixed(1)}
-        unit="k"
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+      <View style={styles.metricsContainer}>
+        {/* Key Metrics */}
+        <MetricCard
+          label="Total de Llamadas Salientes"
+          value={(metrics.calls.totalOutgoing / 1000).toFixed(1)}
+          unit="k"
+          isDark={isDark}
+          themeColors={themeColors}
+        />
 
-      <MetricCard
-        label="Llamadas Contestadas"
-        value={totalAnsweredPercentage}
-        unit="%"
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+        <MetricCard
+          label="Llamadas Contestadas"
+          value={totalAnsweredPercentage}
+          unit="%"
+          isDark={isDark}
+          themeColors={themeColors}
+        />
 
-      <MetricCard
-        label="Tasa de Escalación"
-        value={metrics.management.escalationRate.value}
-        unit="%"
-        trend={metrics.management.escalationRate.trend}
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+        <MetricCard
+          label="Tasa de Escalación"
+          value={metrics.management.escalationRate.value}
+          unit="%"
+          trend={metrics.management.escalationRate.trend}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
 
-      <MetricCard
-        label="Tasa de Conversión"
-        value={metrics.management.conversionRate.value}
-        unit="%"
-        trend={metrics.management.conversionRate.trend}
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+        <MetricCard
+          label="Tasa de Conversión"
+          value={metrics.management.conversionRate.value}
+          unit="%"
+          trend={metrics.management.conversionRate.trend}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
 
-      <MetricCard
-        label="Tasa de Contacto"
-        value={metrics.management.contactRate.value}
-        unit="%"
-        trend={metrics.management.contactRate.trend}
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+        <MetricCard
+          label="Tasa de Contacto"
+          value={metrics.management.contactRate.value}
+          unit="%"
+          trend={metrics.management.contactRate.trend}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
 
-      <MetricCard
-        label="Satisfacción General"
-        value={`${metrics.quality.satisfaction.rating}/${metrics.quality.satisfaction.maxRating}`}
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+        <MetricCard
+          label="Satisfacción General"
+          value={`${metrics.quality.satisfaction.rating}/${metrics.quality.satisfaction.maxRating}`}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
 
-      <MetricCard
-        label="Cierre en Primera Llamada"
-        value={metrics.management.firstCallResolution.value}
-        unit="%"
-        trend={metrics.management.firstCallResolution.trend}
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+        <MetricCard
+          label="Cierre en Primera Llamada"
+          value={metrics.management.firstCallResolution.value}
+          unit="%"
+          trend={metrics.management.firstCallResolution.trend}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
+      </View>
     </View>
   );
 };
