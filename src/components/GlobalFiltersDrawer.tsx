@@ -74,18 +74,15 @@ export const GlobalFiltersDrawer: React.FC<GlobalFiltersDrawerProps> = ({
       bottom: 0,
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
       zIndex: 999,
+      flexDirection: 'column',
+      justifyContent: 'flex-end',
     } as ViewStyle,
     container: {
-      position: 'absolute' as any,
-      bottom: 0,
-      left: 0,
-      right: 0,
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderTopLeftRadius: borderRadius.xl,
       borderTopRightRadius: borderRadius.xl,
       maxHeight: '70%',
       paddingBottom: spacing.lg,
-      zIndex: 1000,
     } as ViewStyle,
     header: {
       flexDirection: 'row',
@@ -191,9 +188,9 @@ export const GlobalFiltersDrawer: React.FC<GlobalFiltersDrawerProps> = ({
   }
 
   return (
-    <>
+    <View style={styles.overlay} pointerEvents="auto">
       <TouchableOpacity
-        style={styles.overlay}
+        style={{ flex: 1 }}
         activeOpacity={1}
         onPress={onClose}
       />
@@ -302,6 +299,6 @@ export const GlobalFiltersDrawer: React.FC<GlobalFiltersDrawerProps> = ({
           </TouchableOpacity>
         </View>
       </View>
-    </>
+    </View>
   );
 };
