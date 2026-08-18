@@ -151,7 +151,6 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       color: themeColors.inkPrimary,
     },
     tableContainer: {
-      flex: 1,
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
       borderRadius: 8,
