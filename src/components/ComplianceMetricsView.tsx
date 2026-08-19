@@ -25,12 +25,6 @@ const ComplianceMetric: React.FC<ComplianceMetricProps> = ({
   isDark,
   themeColors,
 }) => {
-  const getScoreColor = () => {
-    if (score >= 90) return colors.light.newtechGreen;
-    if (score >= 80) return '#FFC53D';
-    return '#FF4D4F';
-  };
-
   const styles = StyleSheet.create({
     card: {
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
@@ -58,7 +52,7 @@ const ComplianceMetric: React.FC<ComplianceMetricProps> = ({
     score: {
       fontSize: fontSize.lg,
       fontWeight: '700',
-      color: getScoreColor(),
+      color: themeColors.inkPrimary,
     } as TextStyle,
     violationsRow: {
       flexDirection: 'row',
@@ -73,7 +67,7 @@ const ComplianceMetric: React.FC<ComplianceMetricProps> = ({
     violationsValue: {
       fontSize: fontSize.sm,
       fontWeight: '600',
-      color: violations > 0 ? '#FF4D4F' : colors.light.newtechGreen,
+      color: themeColors.inkPrimary,
     } as TextStyle,
   });
 
