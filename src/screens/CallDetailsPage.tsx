@@ -18,6 +18,7 @@ import {
   AudioPlayer,
   SentimentEvaluationCard,
   EmotionSentimentDetailsCard,
+  TranscriptPanel,
   OperationalEvaluationCard,
   QAEvaluationCard,
   ComplianceEvaluationCard,
@@ -373,10 +374,15 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
 
       {/* Main Content Area (2-column on desktop, single column on mobile) */}
       <View style={styles.mainContent}>
-        {/* Desktop: Audio Player on Left Side (Fixed Width) */}
+        {/* Desktop: Audio Player + Transcript on Left Side (Fixed Width) */}
         {!isMobile && (
-          <View style={styles.audioPlayerContainer}>
-            <AudioPlayer recordingUrl={call.recordingUrl} duration={call.durationSeconds} />
+          <View style={{ width: 380, flexDirection: 'column', gap: spacing.md }}>
+            <View style={styles.audioPlayerContainer}>
+              <AudioPlayer recordingUrl={call.recordingUrl} duration={call.durationSeconds} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <TranscriptPanel />
+            </View>
           </View>
         )}
 
