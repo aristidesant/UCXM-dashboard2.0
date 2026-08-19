@@ -37,6 +37,9 @@ const ComplianceMetric: React.FC<ComplianceMetricProps> = ({
       borderRadius: borderRadius.lg,
       padding: spacing.md,
       marginBottom: spacing.md,
+      marginRight: spacing.sm,
+      flex: 1,
+      minWidth: '45%',
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
     } as ViewStyle,
@@ -97,6 +100,11 @@ export const ComplianceMetricsView: React.FC = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
+    } as ViewStyle,
+    metricsContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginHorizontal: -spacing.sm / 2,
     } as ViewStyle,
     summaryCard: {
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
@@ -183,38 +191,40 @@ export const ComplianceMetricsView: React.FC = () => {
         </View>
       </View>
 
-      {/* Detailed Metrics */}
-      <ComplianceMetric
-        label={metrics.dataProtection.name || 'Protección de Datos'}
-        score={metrics.dataProtection.score}
-        violations={metrics.dataProtection.violations}
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+      {/* Detailed Metrics - 2 Column Layout */}
+      <View style={styles.metricsContainer}>
+        <ComplianceMetric
+          label={metrics.dataProtection.name || 'Protección de Datos'}
+          score={metrics.dataProtection.score}
+          violations={metrics.dataProtection.violations}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
 
-      <ComplianceMetric
-        label={metrics.recordingCompliance.name || 'Cumplimiento de Grabación'}
-        score={metrics.recordingCompliance.score}
-        violations={metrics.recordingCompliance.violations}
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+        <ComplianceMetric
+          label={metrics.recordingCompliance.name || 'Cumplimiento de Grabación'}
+          score={metrics.recordingCompliance.score}
+          violations={metrics.recordingCompliance.violations}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
 
-      <ComplianceMetric
-        label={metrics.disclosureCompliance.name || 'Cumplimiento de Divulgación'}
-        score={metrics.disclosureCompliance.score}
-        violations={metrics.disclosureCompliance.violations}
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+        <ComplianceMetric
+          label={metrics.disclosureCompliance.name || 'Cumplimiento de Divulgación'}
+          score={metrics.disclosureCompliance.score}
+          violations={metrics.disclosureCompliance.violations}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
 
-      <ComplianceMetric
-        label={metrics.regulatoryRequirements.name || 'Requisitos Regulatorios'}
-        score={metrics.regulatoryRequirements.score}
-        violations={metrics.regulatoryRequirements.violations}
-        isDark={isDark}
-        themeColors={themeColors}
-      />
+        <ComplianceMetric
+          label={metrics.regulatoryRequirements.name || 'Requisitos Regulatorios'}
+          score={metrics.regulatoryRequirements.score}
+          violations={metrics.regulatoryRequirements.violations}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
+      </View>
     </View>
   );
 };
