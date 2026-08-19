@@ -567,6 +567,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
             <SegmentedControl
               activeAnalysis={infoType}
               onSelectAnalysis={setInfoType}
+              showLabels={true}
             />
           </View>
         )}

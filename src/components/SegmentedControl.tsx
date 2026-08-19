@@ -8,6 +8,7 @@ import { InfoType } from '../context/AppContext';
 interface SegmentedControlProps {
   activeAnalysis: InfoType;
   onSelectAnalysis: (id: InfoType) => void;
+  showLabels?: boolean;
 }
 
 interface Analysis {
@@ -19,6 +20,7 @@ interface Analysis {
 export const SegmentedControl: React.FC<SegmentedControlProps> = ({
   activeAnalysis,
   onSelectAnalysis,
+  showLabels = false,
 }) => {
   const { effectiveTheme } = useTheme();
   const isDark = effectiveTheme === 'dark';
@@ -61,20 +63,23 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
       backgroundColor: isDark ? 'rgba(20, 26, 34, 0.4)' : 'rgba(255, 255, 255, 0.5)',
       borderRadius: 8,
       padding: spacing.xs,
-      marginHorizontal: spacing.lg,
+      marginHorizontal: showLabels ? 0 : spacing.lg,
       marginVertical: spacing.md,
       gap: spacing.xs,
       justifyContent: 'center',
+      flexWrap: showLabels ? 'wrap' : 'nowrap',
     } as ViewStyle,
     segment: {
-      width: 44,
+      width: showLabels ? 'auto' : 44,
       height: 44,
-      flexDirection: 'row',
+      flexDirection: showLabels ? 'row' : 'column',
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 6,
       borderWidth: 1.5,
       borderColor: 'transparent',
+      paddingHorizontal: showLabels ? spacing.md : 0,
+      gap: showLabels ? spacing.xs : 0,
     } as ViewStyle,
     activeSegment: {
       backgroundColor: isDark
@@ -92,6 +97,17 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
     activeIcon: {
       opacity: 1,
     } as ViewStyle,
+    segmentLabel: {
+      fontSize: 12,
+      fontWeight: '500',
+      color: themeColors.steelSecondary,
+      textAlign: 'center',
+      maxWidth: 80,
+    } as TextStyle,
+    activeSegmentLabel: {
+      color: themeColors.newtechGreen,
+      fontWeight: '600',
+    } as TextStyle,
     labelContainer: {
       marginTop: spacing.md,
       minHeight: 24,
@@ -137,6 +153,11 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
                     color: isActive ? themeColors.newtechGreen : themeColors.steelSecondary,
                   })}
                 </View>
+                {showLabels && (
+                  <Text style={[styles.segmentLabel, isActive && styles.activeSegmentLabel]}>
+                    {analysis.label}
+                  </Text>
+                )}
               </TouchableOpacity>
             </View>
           );
