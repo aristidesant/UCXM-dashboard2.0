@@ -128,9 +128,11 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
 
   const getEmotionColor = (emotion: string) => emotionColors[emotion.toLowerCase()] || themeColors.newtechGreen;
 
-  const sortedEmotions = Object.entries(metrics.emotionDistribution)
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 6);
+  const sortedEmotions = metrics.emotionDistribution
+    ? Object.entries(metrics.emotionDistribution)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 6)
+    : [];
 
   return (
     <View style={styles.container}>
@@ -180,12 +182,12 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
 
       {/* Agent Tone Distribution */}
       <View style={styles.toneDistributionContainer}>
-        {Object.entries(metrics.agentToneDistribution).map(([tone, percentage], index) => (
+        {metrics.agentToneDistribution && Object.entries(metrics.agentToneDistribution).map(([tone, percentage], index) => (
           <View
             key={tone}
             style={[
               styles.toneDistributionRow,
-              index === Object.entries(metrics.agentToneDistribution).length - 1 && {
+              index === Object.entries(metrics.agentToneDistribution || {}).length - 1 && {
                 borderBottomWidth: 0,
               },
             ]}

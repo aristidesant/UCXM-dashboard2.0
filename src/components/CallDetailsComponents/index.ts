@@ -4,6 +4,7 @@ export { CompactCallInfoCard } from './CompactCallInfoCard';
 export { AISummaryCard } from './AISummaryCard';
 export { AudioPlayer } from './AudioPlayer';
 export { SentimentEvaluationCard } from './SentimentEvaluationCard';
+export { EmotionSentimentDetailsCard } from './EmotionSentimentDetailsCard';
 export { OperationalEvaluationCard } from './OperationalEvaluationCard';
 export { QAEvaluationCard } from './QAEvaluationCard';
 export { ComplianceEvaluationCard } from './ComplianceEvaluationCard';

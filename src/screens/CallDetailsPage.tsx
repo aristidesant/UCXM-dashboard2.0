@@ -17,6 +17,7 @@ import {
   AISummaryCard,
   AudioPlayer,
   SentimentEvaluationCard,
+  EmotionSentimentDetailsCard,
   OperationalEvaluationCard,
   QAEvaluationCard,
   ComplianceEvaluationCard,
@@ -58,13 +59,29 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       case 'qa':
         return (
           <View style={styles.metricsGrid}>
-            <MetricCard label="Cortesía Negociación" value="90%" />
-            <MetricCard label="Enc. Negociación" value="85%" />
-            <MetricCard label="Enc. Cierre Conversación" value="100%" />
-            <MetricCard label="Enc. Uso Frases" value="98%" />
+            <MetricCard label="Error crítico de negocio" value="92" />
+            <MetricCard label="Error no crítico" value="87" />
+            <MetricCard label="Error crítico de cumplimiento" value="100" />
+            <MetricCard label="Error crítico usuario final" value="99" />
           </View>
         );
       case 'emotion':
+        if (!isMobile) {
+          return (
+            <EmotionSentimentDetailsCard
+              agentSentiment={{
+                emotion: 'Neutral',
+                confidence: 85,
+                color: '#9CA3AF',
+              }}
+              customerSentiment={{
+                emotion: 'Frustration',
+                confidence: 90,
+                color: '#FF7A7A',
+              }}
+            />
+          );
+        }
         return (
           <View style={styles.metricsGrid}>
             <MetricCard label="Sentimiento Agente" value="Professional" />
