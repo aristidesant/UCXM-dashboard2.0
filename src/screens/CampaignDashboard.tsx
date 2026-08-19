@@ -22,20 +22,21 @@ import {
   ContactList,
   CallsList,
   FilterButton,
+  OperationTabs,
   ContactCardHeader,
   CallDetailModal,
   AnalysisTypeSelector,
-  OperationalMetricsView,
-  QAMetricsView,
-  GlobalEmotionAnalyticsView,
-  ComplianceMetricsView,
-  InsightsMetricsView,
+  QAMetricsPanel,
+  EmotionMetricsPanel,
+  ComplianceMetricsPanel,
+  BusinessInsightsPanel,
   ResponsiveContainer,
   SegmentedControl,
 } from '../components';
 import { CallsListScreen } from './CallsListScreen';
 import { mockDashboards } from '../data/mockDashboards';
 import { mockContacts } from '../data/mockContacts';
+import { QAMetrics, EmotionMetrics, ComplianceMetrics, OperationMetrics } from '../data/mockMetrics';
 import type { Call } from '../data/mockCalls';
 import { mockCalls } from '../data/mockCalls';
 
@@ -58,6 +59,9 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
   const [contactExpanded, setContactExpanded] = useState(false);
+  const [operationSubTab, setOperationSubTab] = useState<'llamadas' | 'gestion' | 'calidad'>(
+    'llamadas'
+  );
   const [mainTab, setMainTab] = useState<'indicadores' | 'detalles'>('indicadores');
   const [showCallsList, setShowCallsList] = useState(false);
   const [selectedCall, setSelectedCall] = useState<Call | null>(null);
@@ -266,45 +270,162 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
     } as ViewStyle,
   });
 
-const renderIndicadores = () => {
-    if (infoType === 'operation' && 'calls' in metrics) {
+  const renderOperationContent = () => {
+    const operationMetrics = metrics as OperationMetrics;
+
+    if (operationSubTab === 'llamadas') {
       return (
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <OperationalMetricsView />
+          <View style={[styles.metricsGrid, { marginTop: 0 }]}>
+            <View style={[styles.metricColumn, !isMobile && { marginRight: spacing.md }]}>
+              <MetricCard
+                label="Total Llamadas Salientes"
+                value={`${(operationMetrics.calls.totalOutgoing / 1000).toFixed(1)}k`}
+              />
+            </View>
+            <View style={styles.metricColumn}>
+              <MetricCard
+                label="Total Llamadas Contestadas"
+                value={`${(operationMetrics.calls.totalAnswered / 1000).toFixed(1)}k`}
+              />
+            </View>
+          </View>
+
+          <Card style={{ marginBottom: spacing.lg }}>
+            <Text style={[typography.heading, { marginBottom: spacing.md, color: themeColors.inkPrimary }]}>Llamadas por Idioma</Text>
+            <View style={{ gap: spacing.md }}>
+              {operationMetrics.calls.byLanguage.map((lang, idx) => (
+                <View key={idx} style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: spacing.sm, borderBottomWidth: idx < operationMetrics.calls.byLanguage.length - 1 ? 1 : 0, borderBottomColor: themeColors.whisperBorder }}>
+                  <Text style={[typography.body, { color: themeColors.steelSecondary }]}>{lang.language}</Text>
+                  <View style={{ flexDirection: 'row', gap: spacing.lg }}>
+                    <Text style={[typography.body, { color: themeColors.inkPrimary }]}>{lang.quantity}</Text>
+                    <Text style={[typography.body, { color: themeColors.steelSecondary }]}>{lang.percentage}%</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </Card>
         </ScrollView>
+      );
+    }
+
+    if (operationSubTab === 'gestion') {
+      return (
+        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+          <View style={[styles.metricsGrid, { marginTop: 0 }]}>
+            <View style={[styles.metricColumn, !isMobile && { marginRight: spacing.md }]}>
+              <MetricCard
+                label="Tasa de Escalación"
+                value={`${operationMetrics.management.escalationRate.value}%`}
+                trend={operationMetrics.management.escalationRate.trend}
+                trendLabel={`${Math.abs(operationMetrics.management.escalationRate.trend)}% vs ayer`}
+              />
+            </View>
+            <View style={styles.metricColumn}>
+              <MetricCard
+                label="Tasa de Conversión"
+                value={`${operationMetrics.management.conversionRate.value}%`}
+                trend={operationMetrics.management.conversionRate.trend}
+                trendLabel={`${Math.abs(operationMetrics.management.conversionRate.trend)}% vs ayer`}
+              />
+            </View>
+          </View>
+
+          <View style={styles.metricsGrid}>
+            <View style={[styles.metricColumn, !isMobile && { marginRight: spacing.md }]}>
+              <MetricCard
+                label="Tasa de Contacto"
+                value={`${operationMetrics.management.contactRate.value}%`}
+                trend={operationMetrics.management.contactRate.trend}
+                trendLabel={`${Math.abs(operationMetrics.management.contactRate.trend)}% vs ayer`}
+              />
+            </View>
+            <View style={styles.metricColumn}>
+              <MetricCard
+                label="Tiempo Promedio de Manejo"
+                value={`${operationMetrics.management.averageHandleTime.minutes}:${String(operationMetrics.management.averageHandleTime.seconds).padStart(2, '0')}`}
+                trend={operationMetrics.management.averageHandleTime.trend}
+                trendLabel={`${Math.abs(operationMetrics.management.averageHandleTime.trend)}% vs ayer`}
+              />
+            </View>
+          </View>
+
+          <Card style={{ marginBottom: spacing.lg }}>
+            <Text style={[typography.heading, { marginBottom: spacing.md, color: themeColors.inkPrimary }]}>Llamadas por Disposición</Text>
+            <View style={{ gap: spacing.md }}>
+              {operationMetrics.management.callsByDisposition.map((disp, idx) => (
+                <View key={idx} style={{ gap: spacing.sm }}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text style={[typography.body, { color: themeColors.steelSecondary }]}>{disp.disposition}</Text>
+                    <Text style={[typography.body, { color: themeColors.inkPrimary }]}>{disp.count} ({disp.percentage}%)</Text>
+                  </View>
+                  <View style={{ height: 8, backgroundColor: themeColors.whisperBorder, borderRadius: 4, overflow: 'hidden' }}>
+                    <View style={{ height: '100%', width: `${disp.percentage}%`, backgroundColor: themeColors.newtechGreen }} />
+                  </View>
+                </View>
+              ))}
+            </View>
+          </Card>
+
+          <MetricCard
+            label="Cierre en Primera Llamada"
+            value={`${operationMetrics.management.firstCallResolution.value}%`}
+            trend={operationMetrics.management.firstCallResolution.trend}
+            trendLabel={`${Math.abs(operationMetrics.management.firstCallResolution.trend)}% vs ayer`}
+          />
+        </ScrollView>
+      );
+    }
+
+    if (operationSubTab === 'calidad') {
+      return (
+        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+          <View style={{ marginTop: 0 }}>
+            <MetricCard
+            label="Satisfacción"
+            value={`${operationMetrics.quality.satisfaction.rating}/${operationMetrics.quality.satisfaction.maxRating}`}
+            trend={operationMetrics.quality.satisfaction.trend}
+            trendLabel={`${Math.abs(operationMetrics.quality.satisfaction.trend)}% vs ayer`}
+          />
+          </View>
+        </ScrollView>
+      );
+    }
+  };
+
+  const renderIndicadores = () => {
+    if (infoType === 'operation' && 'calls' in metrics) {
+      return (
+        <View style={{ flex: 1 }}>
+          <View style={{ marginBottom: spacing.xs }}>
+            <OperationTabs
+              activeTab={operationSubTab}
+              onSelectTab={setOperationSubTab}
+            />
+          </View>
+          {renderOperationContent()}
+        </View>
       );
     }
 
     if (infoType === 'qa') {
-      return (
-        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <QAMetricsView />
-        </ScrollView>
-      );
+      const qaMetrics = metrics as QAMetrics;
+      return <QAMetricsPanel metrics={qaMetrics} />;
     }
 
     if (infoType === 'emotion') {
-      return (
-        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <GlobalEmotionAnalyticsView />
-        </ScrollView>
-      );
+      const emotionMetrics = metrics as EmotionMetrics;
+      return <EmotionMetricsPanel metrics={emotionMetrics} />;
     }
 
     if (infoType === 'compliance') {
-      return (
-        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <ComplianceMetricsView />
-        </ScrollView>
-      );
+      const complianceMetrics = metrics as ComplianceMetrics;
+      return <ComplianceMetricsPanel metrics={complianceMetrics} />;
     }
 
     if (infoType === 'insights') {
-      return (
-        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-          <InsightsMetricsView />
-        </ScrollView>
-      );
+      const insightsMetrics = metrics as any; // Type from BusinessInsightsMetrics
+      return <BusinessInsightsPanel metrics={insightsMetrics} />;
     }
 
     return null;
