@@ -130,7 +130,7 @@ export const HomeScreen: React.FC = () => {
         {/* Weekly Call Volume Chart and Analytics - Side by side on desktop */}
         <View style={styles.chartAndAnalyticsRow}>
           <View style={styles.chartColumn}>
-            <WeeklyCallVolumeChart data={weeklyData.data} labels={weeklyData.labels} />
+            <WeeklyCallVolumeChart incoming={weeklyData.incoming} outgoing={weeklyData.outgoing} labels={weeklyData.labels} />
           </View>
           <View style={styles.analyticsColumn}>
             <AnalyticsQuickView

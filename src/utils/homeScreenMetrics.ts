@@ -137,9 +137,10 @@ export const formatCallVolume = (calls: number): string => {
   return calls.toString();
 };
 
-export const getWeeklyCallVolume = (): { labels: string[]; data: number[] } => {
+export const getWeeklyCallVolume = (): { labels: string[]; incoming: number[]; outgoing: number[] } => {
   return {
     labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-    data: [8200, 15400, 22100, 14300, 18900, 3400, 2100],
+    incoming: [5200, 9400, 13100, 8300, 11900, 2100, 1200],
+    outgoing: [3000, 6000, 9000, 6000, 7000, 1300, 900],
   };
 };

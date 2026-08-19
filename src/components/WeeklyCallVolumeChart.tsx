@@ -7,22 +7,28 @@ import { Card } from './Card';
 import { formatCallVolume } from '../utils/homeScreenMetrics';
 
 interface WeeklyCallVolumeChartProps {
-  data: number[];
+  incoming?: number[];
+  outgoing?: number[];
+  data?: number[];
   labels?: string[];
 }
 
 export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
-  data,
-  labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  incoming = [5200, 9400, 13100, 8300, 11900, 2100, 1200],
+  outgoing = [3000, 6000, 9000, 6000, 7000, 1300, 900],
+  labels = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
 }) => {
   const { effectiveTheme } = useTheme();
   const { isMobile } = usePlatform();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
 
-  const maxValue = Math.max(...data);
-  const peakIndex = data.indexOf(maxValue);
-  const peakLabel = labels[peakIndex];
+  const allData = [...incoming, ...outgoing];
+  const maxValue = Math.max(...allData);
+  const peakIncoming = Math.max(...incoming);
+  const peakOutgoing = Math.max(...outgoing);
+  const peakIncomingIndex = incoming.indexOf(peakIncoming);
+  const peakLabel = labels[peakIncomingIndex];
 
   // Generate Y-axis labels
   const yAxisSteps = 4;
@@ -86,8 +92,11 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
       justifyContent: 'flex-end',
       alignItems: 'center',
     } as ViewStyle,
-    barActive: {
-      backgroundColor: themeColors.newtechGreen,
+    barIncoming: {
+      backgroundColor: colors.light.newtechGreen,
+    } as ViewStyle,
+    barOutgoing: {
+      backgroundColor: '#3B82F6',
     } as ViewStyle,
     barLabel: {
       fontSize: fontSize.xs,
@@ -95,6 +104,27 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
       color: themeColors.steelSecondary,
       marginTop: spacing.sm,
       lineHeight: 16,
+    } as TextStyle,
+    legend: {
+      flexDirection: 'row',
+      gap: spacing.md,
+      marginBottom: spacing.md,
+      justifyContent: 'center',
+    } as ViewStyle,
+    legendItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+    } as ViewStyle,
+    legendColor: {
+      width: 12,
+      height: 12,
+      borderRadius: 2,
+    } as ViewStyle,
+    legendLabel: {
+      fontSize: fontSize.sm,
+      fontWeight: '500',
+      color: themeColors.steelSecondary,
     } as TextStyle,
     peakInfo: {
       flexDirection: 'row',
@@ -123,6 +153,18 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
     <View style={styles.container}>
       <Text style={styles.title}>Volumen de Llamadas Semanal</Text>
       <Card style={styles.card}>
+        {/* Legend */}
+        <View style={styles.legend}>
+          <View style={styles.legendItem}>
+            <View style={[styles.legendColor, styles.barIncoming]} />
+            <Text style={styles.legendLabel}>Entrantes</Text>
+          </View>
+          <View style={styles.legendItem}>
+            <View style={[styles.legendColor, styles.barOutgoing]} />
+            <Text style={styles.legendLabel}>Salientes</Text>
+          </View>
+        </View>
+
         <View style={styles.chartWrapper}>
           {/* Y-Axis Labels */}
           <View style={styles.yAxis}>
@@ -135,25 +177,22 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
 
           {/* Chart Bars */}
           <View style={styles.chartContainer}>
-            {data.map((value, index) => (
-              <View key={index} style={{ flex: 1 }}>
-                <View
-                  style={[
-                    styles.bar,
-                    index === peakIndex && styles.barActive,
-                    { height: Math.max((value / maxValue) * 90, 15) },
-                  ]}
-                />
-                <Text style={styles.barLabel}>{labels[index]}</Text>
+            {labels.map((label, index) => (
+              <View key={index} style={{ flex: 1, alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: spacing.xs, height: 90 }}>
+                  <View style={[styles.bar, styles.barIncoming, { width: isMobile ? '45%' : '48%', height: Math.max((incoming[index] / maxValue) * 90, 15) }]} />
+                  <View style={[styles.bar, styles.barOutgoing, { width: isMobile ? '45%' : '48%', height: Math.max((outgoing[index] / maxValue) * 90, 15) }]} />
+                </View>
+                <Text style={styles.barLabel}>{label}</Text>
               </View>
             ))}
           </View>
         </View>
 
         <View style={styles.peakInfo}>
-          <Text style={styles.peakLabel}>Pico:</Text>
+          <Text style={styles.peakLabel}>Pico (Entrantes):</Text>
           <Text style={styles.peakValue}>
-            {peakLabel} ({formatCallVolume(maxValue)})
+            {peakLabel} ({formatCallVolume(peakIncoming)})
           </Text>
         </View>
       </Card>
