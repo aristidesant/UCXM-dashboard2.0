@@ -80,6 +80,14 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
     container: {
       flex: 1,
       backgroundColor: themeColors.canvasFrost,
+      flexDirection: 'column',
+    } as ViewStyle,
+    mainContent: {
+      flex: 1,
+      flexDirection: isMobile ? 'column' : 'row',
+      paddingHorizontal: !isMobile ? spacing.lg : 0,
+      paddingBottom: !isMobile ? spacing.lg : 0,
+      gap: !isMobile ? spacing.md : 0,
     } as ViewStyle,
     header: {
       paddingHorizontal: spacing.md,
@@ -87,6 +95,7 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       borderRadius: borderRadius.lg,
       marginHorizontal: isMobile ? spacing.md : spacing.lg,
       marginTop: spacing.md,
+      marginBottom: spacing.md,
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
@@ -157,8 +166,17 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       color: themeColors.inkPrimary,
       fontWeight: '600',
     } as TextStyle,
+    contentWrapper: {
+      flex: 1,
+      flexDirection: 'column',
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderRadius: !isMobile ? borderRadius.lg : 0,
+      borderWidth: !isMobile ? 1 : 0,
+      borderColor: !isMobile ? themeColors.whisperBorder : 'transparent',
+      overflow: 'hidden',
+    } as ViewStyle,
     content: {
-      paddingHorizontal: isMobile ? spacing.md : spacing.lg,
+      paddingHorizontal: spacing.md,
       paddingVertical: spacing.md,
     } as ViewStyle,
     section: {
@@ -208,10 +226,14 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
     } as TextStyle,
     audioPlayerContainer: {
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
-      borderTopWidth: 1,
-      borderTopColor: themeColors.whisperBorder,
+      borderTopWidth: isMobile ? 1 : 0,
+      borderLeftWidth: !isMobile ? 1 : 0,
+      borderTopColor: isMobile ? themeColors.whisperBorder : 'transparent',
+      borderLeftColor: !isMobile ? themeColors.whisperBorder : 'transparent',
+      borderRadius: !isMobile ? borderRadius.lg : 0,
       paddingHorizontal: spacing.md,
-      paddingVertical: spacing.sm,
+      paddingVertical: spacing.md,
+      width: !isMobile ? 280 : '100%',
     } as ViewStyle,
   });
 
@@ -268,26 +290,41 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
         </View>
       </View>
 
-      {/* Evaluation Type Selector */}
-      <SegmentedControl activeAnalysis={selectedEvaluationType} onSelectAnalysis={setSelectedEvaluationType} />
-
-      {/* Scrollable Content */}
-      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-        <View style={styles.content}>
-          {/* Evaluation Content */}
-          <View style={styles.section}>{renderEvaluationContent()}</View>
-
-          {/* AI Summary */}
-          <View style={styles.section}>
-            <AISummaryCard summary={call.aiSummary} />
+      {/* Main Content Area (2-column on desktop, single column on mobile) */}
+      <View style={styles.mainContent}>
+        {/* Desktop: Audio Player on Left Side (Fixed Width) */}
+        {!isMobile && (
+          <View style={styles.audioPlayerContainer}>
+            <AudioPlayer recordingUrl={call.recordingUrl} duration={call.durationSeconds} />
           </View>
-        </View>
-      </ScrollView>
+        )}
 
-      {/* Sticky Audio Player Footer */}
-      <View style={styles.audioPlayerContainer}>
-        <AudioPlayer recordingUrl={call.recordingUrl} duration={call.durationSeconds} />
+        {/* Right Column: Evaluation Selector + Scrollable Content */}
+        <View style={styles.contentWrapper}>
+          {/* Evaluation Type Selector */}
+          <SegmentedControl activeAnalysis={selectedEvaluationType} onSelectAnalysis={setSelectedEvaluationType} />
+
+          {/* Scrollable Content */}
+          <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+            <View style={styles.content}>
+              {/* Evaluation Content */}
+              <View style={styles.section}>{renderEvaluationContent()}</View>
+
+              {/* AI Summary */}
+              <View style={styles.section}>
+                <AISummaryCard summary={call.aiSummary} />
+              </View>
+            </View>
+          </ScrollView>
+        </View>
       </View>
+
+      {/* Mobile: Audio Player at Bottom */}
+      {isMobile && (
+        <View style={styles.audioPlayerContainer}>
+          <AudioPlayer recordingUrl={call.recordingUrl} duration={call.durationSeconds} />
+        </View>
+      )}
     </View>
   );
 };
