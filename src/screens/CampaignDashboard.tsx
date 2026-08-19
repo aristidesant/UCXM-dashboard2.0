@@ -22,6 +22,7 @@ import {
   ContactList,
   CallsList,
   ContactsTableDesktop,
+  ContactsTableMobile,
   FilterButton,
   OperationTabs,
   ContactCardHeader,
@@ -603,7 +604,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
           renderIndicadores()
         ) : isMobile ? (
           <View style={{ flex: 1 }}>
-            <CallsList
+            <ContactsTableMobile
               calls={campaignCalls}
               onSelectCall={(call) => onSelectCall?.(call)}
             />

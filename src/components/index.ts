@@ -63,6 +63,7 @@ export { NegativeEmotionWordPool } from './NegativeEmotionWordPool';
 export { CallInfoCard, CallMetadataCard, AISummaryCard, AudioPlayer } from './CallDetailsComponents';
 export { CallsList } from './CallsList';
 export { ContactsTableDesktop } from './ContactsTableDesktop';
+export { ContactsTableMobile } from './ContactsTableMobile';
 export { EvaluationTypeSelector } from './EvaluationTypeSelector';
 export type { EvaluationType } from './EvaluationTypeSelector';
 export { GlobalEmotionAnalyticsView } from './GlobalEmotionAnalyticsView';
