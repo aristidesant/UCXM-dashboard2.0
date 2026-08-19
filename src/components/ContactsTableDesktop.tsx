@@ -34,6 +34,7 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
   const [selectedLists, setSelectedLists] = useState<string[]>(availableLists);
   const [tempSelectedLists, setTempSelectedLists] = useState<string[]>(selectedLists);
   const [modalPageIndex, setModalPageIndex] = useState(0);
+  const [modalListFilter, setModalListFilter] = useState<'all' | 'selected' | 'unselected'>('all');
 
   const handleListSelect = (listName: string) => {
     setSelectedLists((prev) =>
@@ -162,6 +163,32 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
       color: themeColors.steelSecondary,
       fontWeight: '500',
       marginBottom: spacing.lg,
+    } as TextStyle,
+    modalFiltersContainer: {
+      flexDirection: 'row',
+      gap: spacing.md,
+      marginBottom: spacing.lg,
+    } as ViewStyle,
+    modalFilterButton: {
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.md,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+    } as ViewStyle,
+    modalFilterButtonActive: {
+      backgroundColor: colors.light.newtechGreen,
+      borderColor: colors.light.newtechGreen,
+    } as ViewStyle,
+    modalFilterButtonText: {
+      fontSize: fontSize.sm,
+      fontWeight: '500',
+      color: themeColors.steelSecondary,
+    } as TextStyle,
+    modalFilterButtonTextActive: {
+      color: '#FFFFFF',
+      fontWeight: '600',
     } as TextStyle,
     modalSearchContainer: {
       marginBottom: spacing.lg,
@@ -524,6 +551,69 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
               Listas seleccionadas: {tempSelectedLists.length} de {availableLists.length}
             </Text>
 
+            {/* Filter Buttons */}
+            <View style={styles.modalFiltersContainer}>
+              <TouchableOpacity
+                style={[
+                  styles.modalFilterButton,
+                  modalListFilter === 'all' && styles.modalFilterButtonActive,
+                ]}
+                onPress={() => {
+                  setModalListFilter('all');
+                  setModalPageIndex(0);
+                }}
+              >
+                <Text
+                  style={[
+                    styles.modalFilterButtonText,
+                    modalListFilter === 'all' && styles.modalFilterButtonTextActive,
+                  ]}
+                >
+                  Todas
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.modalFilterButton,
+                  modalListFilter === 'selected' && styles.modalFilterButtonActive,
+                ]}
+                onPress={() => {
+                  setModalListFilter('selected');
+                  setModalPageIndex(0);
+                }}
+              >
+                <Text
+                  style={[
+                    styles.modalFilterButtonText,
+                    modalListFilter === 'selected' && styles.modalFilterButtonTextActive,
+                  ]}
+                >
+                  Seleccionadas
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.modalFilterButton,
+                  modalListFilter === 'unselected' && styles.modalFilterButtonActive,
+                ]}
+                onPress={() => {
+                  setModalListFilter('unselected');
+                  setModalPageIndex(0);
+                }}
+              >
+                <Text
+                  style={[
+                    styles.modalFilterButtonText,
+                    modalListFilter === 'unselected' && styles.modalFilterButtonTextActive,
+                  ]}
+                >
+                  No Seleccionadas
+                </Text>
+              </TouchableOpacity>
+            </View>
+
             {/* Search Bar */}
             <View style={styles.modalSearchContainer}>
               <TextInput
@@ -540,9 +630,16 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
 
             {/* Filtered and Paginated Lists */}
             {(() => {
-              const filteredLists = availableLists.filter((list) =>
+              let filteredLists = availableLists.filter((list) =>
                 list.toLowerCase().includes(listSearchQuery.toLowerCase())
               );
+
+              // Apply selection filter
+              if (modalListFilter === 'selected') {
+                filteredLists = filteredLists.filter((list) => tempSelectedLists.includes(list));
+              } else if (modalListFilter === 'unselected') {
+                filteredLists = filteredLists.filter((list) => !tempSelectedLists.includes(list));
+              }
               const itemsPerModalPage = 8;
               const totalModalPages = Math.ceil(filteredLists.length / itemsPerModalPage);
               const startIndex = modalPageIndex * itemsPerModalPage;
