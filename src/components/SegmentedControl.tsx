@@ -71,7 +71,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
     } as ViewStyle,
     segment: {
       width: showLabels ? 'auto' : 44,
-      height: 44,
+      height: showLabels ? 'auto' : 44,
       flexDirection: showLabels ? 'row' : 'column',
       alignItems: 'center',
       justifyContent: 'center',
@@ -79,6 +79,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
       borderWidth: 1.5,
       borderColor: 'transparent',
       paddingHorizontal: showLabels ? spacing.md : 0,
+      paddingVertical: showLabels ? spacing.sm : 0,
       gap: showLabels ? spacing.xs : 0,
     } as ViewStyle,
     activeSegment: {
@@ -102,7 +103,6 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
       fontWeight: '500',
       color: themeColors.steelSecondary,
       textAlign: 'center',
-      maxWidth: 60,
     } as TextStyle,
     activeSegmentLabel: {
       color: themeColors.newtechGreen,
