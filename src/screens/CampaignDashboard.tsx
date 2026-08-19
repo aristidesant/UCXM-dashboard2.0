@@ -250,13 +250,14 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
       marginBottom: spacing.md,
     },
     metricsGrid: {
-      flexDirection: isMobile ? 'column' : 'row',
+      flexDirection: 'row',
       gap: spacing.md,
       marginBottom: spacing.lg,
       flexWrap: 'wrap',
     } as ViewStyle,
     metricColumn: {
-      flex: isMobile ? 1 : 0.48,
+      flex: isMobile ? 1 : 0.31,
+      minHeight: !isMobile ? 160 : 'auto',
     } as ViewStyle,
     fullWidth: {
       width: '100%',
@@ -556,12 +557,19 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
               >
                 {dashboard.name}
               </Text>
-              <Text style={styles.analysisTypeSubtitle}>
-                {analysisTypeLabels[infoType]}
-              </Text>
             </View>
           </View>
         </View>
+
+        {/* Desktop: Show Evaluation Selector Above Tabs */}
+        {!isMobile && (
+          <View style={{ paddingHorizontal: spacing.lg, marginVertical: spacing.md }}>
+            <SegmentedControl
+              activeAnalysis={infoType}
+              onSelectAnalysis={setInfoType}
+            />
+          </View>
+        )}
 
         {/* Tab Navigation */}
         <View style={styles.tabsContainer}>
@@ -593,6 +601,16 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
             <CallsList
               calls={campaignCalls}
               onSelectCall={(call) => onSelectCall?.(call)}
+            />
+          </View>
+        )}
+
+        {/* Mobile/Tablet: Show Evaluation Selector at Bottom */}
+        {isMobile && (
+          <View style={{ paddingHorizontal: spacing.lg, paddingBottom: spacing.lg }}>
+            <SegmentedControl
+              activeAnalysis={infoType}
+              onSelectAnalysis={setInfoType}
             />
           </View>
         )}
