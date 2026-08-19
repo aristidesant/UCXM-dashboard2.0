@@ -51,8 +51,6 @@ const QAScore: React.FC<QAScoreProps> = ({
       minWidth: '45%',
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
-      borderLeftWidth: 4,
-      borderLeftColor: getStatusColor(),
     } as ViewStyle,
     label: {
       fontSize: fontSize.sm,
@@ -63,11 +61,11 @@ const QAScore: React.FC<QAScoreProps> = ({
     scoreContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'baseline',
+      alignItems: 'center',
       marginBottom: spacing.sm,
     } as ViewStyle,
     value: {
-      fontSize: fontSize.xl,
+      fontSize: fontSize.lg,
       fontWeight: '700',
       color: getStatusColor(),
     } as TextStyle,
