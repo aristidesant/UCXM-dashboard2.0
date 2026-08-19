@@ -334,6 +334,7 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
       borderBottomWidth: 1,
       borderBottomColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)',
       paddingVertical: spacing.md,
+      paddingHorizontal: spacing.md,
       alignItems: 'center',
     } as ViewStyle,
     tableRowClickable: {
