@@ -98,11 +98,12 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
       opacity: 1,
     } as ViewStyle,
     segmentLabel: {
-      fontSize: 12,
+      fontSize: 11,
       fontWeight: '500',
       color: themeColors.steelSecondary,
       textAlign: 'center',
-      maxWidth: 80,
+      maxWidth: 90,
+      marginLeft: spacing.xs,
     } as TextStyle,
     activeSegmentLabel: {
       color: themeColors.newtechGreen,
@@ -154,7 +155,10 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
                   })}
                 </View>
                 {showLabels && (
-                  <Text style={[styles.segmentLabel, isActive && styles.activeSegmentLabel]}>
+                  <Text
+                    style={[styles.segmentLabel, isActive && styles.activeSegmentLabel]}
+                    numberOfLines={1}
+                  >
                     {analysis.label}
                   </Text>
                 )}
