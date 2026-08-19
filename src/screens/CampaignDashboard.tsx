@@ -617,10 +617,12 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
         </View>
       </ResponsiveContainer>
 
-      {/* Fixed Evaluation Type Selector at Bottom */}
-      <View style={styles.evaluationSelectorContainer}>
-        <SegmentedControl activeAnalysis={infoType} onSelectAnalysis={setInfoType} />
-      </View>
+      {/* Fixed Evaluation Type Selector at Bottom - Mobile/Tablet Only */}
+      {isMobile && (
+        <View style={styles.evaluationSelectorContainer}>
+          <SegmentedControl activeAnalysis={infoType} onSelectAnalysis={setInfoType} />
+        </View>
+      )}
     </View>
   );
 };
