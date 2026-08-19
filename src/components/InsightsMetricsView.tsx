@@ -152,14 +152,6 @@ export const InsightsMetricsView: React.FC = () => {
 
         {/* Customer Satisfaction */}
         <InsightCard
-          label="Score de Satisfacción"
-          value={metrics.customerSatisfactionScore}
-          unit="%"
-          isDark={isDark}
-          themeColors={themeColors}
-        />
-
-        <InsightCard
           label="Net Promoter Score"
           value={metrics.netPromoterScore}
           isDark={isDark}
