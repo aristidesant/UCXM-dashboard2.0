@@ -99,7 +99,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
       opacity: 1,
     } as ViewStyle,
     segmentLabel: {
-      fontSize: 9,
+      fontSize: 12,
       fontWeight: '500',
       color: themeColors.steelSecondary,
       textAlign: 'center',
