@@ -128,7 +128,7 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
       color: '#FFFFFF',
     } as TextStyle,
     modalOverlay: {
-      position: 'absolute',
+      position: 'fixed',
       top: 0,
       left: 0,
       right: 0,
@@ -136,6 +136,7 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
       justifyContent: 'center',
       alignItems: 'center',
+      zIndex: 9999,
     } as ViewStyle,
     modalContent: {
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
@@ -144,8 +145,9 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
       borderColor: themeColors.whisperBorder,
       padding: spacing.lg,
       maxWidth: 500,
-      maxHeight: '70%',
+      maxHeight: '80%',
       width: '90%',
+      zIndex: 10000,
     } as ViewStyle,
     modalHeader: {
       fontSize: fontSize.lg,
