@@ -120,15 +120,6 @@ export const InsightsMetricsView: React.FC = () => {
       <View style={styles.insightsContainer}>
         {/* Revenue Insights */}
         <InsightCard
-          label="Ingresos Potenciales"
-          value={`$${(metrics.potentialRevenue / 1000).toFixed(0)}`}
-          unit="k"
-          highlight
-          isDark={isDark}
-          themeColors={themeColors}
-        />
-
-        <InsightCard
           label="Ingresos por Llamada"
           value={`$${metrics.revenuePerCall}`}
           isDark={isDark}
@@ -171,14 +162,6 @@ export const InsightsMetricsView: React.FC = () => {
           label="Productividad del Agente"
           value={metrics.agentProductivity}
           unit="llamadas/h"
-          isDark={isDark}
-          themeColors={themeColors}
-        />
-
-        <InsightCard
-          label="Tiempo Promedio de Llamada"
-          value={metrics.averageHandlingTime}
-          unit="seg"
           isDark={isDark}
           themeColors={themeColors}
         />
