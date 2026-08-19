@@ -200,6 +200,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       borderColor: themeColors.whisperBorder,
       borderRadius: 8,
       marginBottom: spacing.lg,
+      backgroundColor: isDark ? themeColors.sunkenBase : '#FFFFFF',
     } as ViewStyle,
     tableHeader: {
       flexDirection: 'row',
