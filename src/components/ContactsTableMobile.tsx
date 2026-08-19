@@ -213,6 +213,7 @@ export const ContactsTableMobile: React.FC<ContactsTableMobileProps> = ({
       justifyContent: 'center',
       alignItems: 'center',
       zIndex: 9999,
+      padding: spacing.md,
     } as ViewStyle,
     modalContent: {
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
@@ -220,9 +221,8 @@ export const ContactsTableMobile: React.FC<ContactsTableMobileProps> = ({
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
       padding: spacing.lg,
-      maxWidth: '90%',
       maxHeight: '80%',
-      width: '90%',
+      width: '100%',
       zIndex: 10000,
     } as ViewStyle,
     modalHeader: {
