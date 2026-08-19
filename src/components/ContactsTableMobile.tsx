@@ -142,17 +142,27 @@ export const ContactsTableMobile: React.FC<ContactsTableMobileProps> = ({
       flexDirection: 'row',
       borderBottomWidth: 1,
       borderBottomColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)',
-      paddingVertical: spacing.sm,
+      paddingVertical: spacing.md,
       paddingHorizontal: spacing.md,
-      alignItems: 'center',
+      alignItems: 'flex-start',
+      gap: spacing.md,
     } as ViewStyle,
     tableCell: {
       flex: 1,
+    } as ViewStyle,
+    tableCellLeft: {
+      flex: 1,
+      gap: spacing.xs,
     } as ViewStyle,
     tableCellText: {
       fontSize: fontSize.xs,
       color: themeColors.inkPrimary,
       fontWeight: '400',
+    } as TextStyle,
+    tableCellName: {
+      fontSize: fontSize.sm,
+      fontWeight: '600',
+      color: themeColors.inkPrimary,
     } as TextStyle,
     dispositionBadge: {
       paddingHorizontal: spacing.sm,
@@ -505,14 +515,11 @@ export const ContactsTableMobile: React.FC<ContactsTableMobileProps> = ({
       {filteredCalls.length > 0 ? (
         <View style={styles.tableContainer}>
           <View style={styles.tableHeader}>
-            <View style={[styles.tableHeaderCell, { flex: 0.35 }]}>
+            <View style={[styles.tableHeaderCell, { flex: 0.6 }]}>
               <Text style={styles.tableHeaderText}>Nombre</Text>
             </View>
-            <View style={[styles.tableHeaderCell, { flex: 0.25 }]}>
-              <Text style={styles.tableHeaderText}>Fecha</Text>
-            </View>
             <View style={[styles.tableHeaderCell, { flex: 0.4 }]}>
-              <Text style={styles.tableHeaderText}>Resultado</Text>
+              <Text style={styles.tableHeaderText}>Fecha</Text>
             </View>
           </View>
 
@@ -527,17 +534,10 @@ export const ContactsTableMobile: React.FC<ContactsTableMobileProps> = ({
                   onPress={() => onSelectCall(call)}
                   activeOpacity={0.7}
                 >
-                  <View style={[styles.tableCell, { flex: 0.35 }]}>
-                    <Text style={styles.tableCellText} numberOfLines={1}>
+                  <View style={[styles.tableCellLeft, { flex: 0.6 }]}>
+                    <Text style={styles.tableCellName} numberOfLines={1}>
                       {call.contactName}
                     </Text>
-                  </View>
-                  <View style={[styles.tableCell, { flex: 0.25 }]}>
-                    <Text style={styles.tableCellText} numberOfLines={1}>
-                      {call.dateTime.split(' ')[0]}
-                    </Text>
-                  </View>
-                  <View style={[styles.tableCell, { flex: 0.4 }]}>
                     <View
                       style={[
                         styles.dispositionBadge,
@@ -548,6 +548,11 @@ export const ContactsTableMobile: React.FC<ContactsTableMobileProps> = ({
                         {call.disposition}
                       </Text>
                     </View>
+                  </View>
+                  <View style={[styles.tableCell, { flex: 0.4 }]}>
+                    <Text style={styles.tableCellText} numberOfLines={1}>
+                      {call.dateTime.split(' ')[0]}
+                    </Text>
                   </View>
                 </TouchableOpacity>
               );
