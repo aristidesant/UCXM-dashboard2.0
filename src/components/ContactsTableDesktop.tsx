@@ -155,7 +155,13 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
       fontSize: fontSize.lg,
       fontWeight: '700',
       color: themeColors.inkPrimary,
-      marginBottom: spacing.md,
+      marginBottom: spacing.sm,
+    } as TextStyle,
+    modalSubheader: {
+      fontSize: fontSize.sm,
+      color: themeColors.steelSecondary,
+      fontWeight: '500',
+      marginBottom: spacing.lg,
     } as TextStyle,
     modalSearchContainer: {
       marginBottom: spacing.lg,
@@ -514,6 +520,9 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalHeader}>Seleccionar Listas de Contacto</Text>
+            <Text style={styles.modalSubheader}>
+              Listas seleccionadas: {tempSelectedLists.length} de {availableLists.length}
+            </Text>
 
             {/* Search Bar */}
             <View style={styles.modalSearchContainer}>
