@@ -605,16 +605,6 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
             />
           </View>
         )}
-
-        {/* Mobile/Tablet: Show Evaluation Selector at Bottom */}
-        {isMobile && (
-          <View style={{ paddingHorizontal: spacing.lg, paddingBottom: spacing.lg }}>
-            <SegmentedControl
-              activeAnalysis={infoType}
-              onSelectAnalysis={setInfoType}
-            />
-          </View>
-        )}
         </View>
       </ResponsiveContainer>
 
