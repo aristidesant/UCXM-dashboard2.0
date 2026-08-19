@@ -348,18 +348,21 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
       fontWeight: '400',
     } as TextStyle,
     dispositionBadge: {
-      paddingHorizontal: spacing.sm,
-      paddingVertical: 2,
-      borderRadius: borderRadius.sm,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.xs,
+      borderRadius: borderRadius.md,
       backgroundColor: colors.light.newtechGreen,
+      alignSelf: 'flex-start',
+      maxWidth: 200,
     } as ViewStyle,
     dispositionBadgeIneffective: {
-      backgroundColor: '#FF9500',
+      backgroundColor: '#9CA3AF',
     } as ViewStyle,
     dispositionBadgeText: {
       fontSize: fontSize.xs,
       fontWeight: '600',
       color: '#FFFFFF',
+      textAlign: 'center',
     } as TextStyle,
     paginationContainer: {
       flexDirection: 'row',
