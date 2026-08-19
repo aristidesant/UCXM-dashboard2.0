@@ -563,7 +563,7 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
 
         {/* Desktop: Show Evaluation Selector Above Tabs */}
         {!isMobile && (
-          <View style={{ marginVertical: spacing.md }}>
+          <View style={{ marginVertical: spacing.md, marginHorizontal: -spacing.lg }}>
             <SegmentedControl
               activeAnalysis={infoType}
               onSelectAnalysis={setInfoType}
