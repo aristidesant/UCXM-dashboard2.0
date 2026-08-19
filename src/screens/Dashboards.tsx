@@ -229,9 +229,9 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       paddingHorizontal: spacing.md,
     } as ViewStyle,
     tableStatusCell: {
-      flex: 1,
       paddingVertical: spacing.md,
       paddingHorizontal: spacing.md,
+      justifyContent: 'center',
     } as ViewStyle,
     tableCellText: {
       fontSize: 14,
@@ -311,7 +311,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
       <View style={[styles.tableCell, { flex: 1 }]}>
         <Text style={styles.tableCellText}>{new Date(item.createdAt).toLocaleDateString()}</Text>
       </View>
-      <View style={[styles.tableStatusCell, { flex: 1 }]}>
+      <View style={[styles.tableStatusCell, { flex: 0.8, maxWidth: 120 }]}>
         <Badge status={item.status} />
       </View>
     </TouchableOpacity>
@@ -512,7 +512,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
               <View style={[styles.tableHeaderCell, { flex: 1 }]}>
                 <Text style={styles.tableHeaderText}>Iniciada</Text>
               </View>
-              <View style={[styles.tableStatusCell, { flex: 1 }]}>
+              <View style={[styles.tableStatusCell, { flex: 0.8, maxWidth: 120 }]}>
                 <Text style={styles.tableHeaderText}>Status</Text>
               </View>
             </View>
