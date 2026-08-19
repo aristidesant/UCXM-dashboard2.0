@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, ViewStyle, TextStyle } from 'react-native';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, Check } from 'lucide-react';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { Call } from '../data/mockCalls';
 import { useTheme } from '../context/ThemeContext';
@@ -23,15 +23,37 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [effectivenessFilter, setEffectivenessFilter] = useState<EffectivenessFilter>('all');
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [isListFilterExpanded, setIsListFilterExpanded] = useState(false);
 
-  // Filter calls based on effectiveness
+  // Get unique contact lists from calls
+  const availableLists = useMemo(() => {
+    const lists = new Set(calls.map((c) => c.contactList));
+    return Array.from(lists).sort();
+  }, [calls]);
+
+  const [selectedLists, setSelectedLists] = useState<string[]>(availableLists);
+
+  const handleListSelect = (listName: string) => {
+    setSelectedLists((prev) =>
+      prev.includes(listName)
+        ? prev.filter((l) => l !== listName)
+        : [...prev, listName]
+    );
+    setCurrentPage(1);
+  };
+
+  // Filter calls based on effectiveness and contact list
   const filteredCalls = useMemo(() => {
     return calls.filter((call) => {
+      // Filter by contact list
+      if (!selectedLists.includes(call.contactList)) return false;
+
+      // Filter by effectiveness
       if (effectivenessFilter === 'all') return true;
       const isEffective = call.disposition === 'Exitoso' || call.disposition === 'Exitosa';
       return effectivenessFilter === 'effective' ? isEffective : !isEffective;
     });
-  }, [calls, effectivenessFilter]);
+  }, [calls, effectivenessFilter, selectedLists]);
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredCalls.length / itemsPerPage);
@@ -49,6 +71,12 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
       gap: spacing.md,
       marginBottom: spacing.lg,
       paddingHorizontal: spacing.lg,
+      alignItems: 'center',
+    } as ViewStyle,
+    filterButtonsGroup: {
+      flexDirection: 'row',
+      gap: spacing.md,
+      flex: 1,
     } as ViewStyle,
     filterButton: {
       paddingHorizontal: spacing.md,
@@ -70,6 +98,115 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
     filterButtonTextActive: {
       color: '#FFFFFF',
       fontWeight: '600',
+    } as TextStyle,
+    listFilterButton: {
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.md,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.xs,
+    } as ViewStyle,
+    listFilterButtonText: {
+      fontSize: fontSize.sm,
+      fontWeight: '500',
+      color: themeColors.steelSecondary,
+    } as TextStyle,
+    listFilterBadge: {
+      backgroundColor: colors.light.newtechGreen,
+      borderRadius: borderRadius.sm,
+      paddingHorizontal: spacing.xs,
+      paddingVertical: 2,
+      marginLeft: spacing.xs,
+    } as ViewStyle,
+    listFilterBadgeText: {
+      fontSize: fontSize.xs,
+      fontWeight: '600',
+      color: '#FFFFFF',
+    } as TextStyle,
+    modalOverlay: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+    } as ViewStyle,
+    modalContent: {
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderRadius: borderRadius.lg,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+      padding: spacing.lg,
+      maxWidth: 500,
+      maxHeight: '70%',
+      width: '90%',
+    } as ViewStyle,
+    modalHeader: {
+      fontSize: fontSize.lg,
+      fontWeight: '700',
+      color: themeColors.inkPrimary,
+      marginBottom: spacing.md,
+    } as TextStyle,
+    modalListItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.md,
+      borderBottomWidth: 1,
+      borderBottomColor: themeColors.whisperBorder,
+      cursor: 'pointer',
+    } as ViewStyle,
+    modalListItemText: {
+      flex: 1,
+      fontSize: fontSize.sm,
+      color: themeColors.inkPrimary,
+      fontWeight: '500',
+    } as TextStyle,
+    modalListItemCheckbox: {
+      width: 20,
+      height: 20,
+      borderRadius: borderRadius.sm,
+      borderWidth: 2,
+      borderColor: themeColors.whisperBorder,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginLeft: spacing.md,
+    } as ViewStyle,
+    modalListItemCheckboxChecked: {
+      backgroundColor: colors.light.newtechGreen,
+      borderColor: colors.light.newtechGreen,
+    } as ViewStyle,
+    modalActions: {
+      flexDirection: 'row',
+      gap: spacing.md,
+      marginTop: spacing.lg,
+      justifyContent: 'flex-end',
+    } as ViewStyle,
+    modalButton: {
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.md,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+    } as ViewStyle,
+    modalButtonPrimary: {
+      backgroundColor: colors.light.newtechGreen,
+      borderColor: colors.light.newtechGreen,
+    } as ViewStyle,
+    modalButtonText: {
+      fontSize: fontSize.sm,
+      fontWeight: '600',
+      color: themeColors.steelSecondary,
+    } as TextStyle,
+    modalButtonTextPrimary: {
+      color: '#FFFFFF',
     } as TextStyle,
     tableWrapper: {
       flex: 1,
@@ -235,66 +372,143 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
     <View style={styles.container}>
       {/* Filters */}
       <View style={styles.filterContainer}>
-        <TouchableOpacity
-          style={[
-            styles.filterButton,
-            effectivenessFilter === 'all' && styles.filterButtonActive,
-          ]}
-          onPress={() => {
-            setEffectivenessFilter('all');
-            setCurrentPage(1);
-          }}
-        >
-          <Text
+        {/* Effectiveness Filters */}
+        <View style={styles.filterButtonsGroup}>
+          <TouchableOpacity
             style={[
-              styles.filterButtonText,
-              effectivenessFilter === 'all' && styles.filterButtonTextActive,
+              styles.filterButton,
+              effectivenessFilter === 'all' && styles.filterButtonActive,
             ]}
+            onPress={() => {
+              setEffectivenessFilter('all');
+              setCurrentPage(1);
+            }}
           >
-            Todos los contactos
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={[
+                styles.filterButtonText,
+                effectivenessFilter === 'all' && styles.filterButtonTextActive,
+              ]}
+            >
+              Todos
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[
-            styles.filterButton,
-            effectivenessFilter === 'effective' && styles.filterButtonActive,
-          ]}
-          onPress={() => {
-            setEffectivenessFilter('effective');
-            setCurrentPage(1);
-          }}
-        >
-          <Text
+          <TouchableOpacity
             style={[
-              styles.filterButtonText,
-              effectivenessFilter === 'effective' && styles.filterButtonTextActive,
+              styles.filterButton,
+              effectivenessFilter === 'effective' && styles.filterButtonActive,
             ]}
+            onPress={() => {
+              setEffectivenessFilter('effective');
+              setCurrentPage(1);
+            }}
           >
-            Contactos Efectivos
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={[
+                styles.filterButtonText,
+                effectivenessFilter === 'effective' && styles.filterButtonTextActive,
+              ]}
+            >
+              Efectivos
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[
-            styles.filterButton,
-            effectivenessFilter === 'ineffective' && styles.filterButtonActive,
-          ]}
-          onPress={() => {
-            setEffectivenessFilter('ineffective');
-            setCurrentPage(1);
-          }}
-        >
-          <Text
+          <TouchableOpacity
             style={[
-              styles.filterButtonText,
-              effectivenessFilter === 'ineffective' && styles.filterButtonTextActive,
+              styles.filterButton,
+              effectivenessFilter === 'ineffective' && styles.filterButtonActive,
             ]}
+            onPress={() => {
+              setEffectivenessFilter('ineffective');
+              setCurrentPage(1);
+            }}
           >
-            Contactos No Efectivos
-          </Text>
+            <Text
+              style={[
+                styles.filterButtonText,
+                effectivenessFilter === 'ineffective' && styles.filterButtonTextActive,
+              ]}
+            >
+              No Efectivos
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Contact List Filter Button */}
+        <TouchableOpacity
+          style={styles.listFilterButton}
+          onPress={() => setIsListFilterExpanded(!isListFilterExpanded)}
+        >
+          <Text style={styles.listFilterButtonText}>Listas</Text>
+          {selectedLists.length < availableLists.length && (
+            <View style={styles.listFilterBadge}>
+              <Text style={styles.listFilterBadgeText}>{selectedLists.length}</Text>
+            </View>
+          )}
+          <ChevronDown size={16} color={themeColors.steelSecondary} />
         </TouchableOpacity>
       </View>
+
+      {/* Contact Lists Filter Modal */}
+      {isListFilterExpanded && (
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalHeader}>Seleccionar Listas de Contacto</Text>
+
+            <ScrollView style={{ maxHeight: '60%', marginBottom: spacing.md }}>
+              {availableLists.map((list) => (
+                <TouchableOpacity
+                  key={list}
+                  style={styles.modalListItem}
+                  onPress={() => handleListSelect(list)}
+                >
+                  <Text style={styles.modalListItemText}>{list}</Text>
+                  <View
+                    style={[
+                      styles.modalListItemCheckbox,
+                      selectedLists.includes(list) && styles.modalListItemCheckboxChecked,
+                    ]}
+                  >
+                    {selectedLists.includes(list) && (
+                      <Check size={14} color="#FFFFFF" strokeWidth={3} />
+                    )}
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+
+            <View style={styles.modalActions}>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => {
+                  setSelectedLists(availableLists);
+                  setCurrentPage(1);
+                }}
+              >
+                <Text style={styles.modalButtonText}>Seleccionar Todo</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => {
+                  setSelectedLists([]);
+                  setCurrentPage(1);
+                }}
+              >
+                <Text style={styles.modalButtonText}>Deseleccionar Todo</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.modalButton, styles.modalButtonPrimary]}
+                onPress={() => setIsListFilterExpanded(false)}
+              >
+                <Text style={[styles.modalButtonText, styles.modalButtonTextPrimary]}>Cerrar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )}
 
       {/* Table */}
       {filteredCalls.length > 0 ? (
