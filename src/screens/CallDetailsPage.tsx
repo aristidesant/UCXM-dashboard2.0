@@ -84,8 +84,11 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
     header: {
       paddingHorizontal: spacing.md,
       paddingVertical: spacing.md,
-      borderBottomWidth: 1,
-      borderBottomColor: themeColors.whisperBorder,
+      borderRadius: borderRadius.lg,
+      marginHorizontal: isMobile ? spacing.md : spacing.lg,
+      marginTop: spacing.md,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
     } as ViewStyle,
     headerTop: {
