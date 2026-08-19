@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, ViewStyle, TextStyle, TextInput } from 'react-native';
-import { ChevronDown, Check } from 'lucide-react';
+import { ChevronDown, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { Call } from '../data/mockCalls';
 import { useTheme } from '../context/ThemeContext';
@@ -34,6 +34,8 @@ export const ContactsTableMobile: React.FC<ContactsTableMobileProps> = ({
   const [tempSelectedLists, setTempSelectedLists] = useState<string[]>(selectedLists);
   const [modalPageIndex, setModalPageIndex] = useState(0);
   const [modalListFilter, setModalListFilter] = useState<'all' | 'selected' | 'unselected'>('all');
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
 
   // Filter calls
   const filteredCalls = useMemo(() => {
@@ -44,6 +46,18 @@ export const ContactsTableMobile: React.FC<ContactsTableMobileProps> = ({
       return effectivenessFilter === 'effective' ? isEffective : !isEffective;
     });
   }, [calls, effectivenessFilter, selectedLists]);
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredCalls.length / itemsPerPage);
+  const paginatedCalls = useMemo(() => {
+    const startIndex = currentPage * itemsPerPage;
+    return filteredCalls.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredCalls, currentPage]);
+
+  // Reset to first page when filters change
+  React.useEffect(() => {
+    setCurrentPage(0);
+  }, [effectivenessFilter, selectedLists]);
 
   const styles = StyleSheet.create({
     container: {
@@ -305,6 +319,39 @@ export const ContactsTableMobile: React.FC<ContactsTableMobileProps> = ({
     modalButtonTextPrimary: {
       color: '#FFFFFF',
     } as TextStyle,
+    paginationContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.md,
+      borderTopWidth: 1,
+      borderTopColor: themeColors.whisperBorder,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+    } as ViewStyle,
+    paginationControls: {
+      flexDirection: 'row',
+      gap: spacing.sm,
+      alignItems: 'center',
+    } as ViewStyle,
+    paginationButton: {
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+      borderRadius: borderRadius.md,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      justifyContent: 'center',
+      alignItems: 'center',
+    } as ViewStyle,
+    paginationButtonDisabled: {
+      opacity: 0.5,
+    } as ViewStyle,
+    paginationInfo: {
+      fontSize: fontSize.xs,
+      color: themeColors.steelSecondary,
+      fontWeight: '500',
+    } as TextStyle,
   });
 
   return (
@@ -524,7 +571,7 @@ export const ContactsTableMobile: React.FC<ContactsTableMobileProps> = ({
           </View>
 
           <ScrollView>
-            {filteredCalls.map((call, index) => {
+            {paginatedCalls.map((call, index) => {
               const isEffective = call.disposition === 'Exitoso' || call.disposition === 'Exitosa';
 
               return (
@@ -558,6 +605,41 @@ export const ContactsTableMobile: React.FC<ContactsTableMobileProps> = ({
               );
             })}
           </ScrollView>
+
+          {/* Pagination Controls */}
+          <View style={styles.paginationContainer}>
+            <View style={styles.paginationControls}>
+              <TouchableOpacity
+                style={[
+                  styles.paginationButton,
+                  currentPage === 0 && styles.paginationButtonDisabled,
+                ]}
+                onPress={() => setCurrentPage(Math.max(0, currentPage - 1))}
+                disabled={currentPage === 0}
+              >
+                <ChevronLeft size={16} color={themeColors.steelSecondary} />
+              </TouchableOpacity>
+
+              <Text style={styles.paginationInfo}>
+                Pág. {currentPage + 1} de {totalPages}
+              </Text>
+
+              <TouchableOpacity
+                style={[
+                  styles.paginationButton,
+                  currentPage === totalPages - 1 && styles.paginationButtonDisabled,
+                ]}
+                onPress={() => setCurrentPage(Math.min(totalPages - 1, currentPage + 1))}
+                disabled={currentPage === totalPages - 1}
+              >
+                <ChevronRight size={16} color={themeColors.steelSecondary} />
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.paginationInfo}>
+              {paginatedCalls.length} de {filteredCalls.length}
+            </Text>
+          </View>
         </View>
       ) : (
         <View style={styles.emptyState}>
