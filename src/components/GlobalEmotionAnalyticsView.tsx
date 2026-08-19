@@ -39,6 +39,42 @@ export const GlobalEmotionAnalyticsView: React.FC = () => {
       paddingTop: spacing.md,
       paddingBottom: spacing.lg,
     } as ViewStyle,
+    sentimentCardsContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing.md,
+      paddingHorizontal: spacing.lg,
+      marginBottom: spacing.lg,
+    } as ViewStyle,
+    sentimentCard: {
+      flex: 1,
+      minWidth: '45%',
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+    } as ViewStyle,
+    sentimentCardLabel: {
+      fontSize: fontSize.sm,
+      color: themeColors.steelSecondary,
+      fontWeight: '500',
+      marginBottom: spacing.md,
+    } as TextStyle,
+    sentimentValueContainer: {
+      gap: spacing.sm,
+    } as ViewStyle,
+    sentimentValueLabel: {
+      fontSize: fontSize.xs,
+      color: themeColors.steelSecondary,
+      fontWeight: '500',
+    } as TextStyle,
+    sentimentValue: {
+      fontSize: fontSize.lg,
+      fontWeight: '700',
+      color: themeColors.inkPrimary,
+      textTransform: 'capitalize',
+    } as TextStyle,
     section: {
       marginBottom: spacing.lg,
       paddingHorizontal: spacing.lg,
@@ -49,27 +85,6 @@ export const GlobalEmotionAnalyticsView: React.FC = () => {
       color: themeColors.inkPrimary,
       marginBottom: spacing.md,
       lineHeight: 24,
-    } as TextStyle,
-    emotionCard: {
-      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
-      borderRadius: borderRadius.lg,
-      padding: spacing.lg,
-      marginBottom: spacing.md,
-      borderWidth: 1,
-      borderColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
-    } as ViewStyle,
-    emotionLabel: {
-      fontSize: fontSize.sm,
-      fontWeight: '500',
-      color: themeColors.steelSecondary,
-      marginBottom: spacing.xs,
-    } as TextStyle,
-    emotionValue: {
-      fontSize: fontSize.xl,
-      fontWeight: '700',
-      color: themeColors.inkPrimary,
-      marginBottom: spacing.sm,
-      textTransform: 'capitalize',
     } as TextStyle,
     distributionContainer: {
       backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
@@ -151,25 +166,26 @@ export const GlobalEmotionAnalyticsView: React.FC = () => {
       contentContainerStyle={styles.scrollContent}
       showsVerticalScrollIndicator={false}
     >
-      {/* Agent Emotion */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Sentimiento Predominante del Agente</Text>
-        <View style={styles.emotionCard}>
-          <Text style={styles.emotionLabel}>Sentimiento</Text>
-          <Text style={styles.emotionValue}>
-            {getSentimentLevel(aggregatedData.agentPredominantEmotion)} - {getEmotionLabel(aggregatedData.agentPredominantEmotion)}
-          </Text>
+      {/* Agent & Client Sentiment - 2 Column Layout */}
+      <View style={styles.sentimentCardsContainer}>
+        <View style={styles.sentimentCard}>
+          <Text style={styles.sentimentCardLabel}>Sentimiento Predominante del Agente</Text>
+          <View style={styles.sentimentValueContainer}>
+            <Text style={styles.sentimentValueLabel}>Sentimiento</Text>
+            <Text style={styles.sentimentValue}>
+              {getSentimentLevel(aggregatedData.agentPredominantEmotion)} - {getEmotionLabel(aggregatedData.agentPredominantEmotion)}
+            </Text>
+          </View>
         </View>
-      </View>
 
-      {/* Client Emotion */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Sentimiento Predominante del Cliente</Text>
-        <View style={styles.emotionCard}>
-          <Text style={styles.emotionLabel}>Sentimiento</Text>
-          <Text style={styles.emotionValue}>
-            {getSentimentLevel(aggregatedData.clientPredominantEmotion)} - {getEmotionLabel(aggregatedData.clientPredominantEmotion)}
-          </Text>
+        <View style={styles.sentimentCard}>
+          <Text style={styles.sentimentCardLabel}>Sentimiento Predominante del Cliente</Text>
+          <View style={styles.sentimentValueContainer}>
+            <Text style={styles.sentimentValueLabel}>Sentimiento</Text>
+            <Text style={styles.sentimentValue}>
+              {getSentimentLevel(aggregatedData.clientPredominantEmotion)} - {getEmotionLabel(aggregatedData.clientPredominantEmotion)}
+            </Text>
+          </View>
         </View>
       </View>
 
