@@ -455,6 +455,14 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
     }
 
     // Mobile: Return content without selector (selector at bottom)
+    // Wrap emotion content in ScrollView for mobile to allow scrolling
+    if (isMobile && infoType === 'emotion') {
+      return (
+        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+          {content}
+        </ScrollView>
+      );
+    }
     return content;
   };
 

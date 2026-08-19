@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
 import type { EmotionMetrics } from '../data/mockMetrics';
@@ -13,6 +13,7 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
   const { effectiveTheme } = useTheme();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
+  const [emotionTab, setEmotionTab] = useState<'agent' | 'customer'>('agent');
 
   const styles = StyleSheet.create({
     container: {
@@ -46,6 +47,27 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
       fontWeight: '700',
       color: themeColors.inkPrimary,
       textTransform: 'capitalize',
+    } as TextStyle,
+    distributionTabs: {
+      flexDirection: 'row',
+      gap: spacing.xs,
+    } as ViewStyle,
+    tabButton: {
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.xs,
+      borderRadius: borderRadius.md,
+      backgroundColor: themeColors.whisperBorder,
+    } as ViewStyle,
+    tabButtonActive: {
+      backgroundColor: colors.light.newtechGreen,
+    } as ViewStyle,
+    tabText: {
+      fontSize: fontSize.sm,
+      fontWeight: '600',
+      color: themeColors.steelSecondary,
+    } as TextStyle,
+    tabTextActive: {
+      color: '#FFFFFF',
     } as TextStyle,
     distributionContainer: {
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
@@ -128,8 +150,14 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
 
   const getEmotionColor = (emotion: string) => emotionColors[emotion.toLowerCase()] || themeColors.newtechGreen;
 
-  const sortedEmotions = metrics.emotionDistribution
-    ? Object.entries(metrics.emotionDistribution)
+  // Agent and customer emotion data
+  const agentEmotions = { satisfaction: 42, frustration: 28, anger: 12, neutral: 18 };
+  const customerEmotions = { satisfaction: 25, frustration: 38, anger: 22, neutral: 15 };
+
+  const currentEmotionData = emotionTab === 'agent' ? agentEmotions : customerEmotions;
+
+  const sortedEmotions = currentEmotionData
+    ? Object.entries(currentEmotionData)
         .sort(([, a], [, b]) => b - a)
         .slice(0, 6)
     : [];
@@ -151,6 +179,23 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
 
       {/* Emotion Distribution */}
       <View style={styles.distributionContainer}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.md }}>
+          <Text style={{ fontSize: fontSize.md, fontWeight: '600', color: themeColors.inkPrimary }}>Distribución de Emociones</Text>
+          <View style={styles.distributionTabs}>
+            <TouchableOpacity
+              style={[styles.tabButton, emotionTab === 'agent' && styles.tabButtonActive]}
+              onPress={() => setEmotionTab('agent')}
+            >
+              <Text style={[styles.tabText, emotionTab === 'agent' && styles.tabTextActive]}>Agente</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.tabButton, emotionTab === 'customer' && styles.tabButtonActive]}
+              onPress={() => setEmotionTab('customer')}
+            >
+              <Text style={[styles.tabText, emotionTab === 'customer' && styles.tabTextActive]}>Cliente</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
         {sortedEmotions.map(([emotion, percentage]) => (
           <View key={emotion} style={styles.distributionItem}>
             <View
