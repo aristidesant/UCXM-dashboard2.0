@@ -24,6 +24,9 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
   const [effectivenessFilter, setEffectivenessFilter] = useState<EffectivenessFilter>('all');
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [isListFilterExpanded, setIsListFilterExpanded] = useState(false);
+  const [listSearchQuery, setListSearchQuery] = useState('');
+  const [tempSelectedLists, setTempSelectedLists] = useState<string[]>(selectedLists);
+  const [modalPageIndex, setModalPageIndex] = useState(0);
 
   // Get unique contact lists from calls
   const availableLists = useMemo(() => {
@@ -155,13 +158,42 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
       color: themeColors.inkPrimary,
       marginBottom: spacing.md,
     } as TextStyle,
+    modalSearchContainer: {
+      marginBottom: spacing.lg,
+    } as ViewStyle,
+    modalSearchInput: {
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+      borderRadius: borderRadius.md,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      fontSize: fontSize.sm,
+      color: themeColors.inkPrimary,
+      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
+    } as TextStyle,
+    modalTableHeader: {
+      flexDirection: 'row',
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.md,
+      borderBottomWidth: 1,
+      borderBottomColor: themeColors.whisperBorder,
+      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
+    } as ViewStyle,
+    modalTableHeaderText: {
+      flex: 1,
+      fontSize: fontSize.xs,
+      fontWeight: '600',
+      color: themeColors.steelSecondary,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+    } as TextStyle,
     modalListItem: {
       flexDirection: 'row',
       alignItems: 'center',
       paddingVertical: spacing.md,
       paddingHorizontal: spacing.md,
       borderBottomWidth: 1,
-      borderBottomColor: themeColors.whisperBorder,
+      borderBottomColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)',
       cursor: 'pointer',
     } as ViewStyle,
     modalListItemText: {
@@ -179,11 +211,37 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
       justifyContent: 'center',
       alignItems: 'center',
       marginLeft: spacing.md,
+      flexShrink: 0,
     } as ViewStyle,
     modalListItemCheckboxChecked: {
       backgroundColor: colors.light.newtechGreen,
       borderColor: colors.light.newtechGreen,
     } as ViewStyle,
+    modalPaginationContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: spacing.md,
+      borderTopWidth: 1,
+      borderTopColor: themeColors.whisperBorder,
+      marginBottom: spacing.lg,
+    } as ViewStyle,
+    modalPaginationButton: {
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.md,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+    } as ViewStyle,
+    modalPaginationButtonDisabled: {
+      opacity: 0.5,
+    } as ViewStyle,
+    modalPaginationText: {
+      fontSize: fontSize.sm,
+      color: themeColors.steelSecondary,
+      fontWeight: '500',
+    } as TextStyle,
     modalActions: {
       flexDirection: 'row',
       gap: spacing.md,
@@ -458,34 +516,117 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
           <View style={styles.modalContent}>
             <Text style={styles.modalHeader}>Seleccionar Listas de Contacto</Text>
 
-            <ScrollView style={{ maxHeight: '60%', marginBottom: spacing.md }}>
-              {availableLists.map((list) => (
-                <TouchableOpacity
-                  key={list}
-                  style={styles.modalListItem}
-                  onPress={() => handleListSelect(list)}
-                >
-                  <Text style={styles.modalListItemText}>{list}</Text>
-                  <View
-                    style={[
-                      styles.modalListItemCheckbox,
-                      selectedLists.includes(list) && styles.modalListItemCheckboxChecked,
-                    ]}
-                  >
-                    {selectedLists.includes(list) && (
-                      <Check size={14} color="#FFFFFF" strokeWidth={3} />
-                    )}
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+            {/* Search Bar */}
+            <View style={styles.modalSearchContainer}>
+              <Text
+                style={styles.modalSearchInput}
+                // @ts-ignore - TextInput placeholder
+                placeholder="Buscar listas..."
+                placeholderTextColor={themeColors.steelSecondary}
+                value={listSearchQuery}
+                onChangeText={(text) => {
+                  setListSearchQuery(text);
+                  setModalPageIndex(0);
+                }}
+              />
+            </View>
 
+            {/* Filtered and Paginated Lists */}
+            {(() => {
+              const filteredLists = availableLists.filter((list) =>
+                list.toLowerCase().includes(listSearchQuery.toLowerCase())
+              );
+              const itemsPerModalPage = 8;
+              const totalModalPages = Math.ceil(filteredLists.length / itemsPerModalPage);
+              const startIndex = modalPageIndex * itemsPerModalPage;
+              const endIndex = startIndex + itemsPerModalPage;
+              const paginatedLists = filteredLists.slice(startIndex, endIndex);
+
+              return (
+                <>
+                  {/* Table Header */}
+                  <View style={styles.modalTableHeader}>
+                    <Text style={[styles.modalTableHeaderText, { flex: 1 }]}>Lista</Text>
+                    <Text style={[styles.modalTableHeaderText, { width: 30 }]}>Estado</Text>
+                  </View>
+
+                  {/* Lists Table */}
+                  <ScrollView style={{ maxHeight: 300, marginBottom: spacing.lg }}>
+                    {paginatedLists.length > 0 ? (
+                      paginatedLists.map((list) => (
+                        <TouchableOpacity
+                          key={list}
+                          style={styles.modalListItem}
+                          onPress={() => {
+                            setTempSelectedLists((prev) =>
+                              prev.includes(list)
+                                ? prev.filter((l) => l !== list)
+                                : [...prev, list]
+                            );
+                          }}
+                        >
+                          <Text style={styles.modalListItemText}>{list}</Text>
+                          <View
+                            style={[
+                              styles.modalListItemCheckbox,
+                              tempSelectedLists.includes(list) && styles.modalListItemCheckboxChecked,
+                            ]}
+                          >
+                            {tempSelectedLists.includes(list) && (
+                              <Check size={14} color="#FFFFFF" strokeWidth={3} />
+                            )}
+                          </View>
+                        </TouchableOpacity>
+                      ))
+                    ) : (
+                      <View style={{ paddingVertical: spacing.lg, alignItems: 'center' }}>
+                        <Text style={{ fontSize: fontSize.sm, color: themeColors.steelSecondary }}>
+                          No se encontraron listas
+                        </Text>
+                      </View>
+                    )}
+                  </ScrollView>
+
+                  {/* Modal Pagination */}
+                  {totalModalPages > 1 && (
+                    <View style={styles.modalPaginationContainer}>
+                      <TouchableOpacity
+                        style={[
+                          styles.modalPaginationButton,
+                          modalPageIndex === 0 && styles.modalPaginationButtonDisabled,
+                        ]}
+                        onPress={() => setModalPageIndex(Math.max(0, modalPageIndex - 1))}
+                        disabled={modalPageIndex === 0}
+                      >
+                        <Text style={styles.modalPaginationText}>← Anterior</Text>
+                      </TouchableOpacity>
+
+                      <Text style={styles.modalPaginationText}>
+                        Página {modalPageIndex + 1} de {totalModalPages}
+                      </Text>
+
+                      <TouchableOpacity
+                        style={[
+                          styles.modalPaginationButton,
+                          modalPageIndex === totalModalPages - 1 && styles.modalPaginationButtonDisabled,
+                        ]}
+                        onPress={() => setModalPageIndex(Math.min(totalModalPages - 1, modalPageIndex + 1))}
+                        disabled={modalPageIndex === totalModalPages - 1}
+                      >
+                        <Text style={styles.modalPaginationText}>Siguiente →</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </>
+              );
+            })()}
+
+            {/* Action Buttons */}
             <View style={styles.modalActions}>
               <TouchableOpacity
                 style={styles.modalButton}
                 onPress={() => {
-                  setSelectedLists(availableLists);
-                  setCurrentPage(1);
+                  setTempSelectedLists(availableLists);
                 }}
               >
                 <Text style={styles.modalButtonText}>Seleccionar Todo</Text>
@@ -494,18 +635,36 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
               <TouchableOpacity
                 style={styles.modalButton}
                 onPress={() => {
-                  setSelectedLists([]);
-                  setCurrentPage(1);
+                  setTempSelectedLists([]);
                 }}
               >
-                <Text style={styles.modalButtonText}>Deseleccionar Todo</Text>
+                <Text style={styles.modalButtonText}>Deseleccionar</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => {
+                  setIsListFilterExpanded(false);
+                  setListSearchQuery('');
+                  setModalPageIndex(0);
+                }}
+              >
+                <Text style={styles.modalButtonText}>Cancelar</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={[styles.modalButton, styles.modalButtonPrimary]}
-                onPress={() => setIsListFilterExpanded(false)}
+                onPress={() => {
+                  setSelectedLists(tempSelectedLists);
+                  setCurrentPage(1);
+                  setIsListFilterExpanded(false);
+                  setListSearchQuery('');
+                  setModalPageIndex(0);
+                }}
               >
-                <Text style={[styles.modalButtonText, styles.modalButtonTextPrimary]}>Cerrar</Text>
+                <Text style={[styles.modalButtonText, styles.modalButtonTextPrimary]}>
+                  Guardar Selección
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
