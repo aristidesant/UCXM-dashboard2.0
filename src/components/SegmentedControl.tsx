@@ -30,7 +30,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
   const analyses: Analysis[] = [
     {
       id: 'operation',
-      label: 'Operational',
+      label: 'Operacional',
       icon: <Activity size={18} />,
     },
     {
@@ -40,17 +40,17 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
     },
     {
       id: 'emotion',
-      label: 'Emotion & Sentiment',
+      label: 'Emoción y Sentimiento',
       icon: <Smile size={18} />,
     },
     {
       id: 'compliance',
-      label: 'Compliance',
+      label: 'Cumplimiento',
       icon: <Shield size={18} />,
     },
     {
       id: 'insights',
-      label: 'Business Insights',
+      label: 'Oportunidades de Negocio',
       icon: <TrendingUp size={18} />,
     },
   ];
