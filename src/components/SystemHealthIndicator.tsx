@@ -95,7 +95,7 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     title: {
       fontSize: 12,
       fontWeight: '700',
-      color: themeColors.newtechGreen,
+      color: isDark ? themeColors.newtechGreen : themeColors.inkPrimary,
       textTransform: 'uppercase',
       letterSpacing: 0.5,
       lineHeight: 18,
@@ -103,7 +103,7 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     period: {
       fontSize: fontSize.xs,
       fontWeight: '400',
-      color: themeColors.steelSecondary,
+      color: isDark ? themeColors.steelSecondary : 'rgba(0, 0, 0, 0.6)',
       marginTop: spacing.xs,
       lineHeight: 14,
     } as TextStyle,
@@ -115,11 +115,11 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     metricCard: {
       flex: 1,
       minWidth: 200,
-      backgroundColor: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.15)',
+      backgroundColor: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(27, 181, 74, 0.08)',
       borderRadius: borderRadius.sm,
       padding: spacing.md,
       borderWidth: 1,
-      borderColor: isDark ? 'rgba(27, 181, 74, 0.2)' : 'rgba(27, 181, 74, 0.1)',
+      borderColor: isDark ? 'rgba(27, 181, 74, 0.2)' : 'rgba(27, 181, 74, 0.2)',
     } as ViewStyle,
     metricContent: {
       flexDirection: 'row',
@@ -132,7 +132,7 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     metricLabel: {
       fontSize: isDesktop ? fontSize.md : fontSize.sm,
       fontWeight: '600',
-      color: isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)',
+      color: isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.85)',
       marginBottom: spacing.xs,
       lineHeight: isDesktop ? 20 : 16,
     } as TextStyle,
@@ -149,7 +149,7 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     } as TextStyle,
     metricUnit: {
       fontSize: isDesktop ? fontSize.sm : fontSize.xs,
-      color: isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.5)',
+      color: isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.7)',
       lineHeight: isDesktop ? 18 : 14,
     } as TextStyle,
     metricRight: {
@@ -158,7 +158,7 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     } as ViewStyle,
     target: {
       fontSize: fontSize.xs,
-      color: isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.5)',
+      color: isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.65)',
       lineHeight: 14,
     } as TextStyle,
     comparison: {
@@ -168,7 +168,7 @@ export const SystemHealthIndicator: React.FC<SystemHealthIndicatorProps> = ({
     } as ViewStyle,
     comparisonLabel: {
       fontSize: fontSize.xs - 1,
-      color: isDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.4)',
+      color: isDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.6)',
       lineHeight: 12,
     } as TextStyle,
     comparisonRow: {
