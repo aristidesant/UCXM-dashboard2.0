@@ -21,6 +21,7 @@ import {
   Chart,
   ContactList,
   CallsList,
+  ContactsTableDesktop,
   FilterButton,
   OperationTabs,
   ContactCardHeader,
@@ -597,9 +598,16 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
         {/* Tab Content */}
         {mainTab === 'indicadores' ? (
           renderIndicadores()
-        ) : (
+        ) : isMobile ? (
           <View style={{ flex: 1 }}>
             <CallsList
+              calls={campaignCalls}
+              onSelectCall={(call) => onSelectCall?.(call)}
+            />
+          </View>
+        ) : (
+          <View style={{ flex: 1 }}>
+            <ContactsTableDesktop
               calls={campaignCalls}
               onSelectCall={(call) => onSelectCall?.(call)}
             />
