@@ -85,8 +85,8 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
     mainContent: {
       flex: 1,
       flexDirection: isMobile ? 'column' : 'row',
-      paddingHorizontal: !isMobile ? spacing.lg : 0,
-      paddingBottom: !isMobile ? spacing.lg : 0,
+      marginHorizontal: !isMobile ? spacing.lg : 0,
+      marginBottom: !isMobile ? spacing.lg : 0,
       gap: !isMobile ? spacing.md : 0,
     } as ViewStyle,
     header: {
@@ -169,6 +169,18 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
     contentWrapper: {
       flex: 1,
       flexDirection: 'column',
+    } as ViewStyle,
+    selectorContainer: {
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderRadius: !isMobile ? borderRadius.lg : 0,
+      borderWidth: !isMobile ? 1 : 0,
+      borderColor: !isMobile ? themeColors.whisperBorder : 'transparent',
+      paddingHorizontal: !isMobile ? spacing.md : 0,
+      paddingVertical: !isMobile ? spacing.md : 0,
+      marginBottom: !isMobile ? spacing.md : 0,
+    } as ViewStyle,
+    contentArea: {
+      flex: 1,
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderRadius: !isMobile ? borderRadius.lg : 0,
       borderWidth: !isMobile ? 1 : 0,
@@ -233,7 +245,7 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       borderRadius: !isMobile ? borderRadius.lg : 0,
       paddingHorizontal: spacing.md,
       paddingVertical: spacing.md,
-      width: !isMobile ? 280 : '100%',
+      width: !isMobile ? 380 : '100%',
     } as ViewStyle,
   });
 
@@ -302,20 +314,24 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
         {/* Right Column: Evaluation Selector + Scrollable Content */}
         <View style={styles.contentWrapper}>
           {/* Evaluation Type Selector */}
-          <SegmentedControl activeAnalysis={selectedEvaluationType} onSelectAnalysis={setSelectedEvaluationType} />
+          <View style={styles.selectorContainer}>
+            <SegmentedControl activeAnalysis={selectedEvaluationType} onSelectAnalysis={setSelectedEvaluationType} />
+          </View>
 
           {/* Scrollable Content */}
-          <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-            <View style={styles.content}>
-              {/* Evaluation Content */}
-              <View style={styles.section}>{renderEvaluationContent()}</View>
+          <View style={styles.contentArea}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={styles.content}>
+                {/* Evaluation Content */}
+                <View style={styles.section}>{renderEvaluationContent()}</View>
 
-              {/* AI Summary */}
-              <View style={styles.section}>
-                <AISummaryCard summary={call.aiSummary} />
+                {/* AI Summary */}
+                <View style={styles.section}>
+                  <AISummaryCard summary={call.aiSummary} />
+                </View>
               </View>
-            </View>
-          </ScrollView>
+            </ScrollView>
+          </View>
         </View>
       </View>
 
