@@ -87,24 +87,24 @@ export const GlobalEmotionAnalyticsView: React.FC = () => {
       lineHeight: 24,
     } as TextStyle,
     distributionContainer: {
-      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderRadius: borderRadius.lg,
-      padding: spacing.lg,
+      padding: spacing.md,
       borderWidth: 1,
-      borderColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
+      borderColor: themeColors.whisperBorder,
     } as ViewStyle,
     distributionItem: {
-      marginBottom: spacing.md,
+      marginBottom: spacing.lg,
     } as ViewStyle,
     distributionLabel: {
       fontSize: fontSize.sm,
       fontWeight: '500',
       color: themeColors.steelSecondary,
-      marginBottom: spacing.xs,
+      marginBottom: spacing.sm,
     } as TextStyle,
     distributionBar: {
-      height: 8,
-      backgroundColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
+      height: 6,
+      backgroundColor: isDark ? themeColors.canvasDark : colors.light.canvasLight,
       borderRadius: borderRadius.sm,
       overflow: 'hidden',
     } as ViewStyle,
@@ -113,10 +113,9 @@ export const GlobalEmotionAnalyticsView: React.FC = () => {
       backgroundColor: themeColors.newtechGreen,
     } as ViewStyle,
     distributionPercentage: {
-      fontSize: fontSize.xs,
+      fontSize: fontSize.sm,
       fontWeight: '600',
       color: themeColors.inkPrimary,
-      marginTop: spacing.xs,
     } as TextStyle,
     toneDistributionRow: {
       flexDirection: 'row',
@@ -199,7 +198,8 @@ export const GlobalEmotionAnalyticsView: React.FC = () => {
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  marginBottom: spacing.xs,
+                  alignItems: 'center',
+                  marginBottom: spacing.sm,
                 }}
               >
                 <Text style={styles.distributionLabel}>
