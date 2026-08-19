@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, ViewStyle, TextStyle } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, ViewStyle, TextStyle, TextInput } from 'react-native';
 import { ChevronLeft, ChevronRight, ChevronDown, Check } from 'lucide-react';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { Call } from '../data/mockCalls';
@@ -20,21 +20,20 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [effectivenessFilter, setEffectivenessFilter] = useState<EffectivenessFilter>('all');
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [isListFilterExpanded, setIsListFilterExpanded] = useState(false);
-  const [listSearchQuery, setListSearchQuery] = useState('');
-  const [tempSelectedLists, setTempSelectedLists] = useState<string[]>(selectedLists);
-  const [modalPageIndex, setModalPageIndex] = useState(0);
-
   // Get unique contact lists from calls
   const availableLists = useMemo(() => {
     const lists = new Set(calls.map((c) => c.contactList));
     return Array.from(lists).sort();
   }, [calls]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [effectivenessFilter, setEffectivenessFilter] = useState<EffectivenessFilter>('all');
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [isListFilterExpanded, setIsListFilterExpanded] = useState(false);
+  const [listSearchQuery, setListSearchQuery] = useState('');
   const [selectedLists, setSelectedLists] = useState<string[]>(availableLists);
+  const [tempSelectedLists, setTempSelectedLists] = useState<string[]>(selectedLists);
+  const [modalPageIndex, setModalPageIndex] = useState(0);
 
   const handleListSelect = (listName: string) => {
     setSelectedLists((prev) =>
@@ -518,9 +517,8 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
 
             {/* Search Bar */}
             <View style={styles.modalSearchContainer}>
-              <Text
+              <TextInput
                 style={styles.modalSearchInput}
-                // @ts-ignore - TextInput placeholder
                 placeholder="Buscar listas..."
                 placeholderTextColor={themeColors.steelSecondary}
                 value={listSearchQuery}
