@@ -37,42 +37,67 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
   const themeColors = isDark ? colors.dark : colors.light;
   const [selectedEvaluationType, setSelectedEvaluationType] = useState<InfoType>('operation');
 
+  const MetricCard = ({ label, value }: { label: string; value: string | number }) => (
+    <View style={styles.metricCard}>
+      <Text style={styles.metricLabel}>{label}</Text>
+      <Text style={styles.metricValue}>{value}</Text>
+    </View>
+  );
+
   const renderEvaluationContent = () => {
     switch (selectedEvaluationType) {
       case 'operation':
         return (
-          <OperationalEvaluationCard
-            duration={call.duration}
-            ahtTarget="5m 00s"
-            escalations={0}
-            result="Exitoso"
-          />
+          <View style={styles.metricsGrid}>
+            <MetricCard label="Duración" value={call.duration} />
+            <MetricCard label="AHT Objetivo" value="5m 00s" />
+            <MetricCard label="Escalaciones" value={0} />
+            <MetricCard label="Resultado" value="Exitoso" />
+          </View>
         );
       case 'qa':
-        return <QAEvaluationCard ecn={90} enc={85} ecc={100} ecuf={98} />;
+        return (
+          <View style={styles.metricsGrid}>
+            <MetricCard label="Cortesía Negociación" value="90%" />
+            <MetricCard label="Enc. Negociación" value="85%" />
+            <MetricCard label="Enc. Cierre Conversación" value="100%" />
+            <MetricCard label="Enc. Uso Frases" value="98%" />
+          </View>
+        );
       case 'emotion':
         return (
-          <SentimentEvaluationCard
-            agentSentiment="professional"
-            agentEmotion="joy"
-            clientSentiment="satisfaction"
-            clientEmotion="satisfaction"
-            agentTone={{ professional: 45, empathetic: 30, polite: 20, casual: 5 }}
-          />
+          <View style={styles.metricsGrid}>
+            <MetricCard label="Sentimiento Agente" value="Professional" />
+            <MetricCard label="Emoción Agente" value="Alegría" />
+            <MetricCard label="Sentimiento Cliente" value="Satisfecho" />
+            <MetricCard label="Emoción Cliente" value="Satisfecho" />
+          </View>
         );
       case 'compliance':
-        return <ComplianceEvaluationCard riskLevel="Bajo" />;
+        return (
+          <View style={styles.metricsGrid}>
+            <MetricCard label="Nivel de Riesgo" value="Bajo" />
+            <MetricCard label="Cumplimiento" value="95%" />
+            <MetricCard label="Violaciones" value={0} />
+            <MetricCard label="Auditoría" value="Aprobada" />
+          </View>
+        );
       case 'insights':
         return (
-          <BusinessEvaluationCard
-            salesOpportunity="No identificada"
-            retention="Alta"
-            churnRisk="Bajo"
-            upsellPotential="Futuro"
-          />
+          <View style={styles.metricsGrid}>
+            <MetricCard label="Oportunidad de Venta" value="No identificada" />
+            <MetricCard label="Retención" value="Alta" />
+            <MetricCard label="Riesgo de Churn" value="Bajo" />
+            <MetricCard label="Potencial Upsell" value="Futuro" />
+          </View>
         );
       default:
-        return <OperationalEvaluationCard />;
+        return (
+          <View style={styles.metricsGrid}>
+            <MetricCard label="Duración" value={call.duration} />
+            <MetricCard label="AHT Objetivo" value="5m 00s" />
+          </View>
+        );
     }
   };
 
@@ -115,12 +140,12 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       gap: spacing.xs,
     } as ViewStyle,
     headerName: {
-      fontSize: fontSize.sm,
+      fontSize: fontSize.lg,
       fontWeight: '700',
       color: themeColors.inkPrimary,
     } as TextStyle,
     headerPhone: {
-      fontSize: fontSize.xs,
+      fontSize: fontSize.sm,
       color: themeColors.steelSecondary,
       fontWeight: '400',
     } as TextStyle,
@@ -157,12 +182,12 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
       gap: spacing.xs,
     } as ViewStyle,
     metaLabel: {
-      fontSize: fontSize.xs,
+      fontSize: fontSize.sm,
       color: themeColors.steelSecondary,
       fontWeight: '500',
     } as TextStyle,
     metaValue: {
-      fontSize: fontSize.xs,
+      fontSize: fontSize.sm,
       color: themeColors.inkPrimary,
       fontWeight: '600',
     } as TextStyle,
@@ -194,6 +219,33 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
     section: {
       marginBottom: spacing.md,
     } as ViewStyle,
+    metricsGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginHorizontal: -spacing.sm / 2,
+    } as ViewStyle,
+    metricCard: {
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+      marginRight: spacing.sm,
+      flex: 1,
+      minWidth: '45%',
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+    } as ViewStyle,
+    metricLabel: {
+      fontSize: fontSize.sm,
+      color: themeColors.steelSecondary,
+      fontWeight: '500',
+      marginBottom: spacing.sm,
+    } as TextStyle,
+    metricValue: {
+      fontSize: fontSize.lg,
+      fontWeight: '700',
+      color: themeColors.inkPrimary,
+    } as TextStyle,
     evaluationCard: {
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderRadius: borderRadius.lg,
@@ -315,7 +367,11 @@ export const CallDetailsPage: React.FC<CallDetailsPageProps> = ({ call, onBack }
         <View style={styles.contentWrapper}>
           {/* Evaluation Type Selector */}
           <View style={styles.selectorContainer}>
-            <SegmentedControl activeAnalysis={selectedEvaluationType} onSelectAnalysis={setSelectedEvaluationType} />
+            <SegmentedControl
+              activeAnalysis={selectedEvaluationType}
+              onSelectAnalysis={setSelectedEvaluationType}
+              showLabels={!isMobile}
+            />
           </View>
 
           {/* Scrollable Content */}
