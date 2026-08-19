@@ -315,11 +315,12 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
       borderBottomWidth: 1,
       borderBottomColor: themeColors.whisperBorder,
       paddingVertical: spacing.md,
+      paddingHorizontal: spacing.md,
       backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
     } as ViewStyle,
     tableHeaderCell: {
       flex: 1,
-      paddingHorizontal: spacing.md,
+      paddingHorizontal: spacing.sm,
     } as ViewStyle,
     tableHeaderText: {
       fontSize: fontSize.sm,
