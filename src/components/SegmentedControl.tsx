@@ -103,7 +103,6 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
       color: themeColors.steelSecondary,
       textAlign: 'center',
       maxWidth: 90,
-      marginLeft: spacing.xs,
     } as TextStyle,
     activeSegmentLabel: {
       color: themeColors.newtechGreen,
