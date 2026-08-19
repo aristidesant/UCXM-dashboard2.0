@@ -98,11 +98,11 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
       opacity: 1,
     } as ViewStyle,
     segmentLabel: {
-      fontSize: 11,
+      fontSize: 10,
       fontWeight: '500',
       color: themeColors.steelSecondary,
       textAlign: 'center',
-      maxWidth: 90,
+      maxWidth: 75,
     } as TextStyle,
     activeSegmentLabel: {
       color: themeColors.newtechGreen,
@@ -167,9 +167,11 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
         })}
       </View>
 
-      <View style={styles.labelContainer}>
-        <Text style={styles.label}>{currentLabel}</Text>
-      </View>
+      {!showLabels && (
+        <View style={styles.labelContainer}>
+          <Text style={styles.label}>{currentLabel}</Text>
+        </View>
+      )}
     </View>
   );
 };
