@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, ViewStyle, TextStyle } from 'react-native';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { Call } from '../data/mockCalls';
 import { useTheme } from '../context/ThemeContext';
@@ -22,7 +22,7 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
 
   const [currentPage, setCurrentPage] = useState(1);
   const [effectivenessFilter, setEffectivenessFilter] = useState<EffectivenessFilter>('all');
-  const itemsPerPage = 10;
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Filter calls based on effectiveness
   const filteredCalls = useMemo(() => {
@@ -134,24 +134,87 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
     } as TextStyle,
     paginationContainer: {
       flexDirection: 'row',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
       alignItems: 'center',
-      gap: spacing.md,
       paddingHorizontal: spacing.lg,
       paddingVertical: spacing.md,
+      borderTopWidth: 1,
+      borderTopColor: themeColors.whisperBorder,
+      backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
+    } as ViewStyle,
+    paginationSection: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.md,
     } as ViewStyle,
     paginationButton: {
       paddingHorizontal: spacing.md,
       paddingVertical: spacing.sm,
       borderRadius: borderRadius.md,
       borderWidth: 1,
-      borderColor: themeColors.whisperBorder,
+      borderColor: colors.light.newtechGreen,
+      backgroundColor: colors.light.newtechGreen,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: spacing.xs,
+    } as ViewStyle,
+    paginationButtonSecondary: {
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderColor: themeColors.whisperBorder,
     } as ViewStyle,
     paginationButtonDisabled: {
       opacity: 0.5,
     } as ViewStyle,
     paginationText: {
+      fontSize: fontSize.sm,
+      color: themeColors.steelSecondary,
+      fontWeight: '500',
+    } as TextStyle,
+    paginationButtonText: {
+      fontSize: fontSize.sm,
+      color: '#FFFFFF',
+      fontWeight: '600',
+    } as TextStyle,
+    itemsPerPageContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.md,
+    } as ViewStyle,
+    itemsPerPageLabel: {
+      fontSize: fontSize.sm,
+      color: themeColors.steelSecondary,
+      fontWeight: '500',
+    } as TextStyle,
+    itemsPerPageButton: {
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.md,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      minWidth: 50,
+      alignItems: 'center',
+    } as ViewStyle,
+    itemsPerPageButtonActive: {
+      backgroundColor: colors.light.newtechGreen,
+      borderColor: colors.light.newtechGreen,
+    } as ViewStyle,
+    itemsPerPageButtonText: {
+      fontSize: fontSize.sm,
+      color: themeColors.steelSecondary,
+      fontWeight: '500',
+    } as TextStyle,
+    itemsPerPageButtonTextActive: {
+      color: '#FFFFFF',
+      fontWeight: '600',
+    } as TextStyle,
+    pageInfoContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+    } as ViewStyle,
+    pageInfoText: {
       fontSize: fontSize.sm,
       color: themeColors.steelSecondary,
       fontWeight: '500',
@@ -297,21 +360,62 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
             </ScrollView>
           </View>
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <View style={styles.paginationContainer}>
+          {/* Pagination Footer */}
+          <View style={styles.paginationContainer}>
+            {/* Left Section: Items Per Page */}
+            <View style={styles.itemsPerPageContainer}>
+              <Text style={styles.itemsPerPageLabel}>Mostrar:</Text>
+              {[5, 10, 15, 20].map((num) => (
+                <TouchableOpacity
+                  key={num}
+                  style={[
+                    styles.itemsPerPageButton,
+                    itemsPerPage === num && styles.itemsPerPageButtonActive,
+                  ]}
+                  onPress={() => {
+                    setItemsPerPage(num);
+                    setCurrentPage(1);
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.itemsPerPageButtonText,
+                      itemsPerPage === num && styles.itemsPerPageButtonTextActive,
+                    ]}
+                  >
+                    {num}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+              <Text style={styles.itemsPerPageLabel}>
+                ({filteredCalls.length} total)
+              </Text>
+            </View>
+
+            {/* Center Section: Page Info */}
+            <View style={styles.pageInfoContainer}>
+              <Text style={styles.pageInfoText}>
+                {startIndex + 1}-{Math.min(endIndex, filteredCalls.length)} de{' '}
+                {filteredCalls.length}
+              </Text>
+            </View>
+
+            {/* Right Section: Navigation Buttons */}
+            <View style={styles.paginationSection}>
               <TouchableOpacity
                 style={[
                   styles.paginationButton,
+                  styles.paginationButtonSecondary,
                   currentPage === 1 && styles.paginationButtonDisabled,
                 ]}
                 onPress={() => setCurrentPage(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
               >
-                <ChevronUp size={18} color={themeColors.steelSecondary} />
+                <ChevronLeft size={18} color={currentPage === 1 ? themeColors.steelSecondary : themeColors.inkPrimary} />
+                <Text style={[styles.paginationText, { fontWeight: '600' }]}>Anterior</Text>
               </TouchableOpacity>
 
-              <Text style={styles.paginationText}>
+              <Text style={styles.pageInfoText}>
                 Página {currentPage} de {totalPages}
               </Text>
 
@@ -323,10 +427,11 @@ export const ContactsTableDesktop: React.FC<ContactsTableDesktopProps> = ({
                 onPress={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
               >
-                <ChevronDown size={18} color={themeColors.steelSecondary} />
+                <Text style={styles.paginationButtonText}>Siguiente</Text>
+                <ChevronRight size={18} color="#FFFFFF" />
               </TouchableOpacity>
             </View>
-          )}
+          </View>
         </>
       ) : (
         <View style={styles.emptyState}>
