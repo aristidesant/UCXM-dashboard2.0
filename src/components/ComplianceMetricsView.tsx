@@ -111,14 +111,15 @@ export const ComplianceMetricsView: React.FC = () => {
       borderRadius: borderRadius.lg,
       padding: spacing.md,
       marginBottom: spacing.md,
+      marginRight: spacing.sm,
+      flex: 1,
+      minWidth: '45%',
       borderWidth: 1,
       borderColor: themeColors.whisperBorder,
-      borderLeftWidth: 4,
     } as ViewStyle,
     summaryValue: {
       fontSize: fontSize.xl,
       fontWeight: '700',
-      color: themeColors.inkPrimary,
       marginBottom: spacing.xs,
     } as TextStyle,
     summaryLabel: {
@@ -131,13 +132,16 @@ export const ComplianceMetricsView: React.FC = () => {
       color: themeColors.steelSecondary,
       marginTop: spacing.sm,
     } as TextStyle,
-    riskRow: {
+    riskContainer: {
       flexDirection: 'row',
+      flexWrap: 'wrap',
       gap: spacing.md,
       marginBottom: spacing.md,
+      marginHorizontal: -spacing.sm / 2,
     } as ViewStyle,
     riskCard: {
       flex: 1,
+      minWidth: '45%',
       backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderRadius: borderRadius.lg,
       padding: spacing.md,
@@ -153,30 +157,30 @@ export const ComplianceMetricsView: React.FC = () => {
     riskValue: {
       fontSize: fontSize.lg,
       fontWeight: '700',
-      color: themeColors.inkPrimary,
     } as TextStyle,
   });
 
-  const summaryBorderColor =
-    metrics.complianceScore >= 90
-      ? colors.light.newtechGreen
-      : metrics.complianceScore >= 80
-        ? '#FFC53D'
-        : '#FF4D4F';
+  const getScoreColor = (score: number): string => {
+    if (score >= 90) return colors.light.newtechGreen;
+    if (score >= 80) return '#FFC53D';
+    return '#FF4D4F';
+  };
 
   return (
     <View style={styles.container}>
       {/* Overall Compliance Score */}
-      <View style={[styles.summaryCard, { borderLeftColor: summaryBorderColor }]}>
+      <View style={styles.summaryCard}>
         <Text style={styles.summaryLabel}>Cumplimiento General</Text>
-        <Text style={styles.summaryValue}>{metrics.complianceScore}%</Text>
+        <Text style={[styles.summaryValue, { color: getScoreColor(metrics.complianceScore) }]}>
+          {metrics.complianceScore}%
+        </Text>
         <Text style={styles.summarySubtext}>
           Tasa de Adherencia: {metrics.adherenceRate}%
         </Text>
       </View>
 
-      {/* Risk Assessment */}
-      <View style={styles.riskRow}>
+      {/* Risk Assessment - 2 Column Layout */}
+      <View style={styles.riskContainer}>
         <View style={styles.riskCard}>
           <Text style={styles.riskLabel}>Llamadas Alto Riesgo</Text>
           <Text style={[styles.riskValue, { color: '#FF4D4F' }]}>
