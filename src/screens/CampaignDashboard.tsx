@@ -396,41 +396,65 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
   };
 
   const renderIndicadores = () => {
-    if (infoType === 'operation' && 'calls' in metrics) {
+    const content = (() => {
+      if (infoType === 'operation' && 'calls' in metrics) {
+        return (
+          <View style={{ flex: 1 }}>
+            <View style={{ marginBottom: spacing.xs }}>
+              <OperationTabs
+                activeTab={operationSubTab}
+                onSelectTab={setOperationSubTab}
+              />
+            </View>
+            {renderOperationContent()}
+          </View>
+        );
+      }
+
+      if (infoType === 'qa') {
+        const qaMetrics = metrics as QAMetrics;
+        return <QAMetricsPanel metrics={qaMetrics} />;
+      }
+
+      if (infoType === 'emotion') {
+        const emotionMetrics = metrics as EmotionMetrics;
+        return <EmotionMetricsPanel metrics={emotionMetrics} />;
+      }
+
+      if (infoType === 'compliance') {
+        const complianceMetrics = metrics as ComplianceMetrics;
+        return <ComplianceMetricsPanel metrics={complianceMetrics} />;
+      }
+
+      if (infoType === 'insights') {
+        const insightsMetrics = metrics as any; // Type from BusinessInsightsMetrics
+        return <BusinessInsightsPanel metrics={insightsMetrics} />;
+      }
+
+      return null;
+    })();
+
+    // Desktop: Show selector at top, centered
+    if (!isMobile) {
       return (
-        <View style={{ flex: 1 }}>
-          <View style={{ marginBottom: spacing.xs }}>
-            <OperationTabs
-              activeTab={operationSubTab}
-              onSelectTab={setOperationSubTab}
+        <View style={{ flex: 1, flexDirection: 'column' }}>
+          <View style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: spacing.lg, marginBottom: spacing.lg }}>
+            <SegmentedControl
+              activeAnalysis={infoType}
+              onSelectAnalysis={(analysisType) => {
+                setInfoType(analysisType);
+                setShowAnalysisSelector(false);
+              }}
+              showLabels={true}
             />
           </View>
-          {renderOperationContent()}
+          {content}
         </View>
       );
     }
 
-    if (infoType === 'qa') {
-      const qaMetrics = metrics as QAMetrics;
-      return <QAMetricsPanel metrics={qaMetrics} />;
-    }
-
-    if (infoType === 'emotion') {
-      const emotionMetrics = metrics as EmotionMetrics;
-      return <EmotionMetricsPanel metrics={emotionMetrics} />;
-    }
-
-    if (infoType === 'compliance') {
-      const complianceMetrics = metrics as ComplianceMetrics;
-      return <ComplianceMetricsPanel metrics={complianceMetrics} />;
-    }
-
-    if (infoType === 'insights') {
-      const insightsMetrics = metrics as any; // Type from BusinessInsightsMetrics
-      return <BusinessInsightsPanel metrics={insightsMetrics} />;
-    }
-
-    return null;
+    // Mobile: Return content without selector (selector at bottom)
+    return content;
   };
 
   const renderContactos = () => (
@@ -511,16 +535,6 @@ export const CampaignDashboardScreen: React.FC<CampaignDashboardScreenProps> = (
               <Text style={styles.metadataValue}>{dashboard.type}</Text>
             </View>
           </View>
-        </View>
-
-        <View style={{ flex: 1, paddingHorizontal: spacing.lg, paddingVertical: spacing.lg, justifyContent: 'center', alignItems: 'center' }}>
-          <SegmentedControl
-            activeAnalysis={infoType}
-            onSelectAnalysis={(analysisType) => {
-              setInfoType(analysisType);
-              setShowAnalysisSelector(false);
-            }}
-          />
         </View>
       </View>
     );
