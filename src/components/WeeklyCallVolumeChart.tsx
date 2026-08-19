@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
+import { usePlatform } from '../hooks/usePlatform';
 import { Card } from './Card';
 import { formatCallVolume } from '../utils/homeScreenMetrics';
 
@@ -15,6 +16,7 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
   labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 }) => {
   const { effectiveTheme } = useTheme();
+  const { isMobile } = usePlatform();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
 
@@ -73,11 +75,11 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
       flexDirection: 'row',
       alignItems: 'flex-end',
       justifyContent: 'space-around',
-      gap: spacing.xs,
+      gap: isMobile ? spacing.xs : spacing.sm,
       paddingBottom: spacing.xs,
     } as ViewStyle,
     bar: {
-      width: '12%',
+      width: isMobile ? '12%' : '20%',
       backgroundColor: themeColors.primaryBlue,
       borderRadius: borderRadius.sm,
       minHeight: 20,
