@@ -180,8 +180,8 @@ export const WeeklyCallVolumeChart: React.FC<WeeklyCallVolumeChartProps> = ({
             {labels.map((label, index) => (
               <View key={index} style={{ flex: 1, alignItems: 'center' }}>
                 <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: spacing.xs, height: 90 }}>
-                  <View style={[styles.bar, styles.barIncoming, { width: isMobile ? '45%' : '48%', height: Math.max((incoming[index] / maxValue) * 90, 15) }]} />
-                  <View style={[styles.bar, styles.barOutgoing, { width: isMobile ? '45%' : '48%', height: Math.max((outgoing[index] / maxValue) * 90, 15) }]} />
+                  <View style={[styles.bar, styles.barIncoming, { width: isMobile ? '40%' : '55%', height: Math.max((incoming[index] / maxValue) * 90, 15) }]} />
+                  <View style={[styles.bar, styles.barOutgoing, { width: isMobile ? '40%' : '55%', height: Math.max((outgoing[index] / maxValue) * 90, 15) }]} />
                 </View>
                 <Text style={styles.barLabel}>{label}</Text>
               </View>
