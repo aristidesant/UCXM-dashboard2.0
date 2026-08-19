@@ -64,7 +64,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
       borderRadius: 8,
       padding: spacing.xs,
       marginHorizontal: showLabels ? 0 : spacing.lg,
-      marginVertical: spacing.md,
+      marginVertical: showLabels ? 0 : spacing.md,
       gap: spacing.xs,
       justifyContent: 'center',
       flexWrap: showLabels ? 'wrap' : 'nowrap',
