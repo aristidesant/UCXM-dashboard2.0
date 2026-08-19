@@ -1,14 +1,87 @@
 import React from 'react';
-import { StyleSheet, View, Text, ViewStyle, TextStyle, ScrollView } from 'react-native';
-import { AlertCircle, CheckCircle } from 'lucide-react';
+import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
-import { Card, MetricCard } from './index';
 import type { ComplianceMetrics } from '../data/mockMetrics';
 
 interface ComplianceMetricsPanelProps {
   metrics: ComplianceMetrics;
 }
+
+interface ComplianceMetricProps {
+  label: string;
+  score: number;
+  violations: number;
+  isDark: boolean;
+  themeColors: any;
+}
+
+const ComplianceMetric: React.FC<ComplianceMetricProps> = ({
+  label,
+  score,
+  violations,
+  isDark,
+  themeColors,
+}) => {
+  const styles = StyleSheet.create({
+    card: {
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+      marginRight: spacing.sm,
+      flex: 1,
+      minWidth: '45%',
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+    } as ViewStyle,
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing.sm,
+    } as ViewStyle,
+    label: {
+      fontSize: fontSize.sm,
+      color: themeColors.steelSecondary,
+      fontWeight: '500',
+      flex: 1,
+    } as TextStyle,
+    score: {
+      fontSize: fontSize.lg,
+      fontWeight: '700',
+      color: themeColors.inkPrimary,
+    } as TextStyle,
+    violationsRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.md,
+    } as ViewStyle,
+    violationsLabel: {
+      fontSize: fontSize.xs,
+      color: themeColors.steelSecondary,
+      fontWeight: '400',
+    } as TextStyle,
+    violationsValue: {
+      fontSize: fontSize.sm,
+      fontWeight: '600',
+      color: themeColors.inkPrimary,
+    } as TextStyle,
+  });
+
+  return (
+    <View style={styles.card}>
+      <View style={styles.header}>
+        <Text style={styles.label}>{label}</Text>
+        <Text style={styles.score}>{score}%</Text>
+      </View>
+      <View style={styles.violationsRow}>
+        <Text style={styles.violationsLabel}>Violaciones:</Text>
+        <Text style={styles.violationsValue}>{violations}</Text>
+      </View>
+    </View>
+  );
+};
 
 export const ComplianceMetricsPanel: React.FC<ComplianceMetricsPanelProps> = ({ metrics }) => {
   const { effectiveTheme } = useTheme();
@@ -19,137 +92,123 @@ export const ComplianceMetricsPanel: React.FC<ComplianceMetricsPanelProps> = ({ 
     container: {
       flex: 1,
     } as ViewStyle,
-    scrollContent: {
-      paddingHorizontal: 0,
-      paddingTop: spacing.md,
-      paddingBottom: spacing.lg,
-    } as ViewStyle,
-    section: {
-      marginBottom: spacing.lg,
-      paddingHorizontal: spacing.lg,
-    } as ViewStyle,
-    sectionTitle: {
-      fontSize: fontSize.lg,
-      fontWeight: '600',
-      color: themeColors.inkPrimary,
+    summaryCard: {
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
       marginBottom: spacing.md,
-      lineHeight: 24,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+    } as ViewStyle,
+    summaryValue: {
+      fontSize: fontSize.xl,
+      fontWeight: '700',
+      marginBottom: spacing.xs,
     } as TextStyle,
-    metricsGrid: {
+    summaryLabel: {
+      fontSize: fontSize.sm,
+      color: themeColors.steelSecondary,
+      fontWeight: '500',
+    } as TextStyle,
+    summarySubtext: {
+      fontSize: fontSize.xs,
+      color: themeColors.steelSecondary,
+      marginTop: spacing.sm,
+    } as TextStyle,
+    metricsContainer: {
       flexDirection: 'row',
-      gap: spacing.md,
       flexWrap: 'wrap',
-    } as ViewStyle,
-    metricColumn: {
-      flex: 1,
-      minWidth: '48%',
-    } as ViewStyle,
-    metricColumnFull: {
-      width: '100%',
+      marginHorizontal: -spacing.sm / 2,
     } as ViewStyle,
     riskContainer: {
-      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
-      borderRadius: borderRadius.lg,
-      padding: spacing.lg,
-      borderWidth: 1,
-      borderColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
-    } as ViewStyle,
-    riskRow: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingVertical: spacing.md,
-      paddingHorizontal: spacing.md,
-      borderBottomWidth: 1,
-      borderBottomColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
+      flexWrap: 'wrap',
+      gap: spacing.md,
+      marginBottom: spacing.md,
+      marginHorizontal: -spacing.sm / 2,
+    } as ViewStyle,
+    riskCard: {
+      flex: 1,
+      minWidth: '45%',
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
     } as ViewStyle,
     riskLabel: {
-      fontSize: fontSize.sm,
-      fontWeight: '500',
+      fontSize: fontSize.xs,
       color: themeColors.steelSecondary,
-      flexDirection: 'row',
-      alignItems: 'center',
+      fontWeight: '500',
+      marginBottom: spacing.sm,
     } as TextStyle,
     riskValue: {
       fontSize: fontSize.lg,
       fontWeight: '700',
-      color: themeColors.inkPrimary,
     } as TextStyle,
   });
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.scrollContent}
-      showsVerticalScrollIndicator={false}
-    >
-      {/* Overall Metrics */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Métricas Generales</Text>
-        <View style={styles.metricsGrid}>
-          <View style={styles.metricColumn}>
-            <MetricCard
-              label="Puntuación de Cumplimiento"
-              value={`${metrics.complianceScore}%`}
-            />
-          </View>
-          <View style={styles.metricColumn}>
-            <MetricCard
-              label="Tasa de Adherencia"
-              value={`${metrics.adherenceRate}%`}
-            />
-          </View>
-          <View style={[styles.metricColumn, styles.metricColumnFull]}>
-            <MetricCard
-              label="Violaciones Detectadas"
-              value={metrics.violationCount.toString()}
-            />
-          </View>
+    <View style={styles.container}>
+      <View style={styles.summaryCard}>
+        <Text style={styles.summaryLabel}>Cumplimiento General</Text>
+        <Text style={[styles.summaryValue, { color: metrics.complianceScore >= 90 ? colors.light.newtechGreen : metrics.complianceScore >= 80 ? '#FFC53D' : '#FF4D4F' }]}>
+          {metrics.complianceScore}%
+        </Text>
+        <Text style={styles.summarySubtext}>
+          Tasa de Adherencia: {metrics.adherenceRate}%
+        </Text>
+      </View>
+
+      <View style={styles.riskContainer}>
+        <View style={styles.riskCard}>
+          <Text style={styles.riskLabel}>Llamadas Alto Riesgo</Text>
+          <Text style={[styles.riskValue, { color: '#FF4D4F' }]}>
+            {metrics.highRiskCalls}
+          </Text>
+        </View>
+        <View style={styles.riskCard}>
+          <Text style={styles.riskLabel}>Llamadas Bajo Riesgo</Text>
+          <Text style={[styles.riskValue, { color: colors.light.newtechGreen }]}>
+            {metrics.lowRiskCalls}
+          </Text>
         </View>
       </View>
 
-      {/* Compliance Areas - 2 Column Grid with MetricCard */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Áreas de Cumplimiento</Text>
-        <View style={styles.metricsGrid}>
-          {[
-            { name: 'Protección de Datos', data: metrics.dataProtection },
-            { name: 'Cumplimiento de Grabación', data: metrics.recordingCompliance },
-            { name: 'Cumplimiento de Divulgación', data: metrics.disclosureCompliance },
-            { name: 'Requisitos Regulatorios', data: metrics.regulatoryRequirements },
-          ].map((area) => (
-            <View key={area.name} style={styles.metricColumn}>
-              <MetricCard
-                label={area.name}
-                value={`${area.data.score}%`}
-                trendLabel={area.data.violations === 0 ? '✓ Sin violaciones' : `⚠ ${area.data.violations} violación(es)`}
-              />
-            </View>
-          ))}
-        </View>
-      </View>
+      <View style={styles.metricsContainer}>
+        <ComplianceMetric
+          label={metrics.dataProtection.name || 'Protección de Datos'}
+          score={metrics.dataProtection.score}
+          violations={metrics.dataProtection.violations}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
 
-      {/* Risk Indicators */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Indicadores de Riesgo</Text>
-        <View style={styles.riskContainer}>
-          <View style={[styles.riskRow, { borderBottomWidth: 1 }]}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <AlertCircle size={20} color="#FF6B6B" />
-              <Text style={[styles.riskLabel, { marginLeft: spacing.sm }]}>Llamadas de Alto Riesgo</Text>
-            </View>
-            <Text style={styles.riskValue}>{metrics.highRiskCalls}</Text>
-          </View>
-          <View style={[styles.riskRow, { borderBottomWidth: 0 }]}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <CheckCircle size={20} color={themeColors.newtechGreen} />
-              <Text style={[styles.riskLabel, { marginLeft: spacing.sm }]}>Llamadas de Bajo Riesgo</Text>
-            </View>
-            <Text style={styles.riskValue}>{metrics.lowRiskCalls}</Text>
-          </View>
-        </View>
+        <ComplianceMetric
+          label={metrics.recordingCompliance.name || 'Cumplimiento de Grabación'}
+          score={metrics.recordingCompliance.score}
+          violations={metrics.recordingCompliance.violations}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
+
+        <ComplianceMetric
+          label={metrics.disclosureCompliance.name || 'Cumplimiento de Divulgación'}
+          score={metrics.disclosureCompliance.score}
+          violations={metrics.disclosureCompliance.violations}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
+
+        <ComplianceMetric
+          label={metrics.regulatoryRequirements.name || 'Requisitos Regulatorios'}
+          score={metrics.regulatoryRequirements.score}
+          violations={metrics.regulatoryRequirements.violations}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

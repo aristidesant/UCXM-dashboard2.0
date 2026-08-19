@@ -1,8 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, Text, ViewStyle, TextStyle, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
 import { colors, spacing, borderRadius, fontSize } from '../design';
 import { useTheme } from '../context/ThemeContext';
-import { Card, MetricCard } from './index';
 import type { EmotionMetrics } from '../data/mockMetrics';
 import { getSentimentLevel, getEmotionLabel, getToneLabel } from '../utils/homeScreenMetrics';
 
@@ -19,66 +18,42 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
     container: {
       flex: 1,
     } as ViewStyle,
-    scrollContent: {
-      paddingHorizontal: 0,
-      paddingTop: spacing.md,
-      paddingBottom: spacing.lg,
-    } as ViewStyle,
-    section: {
+    sentimentCardsContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginHorizontal: -spacing.sm / 2,
       marginBottom: spacing.lg,
-      paddingHorizontal: spacing.lg,
     } as ViewStyle,
-    sectionTitle: {
-      fontSize: fontSize.lg,
-      fontWeight: '600',
-      color: themeColors.inkPrimary,
-      marginBottom: spacing.md,
-      lineHeight: 24,
-    } as TextStyle,
-    emotionCard: {
-      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
+    sentimentCard: {
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderRadius: borderRadius.lg,
-      padding: spacing.lg,
+      padding: spacing.md,
       marginBottom: spacing.md,
+      marginRight: spacing.sm,
+      flex: 1,
+      minWidth: '45%',
       borderWidth: 1,
-      borderColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
+      borderColor: themeColors.whisperBorder,
     } as ViewStyle,
-    emotionLabel: {
+    sentimentLabel: {
       fontSize: fontSize.sm,
       fontWeight: '500',
       color: themeColors.steelSecondary,
-      marginBottom: spacing.xs,
-    } as TextStyle,
-    emotionValue: {
-      fontSize: fontSize.xl,
-      fontWeight: '700',
-      color: themeColors.inkPrimary,
       marginBottom: spacing.sm,
-      textTransform: 'capitalize',
     } as TextStyle,
-    confidenceLabel: {
-      fontSize: fontSize.xs,
-      color: themeColors.steelSecondary,
-    } as TextStyle,
-    confidenceValue: {
+    sentimentValue: {
       fontSize: fontSize.lg,
       fontWeight: '700',
-      color: themeColors.newtechGreen,
+      color: themeColors.inkPrimary,
+      textTransform: 'capitalize',
     } as TextStyle,
-    metricsGrid: {
-      flexDirection: 'row',
-      gap: spacing.md,
-      marginBottom: spacing.md,
-    } as ViewStyle,
-    metricColumn: {
-      flex: 1,
-    } as ViewStyle,
     distributionContainer: {
-      backgroundColor: isDark ? themeColors.canvasDark : themeColors.canvasLight,
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
       borderRadius: borderRadius.lg,
       padding: spacing.lg,
+      marginBottom: spacing.lg,
       borderWidth: 1,
-      borderColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
+      borderColor: themeColors.whisperBorder,
     } as ViewStyle,
     distributionItem: {
       marginBottom: spacing.md,
@@ -91,13 +66,12 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
     } as TextStyle,
     distributionBar: {
       height: 8,
-      backgroundColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
+      backgroundColor: themeColors.whisperBorder,
       borderRadius: borderRadius.sm,
       overflow: 'hidden',
     } as ViewStyle,
     distributionFill: {
       height: '100%',
-      backgroundColor: themeColors.newtechGreen,
     } as ViewStyle,
     distributionPercentage: {
       fontSize: fontSize.xs,
@@ -105,14 +79,21 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
       color: themeColors.inkPrimary,
       marginTop: spacing.xs,
     } as TextStyle,
+    toneDistributionContainer: {
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderRadius: borderRadius.lg,
+      padding: spacing.lg,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+    } as ViewStyle,
     toneDistributionRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       paddingVertical: spacing.sm,
-      paddingHorizontal: spacing.md,
+      paddingHorizontal: 0,
       borderBottomWidth: 1,
-      borderBottomColor: isDark ? themeColors.whisperBorder : themeColors.lightGray,
+      borderBottomColor: themeColors.whisperBorder,
     } as ViewStyle,
     toneName: {
       fontSize: fontSize.sm,
@@ -152,84 +133,69 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
     .slice(0, 6);
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.scrollContent}
-      showsVerticalScrollIndicator={false}
-    >
-      {/* Agent Emotion */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Sentimiento Predominante del Agente</Text>
-        <View style={styles.emotionCard}>
-          <Text style={styles.emotionLabel}>Sentimiento</Text>
-          <Text style={styles.emotionValue}>{getSentimentLevel(metrics.agentPredominantEmotion)} - {getEmotionLabel(metrics.agentPredominantEmotion)}</Text>
+    <View style={styles.container}>
+      {/* Sentiment Cards - 2 Column Layout */}
+      <View style={styles.sentimentCardsContainer}>
+        <View style={styles.sentimentCard}>
+          <Text style={styles.sentimentLabel}>Sentimiento Predominante del Agente</Text>
+          <Text style={styles.sentimentValue}>{getSentimentLevel(metrics.agentPredominantEmotion)} - {getEmotionLabel(metrics.agentPredominantEmotion)}</Text>
         </View>
-      </View>
 
-      {/* Client Emotion */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Sentimiento Predominante del Cliente</Text>
-        <View style={styles.emotionCard}>
-          <Text style={styles.emotionLabel}>Sentimiento</Text>
-          <Text style={styles.emotionValue}>{getSentimentLevel(metrics.clientPredominantEmotion)} - {getEmotionLabel(metrics.clientPredominantEmotion)}</Text>
+        <View style={styles.sentimentCard}>
+          <Text style={styles.sentimentLabel}>Sentimiento Predominante del Cliente</Text>
+          <Text style={styles.sentimentValue}>{getSentimentLevel(metrics.clientPredominantEmotion)} - {getEmotionLabel(metrics.clientPredominantEmotion)}</Text>
         </View>
       </View>
 
       {/* Emotion Distribution */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Distribución Emocional</Text>
-        <View style={styles.distributionContainer}>
-          {sortedEmotions.map(([emotion, percentage]) => (
-            <View key={emotion} style={styles.distributionItem}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginBottom: spacing.xs,
-                }}
-              >
-                <Text style={styles.distributionLabel}>
-                  {getEmotionLabel(emotion)}
-                </Text>
-                <Text style={styles.distributionPercentage}>{percentage}%</Text>
-              </View>
-              <View style={styles.distributionBar}>
-                <View
-                  style={[
-                    styles.distributionFill,
-                    {
-                      width: `${percentage}%`,
-                      backgroundColor: getEmotionColor(emotion),
-                    },
-                  ]}
-                />
-              </View>
+      <View style={styles.distributionContainer}>
+        {sortedEmotions.map(([emotion, percentage]) => (
+          <View key={emotion} style={styles.distributionItem}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: spacing.xs,
+              }}
+            >
+              <Text style={styles.distributionLabel}>
+                {getEmotionLabel(emotion)}
+              </Text>
+              <Text style={styles.distributionPercentage}>{percentage}%</Text>
             </View>
-          ))}
-        </View>
+            <View style={styles.distributionBar}>
+              <View
+                style={[
+                  styles.distributionFill,
+                  {
+                    width: `${percentage}%`,
+                    backgroundColor: getEmotionColor(emotion),
+                  },
+                ]}
+              />
+            </View>
+          </View>
+        ))}
       </View>
 
       {/* Agent Tone Distribution */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Tono del Agente</Text>
-        <Card>
-          {Object.entries(metrics.agentToneDistribution).map(([tone, percentage], index) => (
-            <View
-              key={tone}
-              style={[
-                styles.toneDistributionRow,
-                index === Object.entries(metrics.agentToneDistribution).length - 1 && {
-                  borderBottomWidth: 0,
-                },
-              ]}
-            >
-              <Text style={styles.toneName}>{getToneLabel(tone)}</Text>
-              <Text style={styles.tonePercentage}>{percentage}%</Text>
-            </View>
-          ))}
-        </Card>
+      <View style={styles.toneDistributionContainer}>
+        {Object.entries(metrics.agentToneDistribution).map(([tone, percentage], index) => (
+          <View
+            key={tone}
+            style={[
+              styles.toneDistributionRow,
+              index === Object.entries(metrics.agentToneDistribution).length - 1 && {
+                borderBottomWidth: 0,
+              },
+            ]}
+          >
+            <Text style={styles.toneName}>{getToneLabel(tone)}</Text>
+            <Text style={styles.tonePercentage}>{percentage}%</Text>
+          </View>
+        ))}
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

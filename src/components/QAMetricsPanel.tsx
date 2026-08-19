@@ -1,119 +1,178 @@
 import React from 'react';
-import { StyleSheet, View, Text, ViewStyle, TextStyle, ScrollView } from 'react-native';
-import { colors, spacing, borderRadius, fontSize } from '../design';
+import { StyleSheet, View, Text, ViewStyle, TextStyle } from 'react-native';
+import { colors, spacing, fontSize, borderRadius } from '../design';
 import { useTheme } from '../context/ThemeContext';
-import { Card, MetricCard } from './index';
 import type { QAMetrics } from '../data/mockMetrics';
 
 interface QAMetricsPanelProps {
   metrics: QAMetrics;
 }
 
+interface QAScoreProps {
+  label: string;
+  value: number;
+  threshold: number;
+  status: 'ok' | 'warning' | 'critical';
+  isDark: boolean;
+  themeColors: any;
+}
+
+const QAScore: React.FC<QAScoreProps> = ({
+  label,
+  value,
+  threshold,
+  status,
+  isDark,
+  themeColors,
+}) => {
+  const getStatusColor = () => {
+    switch (status) {
+      case 'ok':
+        return colors.light.newtechGreen;
+      case 'warning':
+        return '#FFC53D';
+      case 'critical':
+        return '#FF4D4F';
+      default:
+        return themeColors.steelSecondary;
+    }
+  };
+
+  const styles = StyleSheet.create({
+    card: {
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+      marginRight: spacing.sm,
+      flex: 1,
+      minWidth: '45%',
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
+    } as ViewStyle,
+    label: {
+      fontSize: fontSize.sm,
+      color: themeColors.steelSecondary,
+      fontWeight: '500',
+      marginBottom: spacing.sm,
+    } as TextStyle,
+    scoreContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing.sm,
+    } as ViewStyle,
+    value: {
+      fontSize: fontSize.lg,
+      fontWeight: '700',
+      color: getStatusColor(),
+    } as TextStyle,
+    threshold: {
+      fontSize: fontSize.xs,
+      color: themeColors.steelSecondary,
+      fontWeight: '400',
+    } as TextStyle,
+  });
+
+  return (
+    <View style={styles.card}>
+      <Text style={styles.label}>{label}</Text>
+      <View style={styles.scoreContainer}>
+        <Text style={styles.value}>{value}</Text>
+        <Text style={styles.threshold}>Umbral: {threshold}</Text>
+      </View>
+    </View>
+  );
+};
+
 export const QAMetricsPanel: React.FC<QAMetricsPanelProps> = ({ metrics }) => {
   const { effectiveTheme } = useTheme();
   const isDark = effectiveTheme === 'dark';
   const themeColors = isDark ? colors.dark : colors.light;
 
-  const getStatusColor = (status: 'ok' | 'warning' | 'critical') => {
-    switch (status) {
-      case 'ok':
-        return themeColors.newtechGreen;
-      case 'warning':
-        return '#FFB800';
-      case 'critical':
-        return '#FF6B6B';
-    }
-  };
-
   const styles = StyleSheet.create({
     container: {
       flex: 1,
     } as ViewStyle,
-    scrollContent: {
-      paddingHorizontal: 0,
-      paddingTop: spacing.md,
-      paddingBottom: spacing.lg,
-    } as ViewStyle,
-    section: {
-      marginBottom: spacing.lg,
-      paddingHorizontal: spacing.lg,
-    } as ViewStyle,
-    sectionTitle: {
-      fontSize: fontSize.lg,
-      fontWeight: '600',
-      color: themeColors.inkPrimary,
-      marginBottom: spacing.md,
-      lineHeight: 24,
-    } as TextStyle,
-    distributionGrid: {
+    scoresContainer: {
       flexDirection: 'row',
-      gap: spacing.md,
+      flexWrap: 'wrap',
+      marginHorizontal: -spacing.sm / 2,
     } as ViewStyle,
-    distributionItem: {
-      flex: 1,
+    summaryCard: {
+      backgroundColor: isDark ? themeColors.sunkenBase : themeColors.pureSurface,
+      borderRadius: borderRadius.lg,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+      borderWidth: 1,
+      borderColor: themeColors.whisperBorder,
     } as ViewStyle,
-    distributionLabel: {
+    summaryLabel: {
       fontSize: fontSize.sm,
-      fontWeight: '500',
       color: themeColors.steelSecondary,
+      fontWeight: '500',
       marginBottom: spacing.sm,
-      textTransform: 'uppercase',
-      letterSpacing: 0.5,
     } as TextStyle,
-    distributionValue: {
+    summaryValue: {
       fontSize: fontSize.xl,
       fontWeight: '700',
       color: themeColors.inkPrimary,
+      marginBottom: spacing.sm,
     } as TextStyle,
-    metricsGrid: {
-      flexDirection: 'row',
-      gap: spacing.md,
-      flexWrap: 'wrap',
-    } as ViewStyle,
-    metricColumn: {
-      flex: 1,
-      minWidth: '48%',
-    } as ViewStyle,
+    summarySubtext: {
+      fontSize: fontSize.xs,
+      color: themeColors.steelSecondary,
+    } as TextStyle,
   });
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.scrollContent}
-      showsVerticalScrollIndicator={false}
-    >
-      {/* Analysis Distribution - Simple Formula Display */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Distribución de Análisis</Text>
-        <View style={styles.distributionGrid}>
-          <View style={styles.distributionItem}>
-            <Text style={styles.distributionLabel}>Contactos Efectivos</Text>
-            <Text style={styles.distributionValue}>{metrics.effectivePercentage}%</Text>
-          </View>
-          <View style={styles.distributionItem}>
-            <Text style={styles.distributionLabel}>Contactos No Efectivos</Text>
-            <Text style={styles.distributionValue}>{100 - metrics.effectivePercentage}%</Text>
-          </View>
-        </View>
+    <View style={styles.container}>
+      <View style={styles.summaryCard}>
+        <Text style={styles.summaryLabel}>Contactos Efectivos</Text>
+        <Text style={styles.summaryValue}>{metrics.effectivePercentage}%</Text>
+        <Text style={styles.summarySubtext}>
+          {metrics.effectiveContacts} efectivos de {metrics.effectiveContacts + metrics.ineffectiveContacts} total
+        </Text>
       </View>
 
-      {/* Error Metrics - 2-Column Grid with Metric Cards */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Métricas de Errores</Text>
-        <View style={styles.metricsGrid}>
-          {[metrics.ecn, metrics.enc, metrics.ecc, metrics.ecuf].filter(Boolean).map((error) => (
-            <View key={error.name} style={styles.metricColumn}>
-              <MetricCard
-                label={error.name}
-                value={`${error.value}%`}
-                trend={error.status === 'ok' ? 1 : error.status === 'warning' ? 0 : -1}
-                trendLabel={`Umbral: ${error.threshold}% - ${error.status === 'ok' ? '✓ OK' : '⚠ Revisar'}`}
-              />
-            </View>
-          ))}
-        </View>
+      <View style={styles.scoresContainer}>
+        <QAScore
+          label={metrics.ecn.name}
+          value={metrics.ecn.value}
+          threshold={metrics.ecn.threshold}
+          status={metrics.ecn.status}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
+
+        <QAScore
+          label={metrics.enc.name}
+          value={metrics.enc.value}
+          threshold={metrics.enc.threshold}
+          status={metrics.enc.status}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
+
+        <QAScore
+          label={metrics.ecc.name}
+          value={metrics.ecc.value}
+          threshold={metrics.ecc.threshold}
+          status={metrics.ecc.status}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
+
+        <QAScore
+          label={metrics.ecuf.name}
+          value={metrics.ecuf.value}
+          threshold={metrics.ecuf.threshold}
+          status={metrics.ecuf.status}
+          isDark={isDark}
+          themeColors={themeColors}
+        />
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
