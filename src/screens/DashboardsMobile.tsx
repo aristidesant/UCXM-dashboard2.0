@@ -169,7 +169,7 @@ export const DashboardsMobileScreen: React.FC<DashboardsMobileScreenProps> = ({
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        <Text style={styles.header}>Dashboards</Text>
+        <Text style={styles.header}>Campañas</Text>
 
         <View style={styles.searchContainer}>
           <View style={styles.searchInputWrapper}>

@@ -330,7 +330,7 @@ export const DashboardsScreen: React.FC<DashboardsScreenProps> = ({
   return (
     <ResponsiveContainer>
       <View style={styles.container}>
-        <Text style={styles.header}>Dashboards</Text>
+        <Text style={styles.header}>Campañas</Text>
 
       {!isMobile && (
         <View style={{ flex: 1, flexDirection: 'column', position: 'relative', zIndex: 0 }}>
