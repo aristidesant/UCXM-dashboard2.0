@@ -111,11 +111,6 @@ export const BusinessInsightsPanel: React.FC<BusinessInsightsPanelProps> = ({ me
       <View style={styles.insightsContainer}>
         {/* Revenue Insights */}
         <InsightCard
-          label="Ingresos por Llamada"
-          value={`$${metrics.revenuePerCall}`}
-        />
-
-        <InsightCard
           label="Crecimiento de Ingresos"
           value={metrics.revenueGrowth}
           unit="%"
@@ -126,29 +121,13 @@ export const BusinessInsightsPanel: React.FC<BusinessInsightsPanelProps> = ({ me
           value={metrics.conversionOpportunities}
         />
 
-        {/* Customer Satisfaction */}
-        <InsightCard
-          label="Net Promoter Score"
-          value={metrics.netPromoterScore}
-        />
-
         {/* Risk & Efficiency */}
-        <InsightCard
-          label="Riesgo de Churn"
-          value={metrics.churnRisk}
-          unit="%"
-        />
-
         <InsightCard
           label="Productividad del Agente"
           value={metrics.agentProductivity}
           unit="llamadas/h"
         />
 
-        <InsightCard
-          label="Costo por Llamada"
-          value={`$${metrics.costPerCall}`}
-        />
       </View>
     </View>
   );
