@@ -180,7 +180,7 @@ export const EmotionMetricsPanel: React.FC<EmotionMetricsPanelProps> = ({ metric
       {/* Emotion Distribution */}
       <View style={styles.distributionContainer}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.md }}>
-          <Text style={{ fontSize: fontSize.md, fontWeight: '600', color: themeColors.inkPrimary }}>Distribución de Emociones</Text>
+          <Text style={{ fontSize: fontSize.lg, fontWeight: '600', color: themeColors.inkPrimary }}>Distribución de Emociones</Text>
           <View style={styles.distributionTabs}>
             <TouchableOpacity
               style={[styles.tabButton, emotionTab === 'agent' && styles.tabButtonActive]}
